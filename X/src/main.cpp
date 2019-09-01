@@ -8,7 +8,6 @@ public:
 	}
 
 };
-
 gx::GameX* gx::CreateApp() {
 	return new Game();
 }

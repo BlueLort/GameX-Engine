@@ -27,9 +27,15 @@
     <ClInclude Include="src\GX\Entry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\GX\Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GX\GameX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GX\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
