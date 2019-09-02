@@ -1,5 +1,5 @@
 #pragma once
-#include "Config.h"
+#include <Config.h>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <memory>
@@ -13,7 +13,7 @@
 
 #define GX_PRINT(...) gx::Logger::getGameLogger()->trace(__VA_ARGS__)
 #define GX_INFO(...) gx::Logger::getGameLogger()->info(__VA_ARGS__)
-#define GXE_DEBUG(...) gx::Logger::getGameLogger()->debug(__VA_ARGS__)
+#define GX_DEBUG(...) gx::Logger::getGameLogger()->debug(__VA_ARGS__)
 #define GX_WARN(...) gx::Logger::getGameLogger()->warn(__VA_ARGS__)
 #define GX_ERROR(...) gx::Logger::getGameLogger()->error(__VA_ARGS__)
 #define GX_FERROR(...) gx::Logger::getGameLogger()->critical(__VA_ARGS__);

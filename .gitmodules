@@ -1,0 +1,3 @@
+[submodule "Game X Engine/3rdParty/ImGUI"]
+	path = Game X Engine/3rdParty/ImGUI
+	url = https://github.com/ocornut/imgui.git

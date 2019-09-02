@@ -1,6 +1,6 @@
 #include <GX.h>
 
-class Game : public  gx::GameX {
+class Game : public  gx::GameXApp {
 public:
 	Game(){ }
 	~Game() {
@@ -8,6 +8,6 @@ public:
 	}
 
 };
-gx::GameX* gx::CreateApp() {
+gx::GameXApp* gx::CreateApp() {
 	return new Game();
 }

@@ -15,12 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GX\Config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GX\GameX.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\GX.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -30,12 +24,27 @@
     <ClInclude Include="src\GX\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Events\Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Config\Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Config\pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GX\GameXApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\GX\GameX.cpp">
+    <ClCompile Include="src\GX\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GX\Logger.cpp">
+    <ClCompile Include="src\Config\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GX\GameXApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

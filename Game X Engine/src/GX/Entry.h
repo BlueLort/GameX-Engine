@@ -1,12 +1,12 @@
 #pragma once
-extern gx::GameX* gx::CreateApp();
+extern gx::GameXApp* gx::CreateApp();
 
 
 int main(int argc, char** argv) {
 
 	gx::Logger::init();
 	
-	gx::GameX* Game = gx::CreateApp();
+	gx::GameXApp* Game = gx::CreateApp();
 	Game->Start();
 	delete Game;
 
