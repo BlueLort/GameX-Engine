@@ -6,7 +6,7 @@
 #define GX_DLL __declspec(dllimport)
 #endif
 
-#define GX_ENABLE_ASSERTS;
+#define GX_ENABLE_ASSERTS
 
 #ifdef GX_ENABLE_ASSERTS
 #define GX_ASSERT(x, ...) { if(!(x)) { GX_FERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
