@@ -9,8 +9,8 @@ namespace gx{
 		GameXApp();
 
 		virtual ~GameXApp();
-
 		void Start();
 	};
-	GameXApp* CreateApp();
+	extern GameXApp* CreateApp();
 }
+

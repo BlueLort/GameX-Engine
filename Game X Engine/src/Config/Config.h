@@ -6,6 +6,9 @@
 #define GX_DLL __declspec(dllimport)
 #endif
 
+
+//Config 
+#define USING_GLM_MATHS
 #define GX_ENABLE_ASSERTS
 
 #ifdef GX_ENABLE_ASSERTS

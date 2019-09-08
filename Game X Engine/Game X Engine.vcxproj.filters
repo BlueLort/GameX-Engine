@@ -21,9 +21,6 @@
     <ClInclude Include="src\GX\Entry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\GX\Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Events\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -36,24 +33,27 @@
     <ClInclude Include="src\GX\GameXApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Window\SDLWindow.h">
+    <ClInclude Include="src\Maths\GXMaths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Maths\GXMaths.h">
+    <ClInclude Include="src\Window\GXWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Logging\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\GX\Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Config\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\GX\GameXApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Window\SDLWindow.cpp">
+    <ClCompile Include="src\Window\GXWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logging\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -90,20 +90,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Config\pch.cpp" />
-    <ClCompile Include="src\GX\Logger.cpp" />
+    <ClCompile Include="src\Logging\Logger.cpp" />
     <ClCompile Include="src\GX\GameXApp.cpp" />
-    <ClCompile Include="src\Window\SDLWindow.cpp" />
+    <ClCompile Include="src\Window\GXWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Config\pch.h" />
     <ClInclude Include="src\Events\Event.h" />
-    <ClInclude Include="src\GX\Logger.h" />
+    <ClInclude Include="src\Logging\Logger.h" />
     <ClInclude Include="src\GX\Entry.h" />
     <ClInclude Include="src\GX\GameXApp.h" />
     <ClInclude Include="src\Config\Config.h" />
     <ClInclude Include="src\GX.h" />
     <ClInclude Include="src\Maths\GXMaths.h" />
-    <ClInclude Include="src\Window\SDLWindow.h" />
+    <ClInclude Include="src\Window\GXWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
