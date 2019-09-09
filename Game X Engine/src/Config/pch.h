@@ -1,7 +1,10 @@
 #pragma once
 
+
+//General
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <fstream>
 #include <algorithm>
 #include <memory>
@@ -11,4 +14,17 @@
 #include <unordered_set>
 #include <stack>
 #include <queue>
+
+//Project Classes
+#include "../Logging/Logger.h"
+//third party
+#include <SDL/SDL.h>
+
+
+
+
+
+
+
+//platform api
 #include <Windows.h>

@@ -1,6 +1,6 @@
 #include <pch.h>
 #include <Config.h>
-
+#define KeyValToSTR(K) (K) //map to input code map
 namespace gx {
 	namespace event {
 		enum EventType
@@ -9,6 +9,7 @@ namespace gx {
 			GX_KEY_PRESSED,
 			GX_KEY_RELEASED,
 			GX_KEY_TYPED,
+			GX_KEY_HOLD,
 			GX_MOUSE_PRESSED,
 			GX_MOUSE_RELEASED,
 			GX_MOUSE_MOVED,
@@ -29,13 +30,18 @@ namespace gx {
 		public:
 			bool handled = false;
 			virtual const char* getName() const = 0;
-			virtual uint32_t getEventClass() const = 0;
+			virtual inline uint32_t getEventClass() const = 0;
 			inline bool isSameClassAs(const Event& e) {
 				return this->getEventClass() & e.getEventClass();
 			}
 
-			virtual const char* toString() { return this->getName(); }
+			virtual const char* toString() const { return this->getName(); }
+		
+			
 		};
+
+		/* EVENT QUEUE IMPLEMENTATION HOWEVER CURRENTLY I'M USING SDL QUEUE TO POLL EVENTS AND HANDLE THEM*/
+		/*
 		constexpr uint32_t EVENTS_LIMIT = 64;
 		class GX_DLL EventQueue {
 		public:
@@ -69,5 +75,6 @@ namespace gx {
 		uint32_t EventQueue::backIte = 0;
 		uint32_t EventQueue::size = 0;
 	}
-
+	*/
+	}
 }

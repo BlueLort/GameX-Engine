@@ -3,7 +3,7 @@
 
 namespace gx {
 
-	GameXApp::GameXApp() {
+	GameXApp::GameXApp() :isRunning(true) {
 
 	}
 
@@ -12,6 +12,20 @@ namespace gx {
 	}
 
 	void GameXApp::Start() {
-		while (true);
+		while (isRunning) {
+			while(GXPollEvents(&GXEvent()));
+		}
 	}
+
+	int GameXApp::onEvent(void* userdata, GXEvent* Event)
+	{
+		//SDL Event Mapping 
+		switch (Event->type) {
+
+
+
+		}
+		return 0;
+	}
+
 }

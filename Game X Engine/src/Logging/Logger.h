@@ -2,7 +2,7 @@
 #include <Config.h>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
-#include <memory>
+
 
 #define GXE_PRINT(...) gx::Logger::getEngineLogger()->trace(__VA_ARGS__)
 #define GXE_INFO(...) gx::Logger::getEngineLogger()->info(__VA_ARGS__)
