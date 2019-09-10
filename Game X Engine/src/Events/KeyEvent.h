@@ -24,6 +24,7 @@ namespace gx {
 		public:
 			KeyPressEvent(uint32_t KeyValue) : KeyEvent(KeyValue) {}
 			const char* getName() const override { return "KEY_PRESSED"; }
+			uint32_t getEventType() const override { return EventType::GX_KEY_PRESSED; }
 			
 		
 		};
@@ -34,6 +35,7 @@ namespace gx {
 		public:
 			KeyHoldEvent(uint32_t KeyValue) : KeyEvent(KeyValue) {}
 			const char* getName() const override { return "KEY_HOLD"; }
+			uint32_t getEventType() const override { return EventType::GX_KEY_HOLD; }
 	
 		};
 
@@ -43,17 +45,10 @@ namespace gx {
 		public:
 			KeyReleaseEvent(uint32_t KeyValue) : KeyEvent(KeyValue) {}
 			const char* getName() const override { return "KEY_RELEASED"; }
+			uint32_t getEventType() const override { return EventType::GX_KEY_RELEASED; }
 
 		};
 
-
-		class GX_DLL KeyTypedEvent : public KeyEvent {
-
-		public:
-			KeyTypedEvent(uint32_t KeyValue) : KeyEvent(KeyValue) {}
-			const char* getName() const override { return "KEY_TYPED"; }
-
-		};
 	}
 
 }

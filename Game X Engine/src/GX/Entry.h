@@ -16,7 +16,8 @@ constexpr uint32_t SDL_FLAGS = SDL_WINDOW_OPENGL;
 void initSystems(gx::GameXApp* gameInst) {
 	gx::Logger::init();	GXE_INFO("Logger initialized successfully !");
 	gx::GXWindow::init("Game X Engine", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_FLAGS); GXE_INFO("Window initialized successfully using SDL2.0 !");
-	gx::GXWindow::addEventsCallBack(gameInst->getEventCallBack(),nullptr);
+	gx::GXWindow::addEventsCallBack(gameInst->getEventCallBack(), nullptr); GXE_INFO("Event CallBack Attached to SDL2.0 Event Queue !");
+	gameInst->timer->init(); GXE_INFO("Application Timer Started using SDL_GetTicks !");
 }
 
 

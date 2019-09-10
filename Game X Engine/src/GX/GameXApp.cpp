@@ -3,7 +3,7 @@
 
 namespace gx {
 
-	GameXApp::GameXApp() :isRunning(true) {
+	GameXApp::GameXApp() :isRunning(true),timer(std::make_unique<Timer>()) {
 
 	}
 
@@ -13,7 +13,8 @@ namespace gx {
 
 	void GameXApp::Start() {
 		while (isRunning) {
-			while(GXPollEvents(&GXEvent()));
+			timer->update();
+			while (GXPollEvents(&GXEvent()) == 1);//Send events to callback
 		}
 	}
 

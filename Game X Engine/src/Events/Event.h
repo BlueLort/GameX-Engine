@@ -8,7 +8,6 @@ namespace gx {
 			GX_NONE = 0,
 			GX_KEY_PRESSED,
 			GX_KEY_RELEASED,
-			GX_KEY_TYPED,
 			GX_KEY_HOLD,
 			GX_MOUSE_PRESSED,
 			GX_MOUSE_RELEASED,
@@ -30,6 +29,7 @@ namespace gx {
 		public:
 			bool handled = false;
 			virtual const char* getName() const = 0;
+			virtual uint32_t getEventType() const = 0;
 			virtual inline uint32_t getEventClass() const = 0;
 			inline bool isSameClassAs(const Event& e) {
 				return this->getEventClass() & e.getEventClass();
