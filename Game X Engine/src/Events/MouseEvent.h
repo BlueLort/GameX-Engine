@@ -7,12 +7,12 @@ namespace gx {
 		public:
 
 			inline uint32_t getKeyVal() const { return keyVal; }
-			inline uint32_t getEventClass() const override { return (EventClass::GX_INPUT | EventClass::GX_MOUSE | EventClass::GX_MOUSE_BUTTON); }
+			virtual inline uint32_t getEventClass() const override { return (EventClass::GX_INPUT | EventClass::GX_MOUSE | EventClass::GX_MOUSE_BUTTON); }
 
 		protected:
 
 			MouseButtonEvent(uint32_t KeyValue) : keyVal(KeyValue) {}
-			const char* toString()const override {
+			virtual const char* toString()const override {
 				std::stringstream ss;
 				ss << KeyValToSTR(keyVal) + " " << this->getName();
 				return ss.str().c_str();
@@ -25,7 +25,7 @@ namespace gx {
 
 		public:
 			MousePressEvent(uint32_t KeyValue) : MouseButtonEvent(KeyValue) {}
-			const char* getName() const override { return "MOUSE_PRESSED"; }
+			virtual const char* getName() const override { return "MOUSE_PRESSED"; }
 
 		};
 
@@ -33,7 +33,7 @@ namespace gx {
 
 		public:
 			MouseReleasedEvent(uint32_t KeyValue) : MouseButtonEvent(KeyValue) {}
-			const char* getName() const override { return "MOUSE_RELEASED"; }
+			virtual const char* getName() const override { return "MOUSE_RELEASED"; }
 
 		};
 
@@ -42,10 +42,10 @@ namespace gx {
 		public:
 			inline int32_t getXOffset() const { return xOff; }
 			inline int32_t getYOffset() const { return yOff; }
-			inline uint32_t getEventClass() const override { return (EventClass::GX_INPUT | EventClass::GX_MOUSE); }
+			virtual inline uint32_t getEventClass() const override { return (EventClass::GX_INPUT | EventClass::GX_MOUSE); }
 		protected:
 			MouseMotionEvent(int32_t xOffset, int32_t yOffset) : xOff(xOffset), yOff(yOffset) {}
-			const char* toString() const override {
+			virtual const char* toString() const override {
 				std::stringstream ss;
 				ss << this->getName() << "|X-Offset: " + std::to_string(xOff) + " |Y-Offset: " + std::to_string(yOff) + " |";
 				return ss.str().c_str();
@@ -58,7 +58,7 @@ namespace gx {
 
 		public:
 			MouseMoveEvent(int32_t xOffset, int32_t yOffset) : MouseMotionEvent(xOffset,yOffset) {}
-			const char* getName() const override { return "MOUSE_MOVED"; }
+			virtual const char* getName() const override { return "MOUSE_MOVED"; }
 
 		};
 
@@ -66,7 +66,7 @@ namespace gx {
 
 		public:
 			MouseScrollEvent(int32_t xOffset, int32_t yOffset) : MouseMotionEvent(xOffset, yOffset) {}
-			const char* getName() const override { return "MOUSE_SCROLLED"; }
+			virtual const char* getName() const override { return "MOUSE_SCROLLED"; }
 
 		};
 	}

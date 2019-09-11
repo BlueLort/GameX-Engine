@@ -6,13 +6,13 @@ namespace gx {
 		public:
 			WindowResizeEvent(uint32_t Width, uint32_t Height)
 				: width(Width), height(Height) {}
-			const char* getName() const override { return "WINDOW_RESIZE"; }
-			inline uint32_t getEventClass() const override { return (EventClass::GX_APPLICATION); }
-			uint32_t getEventType() const override { return EventType::GX_WINDOW_RESIZE; }
+			virtual const char* getName() const override { return "WINDOW_RESIZE"; }
+			virtual inline uint32_t getEventClass() const override { return (EventClass::GX_APPLICATION); }
+			virtual uint32_t getEventType() const override { return EventType::GX_WINDOW_RESIZE; }
 			inline uint32_t getWidth() const { return width; }
 			inline uint32_t getHeight() const { return height; }
 
-			const char* toString() const override
+			virtual const char* toString() const override
 			{
 				std::stringstream ss;
 				ss << this->getName() << "| " << width << " , " << height << " |";
@@ -27,9 +27,9 @@ namespace gx {
 		class GX_DLL WindowCloseEvent : public Event {
 		public:
 			WindowCloseEvent() {}
-			const char* getName() const override { return "WINDOW_CLOSE"; }
-			inline uint32_t getEventClass() const override {return (EventClass::GX_APPLICATION);}
-			uint32_t getEventType() const override { return EventType::GX_WINDOW_CLOSE; }
+			virtual const char* getName() const override { return "WINDOW_CLOSE"; }
+			virtual inline uint32_t getEventClass() const override {return (EventClass::GX_APPLICATION);}
+			virtual uint32_t getEventType() const override { return EventType::GX_WINDOW_CLOSE; }
 		};
 
 	}
