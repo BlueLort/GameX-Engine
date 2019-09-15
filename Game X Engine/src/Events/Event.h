@@ -1,5 +1,5 @@
-#include <pch.h>
-#include <Config.h>
+#include "pch.h"
+#include "Config.h"
 #define KeyValToSTR(K) (K) //map to input code map
 namespace gx {
 	namespace event {

@@ -57,6 +57,9 @@
     <ClInclude Include="src\Renderer\openGL\OpenGLContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\UI\ImGUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GX\GameXApp.cpp">
@@ -71,10 +74,10 @@
     <ClCompile Include="src\Config\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Window\Layer.cpp">
+    <ClCompile Include="src\Renderer\openGL\OpenGLContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderer\openGL\OpenGLContext.cpp">
+    <ClCompile Include="src\UI\ImGUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

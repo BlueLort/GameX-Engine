@@ -1,7 +1,7 @@
 #pragma once
-#include <pch.h>
-#include <Config.h>
-
+#include "pch.h"
+#include "Config.h"
+#include "Window/Layer.h"
 namespace gx {
 	//adapt it to whatever API im using.
 	using GXEvent = SDL_Event;
@@ -21,7 +21,7 @@ namespace gx {
 	private:
 		static int onEvent(void* userdata, GXEvent* Event);
 		bool isRunning;
-
+	
 	};
 
 	extern GameXApp* CreateApp();

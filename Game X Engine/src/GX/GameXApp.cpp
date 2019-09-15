@@ -1,9 +1,9 @@
-#include <pch.h>
+#include "pch.h"
 #include "GameXApp.h"
 
 namespace gx {
 
-	GameXApp::GameXApp() :isRunning(true),timer(std::make_unique<Timer>()) {
+	GameXApp::GameXApp() :isRunning(true),timer(std::make_unique<Timer>()){
 
 	}
 

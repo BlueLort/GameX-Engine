@@ -1,6 +1,6 @@
 #pragma once
-#include <pch.h>
-#include <Config.h>
+#include "pch.h"
+#include "Config.h"
 namespace gx {
 	struct GXWindowData {
 		uint32_t width;
