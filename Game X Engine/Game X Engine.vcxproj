@@ -99,7 +99,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\UI\ImGUI.cpp" />
+    <ClCompile Include="src\Renderer\openGL\GLLoader\glad.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\UI\IMGUI_FILES\imgui.cpp" />
+    <ClCompile Include="src\UI\IMGUI_FILES\imgui_demo.cpp" />
+    <ClCompile Include="src\UI\IMGUI_FILES\imgui_draw.cpp" />
+    <ClCompile Include="src\UI\IMGUI_FILES\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\UI\IMGUI_FILES\imgui_impl_sdl.cpp" />
+    <ClCompile Include="src\UI\IMGUI_FILES\imgui_widgets.cpp" />
+    <ClCompile Include="src\UI\ImGUI_SDLGL.cpp" />
     <ClCompile Include="src\Renderer\openGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Config\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -110,7 +120,17 @@
     <ClCompile Include="src\Window\GXWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\UI\ImGUI.h" />
+    <ClInclude Include="src\Renderer\openGL\GLLoader\glad.h" />
+    <ClInclude Include="src\Renderer\openGL\GLLoader\khrplatform.h" />
+    <ClInclude Include="src\UI\IMGUI_FILES\imconfig.h" />
+    <ClInclude Include="src\UI\IMGUI_FILES\imgui.h" />
+    <ClInclude Include="src\UI\IMGUI_FILES\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\UI\IMGUI_FILES\imgui_impl_sdl.h" />
+    <ClInclude Include="src\UI\IMGUI_FILES\imgui_internal.h" />
+    <ClInclude Include="src\UI\IMGUI_FILES\imstb_rectpack.h" />
+    <ClInclude Include="src\UI\IMGUI_FILES\imstb_textedit.h" />
+    <ClInclude Include="src\UI\IMGUI_FILES\imstb_truetype.h" />
+    <ClInclude Include="src\UI\ImGUI_SDLGL.h" />
     <ClInclude Include="src\Renderer\openGL\OpenGLContext.h" />
     <ClInclude Include="src\Window\Layer.h" />
     <ClInclude Include="src\Config\pch.h" />

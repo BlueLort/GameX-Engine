@@ -14,16 +14,14 @@
 #include <unordered_set>
 #include <stack>
 #include <queue>
-
+#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
+#include <string.h>
 //Project Classes
 #include "../Logging/Logger.h"
 //third party
 #include <SDL/SDL.h>
-
-
-
-
-
 
 
 //platform api

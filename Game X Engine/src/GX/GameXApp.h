@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "Config.h"
 #include "Window/Layer.h"
+#include "UI/ImGUI_SDLGL.h"
 namespace gx {
 	//adapt it to whatever API im using.
 	using GXEvent = SDL_Event;
@@ -15,11 +16,11 @@ namespace gx {
 		virtual ~GameXApp();
 		void Start();
 		GXEventCallBack getEventCallBack() const { return onEvent; }
-
-
+		std::unique_ptr<ImGUI_SDLGL> ImGUI_Layer;
 		std::unique_ptr<Timer> timer;
 	private:
 		static int onEvent(void* userdata, GXEvent* Event);
+		
 		bool isRunning;
 	
 	};
