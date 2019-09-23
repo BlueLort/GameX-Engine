@@ -4,7 +4,7 @@
 namespace gx {
 
 	GameXApp::GameXApp() :isRunning(true),timer(std::make_unique<Timer>())
-		,ImGUI_Layer(std::make_unique<ImGUI_SDLGL>("ImGUI Editor")){
+		,ImGUIGL_Layer(std::make_unique<ImGUI_SDLGL>("ImGUI Editor")){
 
 	}
 

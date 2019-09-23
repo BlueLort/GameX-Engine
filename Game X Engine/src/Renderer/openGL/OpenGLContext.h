@@ -8,8 +8,10 @@ namespace gx {
 	{
 	public:
 		static void init();
-		static SDL_GLContext getGLContext() { return glContext; }
-
+		inline static SDL_GLContext getGLContext() { return glContext; }
+		inline static const GLubyte* getVendorName() { return glGetString(GL_VENDOR); }
+		inline static const GLubyte* getGLVersion() { return glGetString(GL_VERSION); }
+		inline static const GLubyte* getGPUName() { return glGetString(GL_RENDERER); }
 	private:
 		static SDL_GLContext glContext;
 	};
