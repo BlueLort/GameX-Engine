@@ -1,6 +1,9 @@
 #pragma once
 #include "Config.h"
 #include "Events/Event.h"
+#include "Events/KeyEvent.h"
+#include "Events/MouseEvent.h"
+#include "Events/WindowEvent.h"
 namespace gx {
 	class Layer;
 	struct GX_DLL LayerStack {
@@ -13,7 +16,7 @@ namespace gx {
 		inline Layer(const std::string& layerName) : name(layerName) {}
 		virtual void init() = 0;
 		virtual void destroy() = 0;
-		virtual void onEvent(const gx::event::Event& event) = 0;
+		virtual void onEvent(const gx::event::GXEvent& event) = 0;
 		virtual void onUpdate(float deltaTime) {}
 		virtual void onGUIRender() {}
 		inline std::string getName() const { return this->name; }

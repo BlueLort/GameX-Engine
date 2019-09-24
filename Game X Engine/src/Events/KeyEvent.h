@@ -1,13 +1,12 @@
 #pragma once
 
 #include "Event.h"
-
 namespace gx {
 	namespace event {
-		class GX_DLL KeyEvent : public Event {
+		class GX_DLL KeyEvent : public GXEvent {
 		public:
 			inline uint32_t getKeyVal() const { return keyVal; }
-			virtual inline uint32_t getEventClass() const override { return (EventClass::GX_INPUT | EventClass::GX_KEYBOARD); }
+			virtual inline uint32_t getEventClass() const override { return (GXEventClass::GX_INPUT | GXEventClass::GX_KEYBOARD); }
 		protected:
 			KeyEvent(uint32_t KeyValue) : keyVal(KeyValue) {}
 			virtual const char* toString()const override {
@@ -23,8 +22,8 @@ namespace gx {
 
 		public:
 			KeyPressEvent(uint32_t KeyValue) : KeyEvent(KeyValue) {}
-			virtual const char* getName() const override { return "KEY_PRESSED"; }
-			virtual uint32_t getEventType() const override { return EventType::GX_KEY_PRESSED; }
+			virtual inline const char* getName() const override { return "KEY_PRESSED"; }
+			virtual inline uint32_t getEventType() const override { return GXEventType::GX_KEY_PRESSED; }
 			
 		
 		};
@@ -34,8 +33,8 @@ namespace gx {
 
 		public:
 			KeyHoldEvent(uint32_t KeyValue) : KeyEvent(KeyValue) {}
-			virtual const char* getName() const override { return "KEY_HOLD"; }
-			virtual uint32_t getEventType() const override { return EventType::GX_KEY_HOLD; }
+			virtual inline const char* getName() const override { return "KEY_HOLD"; }
+			virtual inline uint32_t getEventType() const override { return GXEventType::GX_KEY_HOLD; }
 	
 		};
 
@@ -44,8 +43,8 @@ namespace gx {
 
 		public:
 			KeyReleaseEvent(uint32_t KeyValue) : KeyEvent(KeyValue) {}
-			virtual const char* getName() const override { return "KEY_RELEASED"; }
-			virtual uint32_t getEventType() const override { return EventType::GX_KEY_RELEASED; }
+			virtual inline const char* getName() const override { return "KEY_RELEASED"; }
+			virtual inline uint32_t getEventType() const override { return GXEventType::GX_KEY_RELEASED; }
 
 		};
 

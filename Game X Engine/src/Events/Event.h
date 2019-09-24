@@ -1,42 +1,48 @@
+#pragma once
 #include "pch.h"
 #include "Config.h"
+#include <SDL/SDL_events.h>
 #define KeyValToSTR(K) (K) //map to input code map
 namespace gx {
 	namespace event {
-		enum EventType
+		enum GXEventType
 		{
 			GX_NONE = 0,
-			GX_KEY_PRESSED,
-			GX_KEY_RELEASED,
-			GX_KEY_HOLD,
-			GX_MOUSE_PRESSED,
-			GX_MOUSE_RELEASED,
-			GX_MOUSE_MOVED,
-			GX_MOUSE_SCROLL,
-			GX_WINDOW_RESIZE,
-			GX_WINDOW_CLOSE
+			GX_KEY_PRESSED	=	SDL_KEYDOWN,
+			GX_KEY_RELEASED	=   SDL_KEYUP,
+			GX_KEY_HOLD = 1,
+			GX_MOUSE_PRESSED = SDL_MOUSEBUTTONDOWN,
+			GX_MOUSE_RELEASED = SDL_MOUSEBUTTONUP,
+			GX_MOUSE_MOVED = SDL_MOUSEMOTION,
+			GX_MOUSE_SCROLL = SDL_MOUSEWHEEL,
+			GX_WINDOW_RESIZE = SDL_WINDOWEVENT_RESIZED,
+			GX_WINDOW_CLOSE = SDL_WINDOWEVENT_CLOSE,
+			GX_WINDOW_SIZE_CHANGED = SDL_WINDOWEVENT_SIZE_CHANGED,
+			GX_WINDOW_MINIMIZE = SDL_WINDOWEVENT_MINIMIZED,
+			GX_WINDOW_MAXIMIZE = SDL_WINDOWEVENT_MAXIMIZED
 		};
-		enum EventClass {
+
+		enum GXEventClass {
 			GX_NO_CLASS = 0,
-			GX_APPLICATION = 1,
 			GX_INPUT = 1 << 1,
 			GX_KEYBOARD = 1 << 2,
 			GX_MOUSE = 1 << 3,
-			GX_MOUSE_BUTTON = 1 << 4
+			GX_MOUSE_BUTTON = 1 << 4,
+			GX_APPLICATION = SDL_WINDOWEVENT
 		};
-		class GX_DLL Event
+
+		class GX_DLL GXEvent
 		{
 		public:
 			bool handled = false;
-			virtual const char* getName() const = 0;
-			virtual uint32_t getEventType() const = 0;
+			virtual inline const char* getName() const = 0;
+			virtual inline uint32_t getEventType() const = 0;
 			virtual inline uint32_t getEventClass() const = 0;
-			inline bool isSameClassAs(const Event& e) {
+			inline bool isSameClassAs(const GXEvent& e) {
 				return this->getEventClass() & e.getEventClass();
 			}
 
 			virtual const char* toString() const { return this->getName(); }
-		
 			
 		};
 

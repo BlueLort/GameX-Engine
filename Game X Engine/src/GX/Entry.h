@@ -24,11 +24,8 @@ void initSystems(gx::GameXApp* gameInst) {
 	GXE_PRINT(gx::OpenGLContext::getGPUName());
 	GXE_PRINT(gx::OpenGLContext::getVendorName());
 	gameInst->ImGUIGL_Layer->init(); GXE_INFO("dear ImGUI v1.73 WIP initialized for OpenGL3.0 !");
-#else
-
 #endif 
 
-	
 }
 
 

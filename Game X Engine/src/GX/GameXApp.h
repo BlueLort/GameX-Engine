@@ -1,11 +1,12 @@
 #pragma once
 #include "pch.h"
 #include "Config.h"
+#include "Events/Event.h"
 #include "Window/Layer.h"
 #include "UI/ImGUI_SDLGL.h"
 namespace gx {
 	//adapt it to whatever API im using.
-	using GXEvent = SDL_Event;
+	using GX_SDLEvent = SDL_Event;
 	using GXEventCallBack = SDL_EventFilter;
 #define GXPollEvents SDL_PollEvent
 	class Timer;
@@ -16,12 +17,13 @@ namespace gx {
 		virtual ~GameXApp();
 		void Start();
 		GXEventCallBack getEventCallBack() const { return onEvent; }
-		std::unique_ptr<ImGUI_SDLGL> ImGUIGL_Layer;
-		std::unique_ptr<Timer> timer;
+		static std::unique_ptr<ImGUI_SDLGL> ImGUIGL_Layer;
+		static std::unique_ptr<Timer> timer;
 	private:
-		static int onEvent(void* userdata, GXEvent* Event);
+		static int onEvent(void* userdata, GX_SDLEvent* Event);
+		static int dispatchEvent(std::shared_ptr<gx::event::GXEvent>& gxEvent);
 		
-		bool isRunning;
+		static bool isRunning;
 	
 	};
 

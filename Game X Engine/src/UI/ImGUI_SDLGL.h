@@ -14,7 +14,7 @@ namespace gx {
 		inline ImGUI_SDLGL(const std::string& layerName) : Layer(layerName) {}
 		virtual void init() override;
 		virtual void destroy() override ;
-		virtual void onEvent(const gx::event::Event& event) override;
+		virtual void onEvent(const gx::event::GXEvent& event) override;
 		virtual void onUpdate(float deltaTime) override;
 
 	};
