@@ -4,6 +4,7 @@
 #include "Events/Event.h"
 #include "Window/Layer.h"
 #include "UI/ImGUI_SDLGL.h"
+#include "Renderer/Renderer.h"
 namespace gx {
 	//adapt it to whatever API im using.
 	using GX_SDLEvent = SDL_Event;
@@ -17,17 +18,67 @@ namespace gx {
 		virtual ~GameXApp();
 		void Start();
 		GXEventCallBack getEventCallBack() const { return onEvent; }
+		//static std::unique_ptr<Renderer> renderer;
 		static std::unique_ptr<ImGUI_SDLGL> ImGUIGL_Layer;
 		static std::unique_ptr<Timer> timer;
 	private:
+		//EVENT HANDLING
 		static int onEvent(void* userdata, GX_SDLEvent* Event);
-		static int dispatchEvent(std::shared_ptr<gx::event::GXEvent>& gxEvent);
-		
-		static bool isRunning;
-	
-	};
+		template<class T>
+		static int dispatchEvent(std::shared_ptr<T>& gxEvent);
 
+		template<class T>
+		static int handleEvent(std::shared_ptr<T>& Event) { return 0; }
+		template<>
+		static int handleEvent<gx::event::WindowCloseEvent>(std::shared_ptr<gx::event::WindowCloseEvent>& Event);
+		template<>
+		static int handleEvent<gx::event::WindowSizeEvent>(std::shared_ptr<gx::event::WindowSizeEvent>& Event);
+		template<>
+		static int handleEvent<gx::event::WindowResizeEvent>(std::shared_ptr<gx::event::WindowResizeEvent>& Event);
+		template<>
+		static int handleEvent<gx::event::WindowMinimizeEvent>(std::shared_ptr<gx::event::WindowMinimizeEvent>& Event);
+		template<>
+		static int handleEvent<gx::event::WindowMaximizeEvent>(std::shared_ptr<gx::event::WindowMaximizeEvent>& Event);
+		static bool isRunning;
+
+	};
 	extern GameXApp* CreateApp();
+
+	template<class T>
+	inline int GameXApp::dispatchEvent(std::shared_ptr<T>& gxEvent)
+	{
+		bool handled = handleEvent<T>(gxEvent);
+		if (handled)return 1;
+
+		//TODO SEND EVENT TO ALL LAYERS IN A STACK PRIORITY MANNER UNTIL IT'S HANDLED OR TERMINATED
+
+		return 0;//Terminated;
+	}
+
+
+	template<>
+	inline int GameXApp::handleEvent<gx::event::WindowCloseEvent>(std::shared_ptr<gx::event::WindowCloseEvent>& Event) {
+		isRunning = false;
+		Event->handled = true;
+		return 1;
+	}
+	template<>
+	inline int GameXApp::handleEvent<gx::event::WindowResizeEvent>(std::shared_ptr<gx::event::WindowResizeEvent>& Event) {
+		Renderer::setViewPort(Event->getWidth(), Event->getHeight());
+		Event->handled = true;
+		return 1;
+	}
+	template<>
+	inline int GameXApp::handleEvent<gx::event::WindowMinimizeEvent>(std::shared_ptr<gx::event::WindowMinimizeEvent>& Event) {
+		Event->handled = true;
+		return 1;
+	}
+	template<>
+	inline int GameXApp::handleEvent<gx::event::WindowMaximizeEvent>(std::shared_ptr<gx::event::WindowMaximizeEvent>& Event) {
+		Event->handled = true;
+		return 1;
+	}
+
 
 	class GX_DLL Timer {//Class to calculate delta time and ticks between frames using whatever windowing API
 	public:
@@ -46,6 +97,7 @@ namespace gx {
 		uint32_t lastTicks;
 
 	};
+
 
 }
 

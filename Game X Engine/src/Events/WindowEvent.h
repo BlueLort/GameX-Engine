@@ -2,11 +2,12 @@
 #include "Event.h"
 namespace gx {
 	namespace event {
-		class GX_DLL WindowSizeEvent : public GXEvent {
+		class GX_DLL WindowSizeEvent : public GXEvent {//in SDL this event is followed by Resize event so i just check for resize.
 		public:
 			WindowSizeEvent(uint32_t Width, uint32_t Height)
 				: width(Width), height(Height) {}
 			virtual inline uint32_t getEventClass() const override { return (GXEventClass::GX_APPLICATION); }
+			virtual inline const char* getName() const override { return "WINDOW_SIZE"; }
 			virtual inline uint32_t getEventType() const override { return GXEventType::GX_WINDOW_SIZE_CHANGED; }
 			inline uint32_t getWidth() const { return width; }
 			inline uint32_t getHeight() const { return height; }
