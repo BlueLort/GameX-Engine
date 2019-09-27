@@ -18,11 +18,9 @@ void initSystems(gx::GameXApp* gameInst) {
 	gx::GXWindow::init("Game X Engine", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_FLAGS); GXE_INFO("Window initialized successfully using SDL2.0 !");
 	gx::GXWindow::addEventsCallBack(gameInst->getEventCallBack(), nullptr); GXE_INFO("Event CallBack Attached to SDL2.0 Event Queue !");
 	gameInst->timer->init(); GXE_INFO("Application Timer Started using SDL_GetTicks !");
+	//init Graphics Context and appropriate Rendering System
+	gx::Renderer::init(); GXE_INFO("Game X Engine Renderer is Initialized Successfully !");
 #ifdef USING_OPENGL
-	gx::OpenGLContext::init(); GXE_INFO("OpenGL Context initialized using GLAD as Loader!");
-	GXE_PRINT(gx::OpenGLContext::getGLVersion());
-	GXE_PRINT(gx::OpenGLContext::getGPUName());
-	GXE_PRINT(gx::OpenGLContext::getVendorName());
 	gameInst->ImGUIGL_Layer->init(); GXE_INFO("dear ImGUI v1.73 WIP initialized for OpenGL3.0 !");
 #endif 
 

@@ -24,10 +24,12 @@ namespace gx {
 			Renderer::begin();
 
 
-
-
-
-
+			ImGUIGL_Layer->startFrame();
+			ImGUIGL_Layer->begin();
+			ImGUIGL_Layer->setGUI();
+			ImGUIGL_Layer->end();
+			ImGUIGL_Layer->demoGUI();
+			ImGUIGL_Layer->render();
 
 			Renderer::end();
 
