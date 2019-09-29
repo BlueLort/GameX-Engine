@@ -1,0 +1,184 @@
+You can also call ImGui::LogText() to output directly to the log without a visual output.
+Copy "Hello, world!" to clipboard
+
+## Window options ##
+[ ]
+No titlebar [ ]
+No scrollbar [ ]
+No menu
+[ ]
+No move [ ]
+No resize [ ]
+No collapse
+[ ]
+No close [ ]
+No nav [ ]
+No background
+[ ]
+No bring to front
+
+## Widgets ##
+
+## Layout ##
+> Child windows
+    (?)
+    [ ]
+    Disable Mouse Wheel
+    [ ]
+    Disable Menu
+    Goto 50
+    --------------------------------
+    Rect of child window is: (459,1142) (659,1242)
+> Widgets Width
+    SetNextItemWidth/PushItemWidth(100) (?)
+    0.000
+    float
+    SetNextItemWidth/PushItemWidth(GetWindowWidth() * 0.5f) (?)
+    0.000
+    float
+    SetNextItemWidth/PushItemWidth(GetContentRegionAvail().x * 0.5f) (?)
+    0.000
+    float
+    SetNextItemWidth/PushItemWidth(-100) (?)
+    0.000
+    float
+    SetNextItemWidth/PushItemWidth(-1) (?)
+    0.000
+    0.000
+    0.000
+> Basic Horizontal Layout
+    (Use ImGui::SameLine() to keep adding items to the right of the preceding item)
+    Two items: Hello Sailor
+    More spacing: Hello Sailor
+    Normal buttons Banana Apple Corniflower
+    Small buttons Like this one can fit within a text block.
+    Aligned x=150 x=300
+    Aligned x=150 x=300
+    [ ]
+    My [ ]
+    Tailor [ ]
+    Is [ ]
+    Rich
+    Combo 1.000
+    X 2.000
+    Y 3.000
+    Z
+    Lists:
+    A B
+    Manually wrapping:
+    Box Box Box Box Box Box Box Box Box Box Box
+    Box Box Box Box Box Box Box Box Box
+> Tabs
+    > Basic
+        This is the Avocado tab!
+        blah blah blah blah blah
+        --------------------------------
+    > Advanced & Close Button
+        [x]
+        ImGuiTabBarFlags_Reorderable
+        [ ]
+        ImGuiTabBarFlags_AutoSelectNewTabs
+        [ ]
+        ImGuiTabBarFlags_TabListPopupButton
+        [ ]
+        ImGuiTabBarFlags_NoCloseWithMiddleMouseButton
+        [x]
+        ImGuiTabBarFlags_FittingPolicyResizeDown
+        [ ]
+        ImGuiTabBarFlags_FittingPolicyScroll
+        [x]
+        Artichoke [x]
+        Beetroot [x]
+        Celery [x]
+        Daikon
+        This is the Artichoke tab!
+        --------------------------------
+> Groups
+    (?)
+    AAA BBB
+    CCC
+    DDD
+    EEE
+    ACTION REACTION
+    LEVERAGE
+    BUZZWORD
+> Text Baseline Alignment
+    (?)
+    One
+    Two
+    Three Hello
+    World Banana
+    Banana Hello
+    World One
+    Two
+    Three
+    HOP Banana Hello
+    World Banana
+    HOP Hello
+    World Banana
+    TEST TEST TEST
+    Text aligned to Widget Widget Widget Widget Widget
+    Button > Node
+        Item 0..
+        Item 1..
+        Item 2..
+        Item 3..
+        Item 4..
+        Item 5..
+    > Node Button
+        Item 0..
+        Item 1..
+        Item 2..
+        Item 3..
+        Item 4..
+        Item 5..
+    Button Bullet text
+    Node Button
+> Scrolling
+    (?)
+    [ ]
+    Decoration (?)
+    [x]
+    Track Item = 50
+    Scroll Offset +0 px
+    Scroll To Pos X/Y = 200 px
+    Top
+    0/0
+    25%
+    0/0
+    Center
+    0/0
+    75%
+    0/0
+    Bottom
+    0/0
+    (?)
+    Left
+    0/0
+    25%
+    0/0
+    Center
+    0/0
+    75%
+    0/0
+    Right
+    0/0
+    (?)
+    7
+    Lines
+    << Scroll from code >> 0/0
+    [ ]
+    Show Horizontal contents size demo window
+> Clipping
+    On a per-widget basis we are occasionally clipping text CPU-side if it won't fit in its frame. Otherwise we are doing coarser clipping + passing a scissor rectangle to the renderer. The system is designed to try minimizing both execution and CPU/GPU rendering cost.
+    100 100
+    size
+    (Click and drag)
+
+## Popups & Modal windows ##
+
+## Columns ##
+
+## Filtering ##
+
+## Inputs, Navigation & Focus ##

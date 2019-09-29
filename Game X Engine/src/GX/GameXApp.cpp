@@ -25,11 +25,9 @@ namespace gx {
 
 
 			ImGUIGL_Layer->startFrame();
-			ImGUIGL_Layer->begin();
-			ImGUIGL_Layer->setGUI();
-			ImGUIGL_Layer->end();
-			ImGUIGL_Layer->demoGUI();
+			ImGUIGL_Layer->onGUIRender();// for all layers
 			ImGUIGL_Layer->render();
+			ImGUIGL_Layer->endFrame();
 
 			Renderer::end();
 
