@@ -16,7 +16,10 @@ namespace gx {
 		inline Layer(const std::string& layerName) : name(layerName) {}
 		virtual void init() = 0;
 		virtual void destroy() = 0;
-		virtual void onEvent(const gx::event::GXEvent& event) = 0;
+
+	
+
+		virtual int onEvent(const gx::event::GXEventType& eventType) = 0;
 		virtual void onUpdate(float deltaTime) {}
 		virtual void onGUIRender() {}
 		inline std::string getName() const { return this->name; }

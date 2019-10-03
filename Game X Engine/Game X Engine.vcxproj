@@ -121,6 +121,7 @@
     <ClCompile Include="src\Window\GXWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Input\InputManager.h" />
     <ClInclude Include="src\Renderer\openGL\GLLoader\glad.h" />
     <ClInclude Include="src\Renderer\openGL\GLLoader\khrplatform.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />

@@ -40,34 +40,47 @@ namespace gx {
 
 		class GX_DLL MouseMotionEvent : public GXEvent {
 		public:
-			inline int32_t getXOffset() const { return xOff; }
-			inline int32_t getYOffset() const { return yOff; }
+			inline int32_t getXVal() const { return x; }
+			inline int32_t getYVal() const { return y; }
 			virtual inline uint32_t getEventClass() const override { return (GXEventClass::GX_INPUT | GXEventClass::GX_MOUSE); }
+			virtual inline const char* getName() const override { return "MOUSE_MOVED"; }
 		protected:
-			MouseMotionEvent(int32_t xOffset, int32_t yOffset) : xOff(xOffset), yOff(yOffset) {}
+			MouseMotionEvent(int32_t X, int32_t Y) : x(X), y (Y) {}
 			virtual inline const char* toString() const override {
 				std::stringstream ss;
-				ss << this->getName() << "|X-Offset: " + std::to_string(xOff) + " |Y-Offset: " + std::to_string(yOff) + " |";
+				ss << this->getName() << "|X: " + std::to_string(x) + " |Y: " + std::to_string(y) + " |";
 				return ss.str().c_str();
 			}
-			double xOff;
-			double yOff;
+			double x;
+			double y;
 		};
 
 		class GX_DLL MouseMoveEvent : public MouseMotionEvent {
 
 		public:
-			MouseMoveEvent(int32_t xOffset, int32_t yOffset) : MouseMotionEvent(xOffset,yOffset) {}
-			virtual inline const char* getName() const override { return "MOUSE_MOVED"; }
-
+	
+			MouseMoveEvent(int32_t X, int32_t Y) : MouseMotionEvent(X,Y) {}
+			virtual inline uint32_t getEventType() const override { return GXEventType::GX_MOUSE_MOVED; }
 		};
-
-		class GX_DLL MouseScrollEvent : public MouseMotionEvent {
+		class GX_DLL MouseMoveRelEvent : public MouseMotionEvent {
 
 		public:
-			MouseScrollEvent(int32_t xOffset, int32_t yOffset) : MouseMotionEvent(xOffset, yOffset) {}
-			virtual inline const char* getName() const override { return "MOUSE_SCROLLED"; }
+			MouseMoveRelEvent(int32_t XRel, int32_t YRel) : MouseMotionEvent(XRel, YRel) {}
+			virtual inline uint32_t getEventType() const override { return GXEventType::GX_MOUSE_MOVED; }
+		};
 
+		class GX_DLL MouseScrollEvent : public GXEvent {
+
+		public:
+			MouseScrollEvent(int32_t xOffset, int32_t yOffset) : xOff(xOffset), yOff(yOffset) {}
+			inline int32_t getXOffset() const { return xOff; }
+			inline int32_t getYOffset() const { return yOff; }
+			virtual inline uint32_t getEventClass() const override { return (GXEventClass::GX_INPUT | GXEventClass::GX_MOUSE); }
+			virtual inline uint32_t getEventType() const override { return GXEventType::GX_MOUSE_SCROLL; }
+			virtual inline const char* getName() const override { return "MOUSE_SCROLLED"; }
+		private:
+			double xOff;
+			double yOff;
 		};
 	}
 

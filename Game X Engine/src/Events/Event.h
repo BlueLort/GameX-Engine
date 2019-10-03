@@ -10,13 +10,14 @@ namespace gx {
 			GX_NONE = 0,
 			GX_KEY_PRESSED	=	SDL_KEYDOWN,
 			GX_KEY_RELEASED	=   SDL_KEYUP,
-			GX_KEY_HOLD = 1,
+			GX_KEY_TYPED = SDL_TEXTINPUT,
 			GX_MOUSE_PRESSED = SDL_MOUSEBUTTONDOWN,
 			GX_MOUSE_RELEASED = SDL_MOUSEBUTTONUP,
 			GX_MOUSE_MOVED = SDL_MOUSEMOTION,
 			GX_MOUSE_SCROLL = SDL_MOUSEWHEEL,
 			GX_WINDOW_RESIZE = SDL_WINDOWEVENT_RESIZED,
 			GX_WINDOW_CLOSE = SDL_WINDOWEVENT_CLOSE,
+			GX_WINDOW_MOVED = SDL_WINDOWEVENT_MOVED,
 			GX_WINDOW_SIZE_CHANGED = SDL_WINDOWEVENT_SIZE_CHANGED,
 			GX_WINDOW_MINIMIZE = SDL_WINDOWEVENT_MINIMIZED,
 			GX_WINDOW_MAXIMIZE = SDL_WINDOWEVENT_MAXIMIZED
@@ -38,12 +39,12 @@ namespace gx {
 			virtual inline const char* getName() const = 0;
 			virtual inline uint32_t getEventType() const = 0;
 			virtual inline uint32_t getEventClass() const = 0;
+			
 			inline bool isSameClassAs(const GXEvent& e) {
 				return this->getEventClass() & e.getEventClass();
 			}
 
-			virtual const char* toString() const { return this->getName(); }
-			
+			virtual inline const char* toString() const { return this->getName(); }
 		};
 
 		/* EVENT QUEUE IMPLEMENTATION HOWEVER CURRENTLY I'M USING SDL QUEUE TO POLL EVENTS AND HANDLE THEM*/

@@ -8,17 +8,34 @@
 
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
 namespace gx {
-	class GX_DLL ImGUI_SDLGL : public Layer
+	class GX_DLL ImGUI_SDLGL
 	{
 	public:
-		inline ImGUI_SDLGL(const std::string& layerName) : Layer(layerName){}
-		virtual void init() override;
-		virtual void destroy() override ;
-		virtual void onEvent(const gx::event::GXEvent& event) override;
-		virtual void onGUIRender() override;
+		inline ImGUI_SDLGL(const std::string& layerName) {}
+		virtual void init();
+		virtual void destroy();
+		virtual void onGUIRender();
 		void startFrame();
 		void render();
 		void endFrame();//essential for viewport effect
+
+
+		//EVENTS
+		int handleEvent(std::shared_ptr<gx::event::WindowCloseEvent>& event) { return 0; }
+		template<class T>
+		inline static int handleEvent(std::shared_ptr<T>& Event){ return 0; }
+		template<>
+		static int handleEvent<gx::event::WindowCloseEvent>(std::shared_ptr<gx::event::WindowCloseEvent> & Event);
+		template<>
+		static int handleEvent<gx::event::WindowResizeEvent>(std::shared_ptr<gx::event::WindowResizeEvent>& Event);
+		template<>
+		static int handleEvent<gx::event::WindowMoveEvent>(std::shared_ptr<gx::event::WindowMoveEvent>& Event);
+		template<>
+		static int handleEvent<gx::event::MouseScrollEvent>(std::shared_ptr<gx::event::MouseScrollEvent>& Event);
+
+	private:
+
+
 	};
 	inline void ImGUI_SDLGL::startFrame() {
 		// Start the Dear ImGui frame
@@ -45,6 +62,41 @@ namespace gx {
 			SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
 		}
 
+	}
+
+
+
+	//EVENTS 
+	template<>
+	inline int ImGUI_SDLGL::handleEvent<gx::event::WindowCloseEvent>(std::shared_ptr<gx::event::WindowCloseEvent> & Event) {
+		if (ImGuiViewport * viewport = ImGui::FindViewportByPlatformHandle((void*)SDL_GetWindowFromID(Event->getWindowID()))) {
+			viewport->PlatformRequestClose = true;
+			return 1;	
+		}
+			return 0;
+		}
+	template<>
+	inline int ImGUI_SDLGL::handleEvent<gx::event::WindowResizeEvent>(std::shared_ptr<gx::event::WindowResizeEvent>& Event){
+		if (ImGuiViewport * viewport = ImGui::FindViewportByPlatformHandle((void*)SDL_GetWindowFromID(Event->getWindowID()))) {
+			viewport->PlatformRequestResize = true;
+			return 1;
+		}
+		return 0;
+	}
+	template<>
+	inline int ImGUI_SDLGL::handleEvent<gx::event::WindowMoveEvent>(std::shared_ptr<gx::event::WindowMoveEvent>& Event){
+		if (ImGuiViewport * viewport = ImGui::FindViewportByPlatformHandle((void*)SDL_GetWindowFromID(Event->getWindowID()))) {
+			viewport->PlatformRequestMove= true;
+			return 1;
+		}
+		return 0;
+	}
+	template<>
+	inline int ImGUI_SDLGL::handleEvent<gx::event::MouseScrollEvent>(std::shared_ptr<gx::event::MouseScrollEvent>& Event){
+		ImGuiIO& io = ImGui::GetIO();
+		io.MouseWheelH += Event->getXOffset() > 0 ? 1 : -1;
+		io.MouseWheel += Event->getYOffset() > 0 ? 1 : -1;
+		return 0;
 	}
 }
 

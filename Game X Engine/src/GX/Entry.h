@@ -21,7 +21,7 @@ void initSystems(gx::GameXApp* gameInst) {
 	//init Graphics Context and appropriate Rendering System
 	gx::Renderer::init(); GXE_INFO("Game X Engine Renderer is Initialized Successfully !");
 #ifdef USING_OPENGL
-	gameInst->ImGUIGL_Layer->init(); GXE_INFO("dear ImGUI v1.73 WIP initialized for OpenGL3.0 !");
+	gameInst->UI_GL->init(); GXE_INFO("dear ImGUI v1.73 WIP initialized for OpenGL3.0 !");
 #endif 
 
 }

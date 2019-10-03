@@ -1,8 +1,26 @@
 #include "pch.h"
 #include "GameXApp.h"
+#define DISPATCH_EVENT(ev,dispatched,name) std::shared_ptr<##ev> gxEvent = std::make_shared<##ev>();\
+dispatched = dispatchSystemEvent<##ev>(gxEvent);\
+eventName = gxEvent->getName()
+
+#define DISPATCH_EVENT_D1(ev,data1,dispatched,name) std::shared_ptr<##ev> gxEvent = std::make_shared<##ev>(data1);\
+dispatched = dispatchSystemEvent<##ev>(gxEvent);\
+eventName = gxEvent->getName()
+
+#define DISPATCH_EVENT_D2(ev,data1,data2,dispatched,name) std::shared_ptr<##ev> gxEvent = std::make_shared<##ev>(data1,data2);\
+dispatched = dispatchSystemEvent<##ev>(gxEvent);\
+eventName = gxEvent->getName()
+
+#define DISPATCH_EVENT_D2_NODATA(ev,data1,data2) std::shared_ptr<##ev> gxEvent = std::make_shared<##ev>(data1,data2);\
+dispatchSystemEvent<##ev>(gxEvent)
+
+#define DISPATCH_EVENT_D3(ev,data1,data2,data3,dispatched,name) std::shared_ptr<##ev> gxEvent = std::make_shared<##ev>(data1,data2,data3);\
+dispatched = dispatchSystemEvent<##ev>(gxEvent);\
+eventName = gxEvent->getName()
 
 namespace gx {
-	std::unique_ptr<ImGUI_SDLGL> GameXApp::ImGUIGL_Layer = std::make_unique<ImGUI_SDLGL>("ImGUI Editor");
+	std::unique_ptr<ImGUI_SDLGL> GameXApp::UI_GL = std::make_unique<ImGUI_SDLGL>("ImGUI Editor");
 	//std::unique_ptr<Renderer> GameXApp::renderer = std::make_unique<Renderer>();
 	std::unique_ptr<Timer> GameXApp::timer = std::make_unique<Timer>();
 	bool GameXApp::isRunning = true;
@@ -19,15 +37,15 @@ namespace gx {
 		while (isRunning) {
 			timer->update();
 			while (GXPollEvents(&GX_SDLEvent()) == 1);//Send events to callback
-			
+
 			//Render
 			Renderer::begin();
 
 
-			ImGUIGL_Layer->startFrame();
-			ImGUIGL_Layer->onGUIRender();// for all layers
-			ImGUIGL_Layer->render();
-			ImGUIGL_Layer->endFrame();
+			UI_GL->startFrame();
+			UI_GL->onGUIRender();// for all layers
+			UI_GL->render();
+			UI_GL->endFrame();
 
 			Renderer::end();
 
@@ -40,57 +58,46 @@ namespace gx {
 		bool dispatched = false;
 		std::string eventName;
 		switch (Event->type) {
+		case SDL_QUIT:
+		{DISPATCH_EVENT_D1(gx::event::WindowCloseEvent,0, dispatched, eventName); }
+		break;
 		case gx::event::GXEventClass::GX_APPLICATION:
 			switch (Event->window.event) {
-				case gx::event::GXEventType::GX_WINDOW_CLOSE:
-				{
-					std::shared_ptr<gx::event::WindowCloseEvent> ev = std::make_shared<gx::event::WindowCloseEvent>();
-					dispatched = dispatchEvent<gx::event::WindowCloseEvent>(ev);
-					eventName = ev->getName();
-					break;
-				}
-				case gx::event::GXEventType::GX_WINDOW_RESIZE:
-				{
-					std::shared_ptr<gx::event::WindowResizeEvent> ev = std::make_shared<gx::event::WindowResizeEvent>(Event->window.data1,Event->window.data2);
-					dispatched = dispatchEvent<gx::event::WindowResizeEvent>(ev);
-					eventName = ev->getName();
-					break;
-				}
-				case gx::event::GXEventType::GX_WINDOW_MINIMIZE:
-				{
-					std::shared_ptr<gx::event::WindowMinimizeEvent> ev = std::make_shared<gx::event::WindowMinimizeEvent>(Event->window.data1, Event->window.data2);
-					dispatched = dispatchEvent<gx::event::WindowMinimizeEvent>(ev);
-					eventName = ev->getName();
-					break;
-				}
-				case gx::event::GXEventType::GX_WINDOW_MAXIMIZE:
-				{
-					std::shared_ptr<gx::event::WindowMaximizeEvent> ev = std::make_shared<gx::event::WindowMaximizeEvent>(Event->window.data1, Event->window.data2);
-					dispatched = dispatchEvent<gx::event::WindowMaximizeEvent>(ev);
-					eventName = ev->getName();
-					break;
-				}
+			case gx::event::GXEventType::GX_WINDOW_CLOSE:
+			{DISPATCH_EVENT_D1(gx::event::WindowCloseEvent,Event->window.windowID, dispatched, eventName); }
+			break;
+			case gx::event::GXEventType::GX_WINDOW_RESIZE:
+			{DISPATCH_EVENT_D3(gx::event::WindowResizeEvent, Event->window.data1, Event->window.data2,Event->window.windowID, dispatched, eventName); }
+			break;
+			case gx::event::GXEventType::GX_WINDOW_MINIMIZE:
+			{DISPATCH_EVENT_D3(gx::event::WindowMinimizeEvent, Event->window.data1, Event->window.data2, Event->window.windowID, dispatched, eventName); }
+			break;
+			case gx::event::GXEventType::GX_WINDOW_MAXIMIZE:
+			{DISPATCH_EVENT_D3(gx::event::WindowMaximizeEvent, Event->window.data1, Event->window.data2, Event->window.windowID, dispatched, eventName); }
+			break;
+
 			}
 			break;
 			//TODO Create Event Instances for appropriate event with correct data
 		case gx::event::GXEventType::GX_KEY_PRESSED:
-			
+
 			break;
 		case gx::event::GXEventType::GX_KEY_RELEASED:
 
 			break;
 		case gx::event::GXEventType::GX_MOUSE_MOVED:
-
-			break;
+		{DISPATCH_EVENT_D2(gx::event::MouseMoveEvent, Event->motion.x, Event->motion.y, dispatched, eventName); }
+		{DISPATCH_EVENT_D2_NODATA(gx::event::MouseMoveEvent, Event->motion.xrel, Event->motion.yrel); }
+		break;
 		case gx::event::GXEventType::GX_MOUSE_PRESSED:
-
-			break;
+		{}
+		break;
 		case gx::event::GXEventType::GX_MOUSE_RELEASED:
 
-			break;
+		break;
 		case gx::event::GXEventType::GX_MOUSE_SCROLL:
-
-			break;
+		{DISPATCH_EVENT_D2(gx::event::MouseScrollEvent, Event->wheel.x, Event->wheel.y, dispatched, eventName); }
+		break;
 		}
 		//if (dispatched) {
 		//	GXE_DEBUG("Event Handled : " + eventName);
@@ -98,6 +105,6 @@ namespace gx {
 		return dispatched;
 	}
 
-	
+
 
 }

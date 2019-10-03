@@ -19,20 +19,18 @@ namespace gx {
 		void Start();
 		GXEventCallBack getEventCallBack() const { return onEvent; }
 		//static std::unique_ptr<Renderer> renderer;
-		static std::unique_ptr<ImGUI_SDLGL> ImGUIGL_Layer;
+		static std::unique_ptr<ImGUI_SDLGL> UI_GL;
 		static std::unique_ptr<Timer> timer;
 	private:
 		//EVENT HANDLING
 		static int onEvent(void* userdata, GX_SDLEvent* Event);
 		template<class T>
-		static int dispatchEvent(std::shared_ptr<T>& gxEvent);
+		static int dispatchSystemEvent(std::shared_ptr<T>& gxEvent);
 
 		template<class T>
 		static int handleEvent(std::shared_ptr<T>& Event) { return 0; }
 		template<>
 		static int handleEvent<gx::event::WindowCloseEvent>(std::shared_ptr<gx::event::WindowCloseEvent>& Event);
-		template<>
-		static int handleEvent<gx::event::WindowSizeEvent>(std::shared_ptr<gx::event::WindowSizeEvent>& Event);
 		template<>
 		static int handleEvent<gx::event::WindowResizeEvent>(std::shared_ptr<gx::event::WindowResizeEvent>& Event);
 		template<>
@@ -45,14 +43,17 @@ namespace gx {
 	extern GameXApp* CreateApp();
 
 	template<class T>
-	inline int GameXApp::dispatchEvent(std::shared_ptr<T>& gxEvent)
+	inline int GameXApp::dispatchSystemEvent(std::shared_ptr<T>& gxEvent)
 	{
-		bool handled = handleEvent<T>(gxEvent);
-		if (handled)return 1;
+		bool handled = false;
+		if (UI_GL->handleEvent(gxEvent)) {
+			handled = true;
+		}
+		if (handleEvent(gxEvent)) {
+			handled = true;
+		}
 
-		//TODO SEND EVENT TO ALL LAYERS IN A STACK PRIORITY MANNER UNTIL IT'S HANDLED OR TERMINATED
-
-		return 0;//Terminated;
+		return handled;
 	}
 
 

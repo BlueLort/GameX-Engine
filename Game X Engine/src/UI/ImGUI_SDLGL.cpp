@@ -42,10 +42,6 @@ namespace gx {
 		//IM_ASSERT(font != NULL);
 	}
 
-	void ImGUI_SDLGL::onEvent(const gx::event::GXEvent& event)
-	{
-	}
-
 	void ImGUI_SDLGL::onGUIRender()
 	{
 		bool show_demo_window; ImGui::ShowDemoWindow(&show_demo_window);

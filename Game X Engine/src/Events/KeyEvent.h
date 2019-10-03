@@ -29,12 +29,12 @@ namespace gx {
 		};
 
 
-		class GX_DLL KeyHoldEvent : public KeyEvent {
+		class GX_DLL KeyTypedEvent : public KeyEvent {
 
 		public:
-			KeyHoldEvent(uint32_t KeyValue) : KeyEvent(KeyValue) {}
+			KeyTypedEvent(uint32_t KeyValue) : KeyEvent(KeyValue) {}
 			virtual inline const char* getName() const override { return "KEY_HOLD"; }
-			virtual inline uint32_t getEventType() const override { return GXEventType::GX_KEY_HOLD; }
+			virtual inline uint32_t getEventType() const override { return GXEventType::GX_KEY_TYPED; }
 	
 		};
 
