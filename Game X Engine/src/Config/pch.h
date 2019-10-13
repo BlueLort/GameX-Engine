@@ -19,7 +19,11 @@
 #include <cstdlib>
 #include <string.h>
 //Project Classes
-#include "../Logging/Logger.h"
+#include "Logging/Logger.h"
+#include "Events/Event.h"
+#include "Events/KeyEvent.h"
+#include "Events/MouseEvent.h"
+#include "Events/WindowEvent.h"
 //third party
 #include <SDL/SDL.h>
 

@@ -5,6 +5,7 @@
 #include "Window/Layer.h"
 #include "UI/ImGUI_SDLGL.h"
 #include "Renderer/Renderer.h"
+#include "Input/InputManager.h"
 namespace gx {
 	//adapt it to whatever API im using.
 	using GX_SDLEvent = SDL_Event;
@@ -29,14 +30,6 @@ namespace gx {
 
 		template<class T>
 		static int handleEvent(std::shared_ptr<T>& Event) { return 0; }
-		template<>
-		static int handleEvent<gx::event::WindowCloseEvent>(std::shared_ptr<gx::event::WindowCloseEvent>& Event);
-		template<>
-		static int handleEvent<gx::event::WindowResizeEvent>(std::shared_ptr<gx::event::WindowResizeEvent>& Event);
-		template<>
-		static int handleEvent<gx::event::WindowMinimizeEvent>(std::shared_ptr<gx::event::WindowMinimizeEvent>& Event);
-		template<>
-		static int handleEvent<gx::event::WindowMaximizeEvent>(std::shared_ptr<gx::event::WindowMaximizeEvent>& Event);
 		static bool isRunning;
 
 	};
@@ -46,6 +39,9 @@ namespace gx {
 	inline int GameXApp::dispatchSystemEvent(std::shared_ptr<T>& gxEvent)
 	{
 		bool handled = false;
+		if (InputManager::getInstance().handleEvent(gxEvent)) {
+			handled = true;
+		}
 		if (UI_GL->handleEvent(gxEvent)) {
 			handled = true;
 		}
@@ -65,7 +61,11 @@ namespace gx {
 	}
 	template<>
 	inline int GameXApp::handleEvent<gx::event::WindowResizeEvent>(std::shared_ptr<gx::event::WindowResizeEvent>& Event) {
-		Renderer::setViewPort(Event->getWidth(), Event->getHeight());
+		GXWindow::windowData->width = Event->getWidth();
+		GXWindow::windowData->height = Event->getHeight();
+		Renderer::setViewPort(GXWindow::windowData->width, GXWindow::windowData->height);
+		
+
 		Event->handled = true;
 		return 1;
 	}

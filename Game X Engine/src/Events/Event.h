@@ -35,7 +35,9 @@ namespace gx {
 		class GX_DLL GXEvent
 		{
 		public:
+			GXEvent(uint32_t WindowID) : windowID(WindowID) {}
 			bool handled = false;
+			uint32_t windowID;
 			virtual inline const char* getName() const = 0;
 			virtual inline uint32_t getEventType() const = 0;
 			virtual inline uint32_t getEventClass() const = 0;

@@ -4,11 +4,9 @@ namespace gx {
 	namespace event {
 		class GX_DLL WindowEvent : public GXEvent {
 		public:
-			inline uint32_t getWindowID()const { return windowID; }
 			virtual inline uint32_t getEventClass() const override { return (GXEventClass::GX_APPLICATION); }
 		protected:
-			WindowEvent(uint32_t WindowID) : windowID(WindowID) {}
-			uint32_t windowID;
+			WindowEvent(uint32_t WindowID) : GXEvent(WindowID) {}
 
 		};
 		class GX_DLL WindowSizeEvent : public WindowEvent {//in SDL this event is followed by Resize event so i just check for resize.

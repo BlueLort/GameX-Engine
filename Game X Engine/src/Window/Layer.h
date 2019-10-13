@@ -1,9 +1,6 @@
 #pragma once
 #include "Config.h"
-#include "Events/Event.h"
-#include "Events/KeyEvent.h"
-#include "Events/MouseEvent.h"
-#include "Events/WindowEvent.h"
+
 namespace gx {
 	class Layer;
 	struct GX_DLL LayerStack {
