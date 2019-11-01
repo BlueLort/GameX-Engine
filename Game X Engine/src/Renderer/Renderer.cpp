@@ -13,6 +13,7 @@ namespace gx {
 
 
 	}
+
 	void Renderer::begin()
 	{
 #ifdef USING_OPENGL
