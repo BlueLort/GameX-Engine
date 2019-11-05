@@ -99,11 +99,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Renderer\openGL\Buffers\GLBufferManager.cpp" />
+    <ClCompile Include="src\Renderer\openGL\Buffers\GLElementBuffer.cpp" />
+    <ClCompile Include="src\Renderer\openGL\Buffers\GLVertexArray.cpp" />
+    <ClCompile Include="src\Renderer\openGL\Buffers\GLVertexBuffer.cpp" />
     <ClCompile Include="src\Renderer\openGL\GLLoader\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Renderer\openGL\Shader\GLShader.cpp" />
+    <ClCompile Include="src\Renderer\openGL\Shader\GLShaderManager.cpp" />
     <ClCompile Include="src\Renderer\Renderer.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui_demo.cpp" />
@@ -124,9 +129,14 @@
   <ItemGroup>
     <ClInclude Include="src\Input\GXKeys.h" />
     <ClInclude Include="src\Input\InputManager.h" />
+    <ClInclude Include="src\Renderer\openGL\Buffers\GLBufferManager.h" />
+    <ClInclude Include="src\Renderer\openGL\Buffers\GLElementBuffer.h" />
+    <ClInclude Include="src\Renderer\openGL\Buffers\GLVertexArray.h" />
+    <ClInclude Include="src\Renderer\openGL\Buffers\GLVertexBuffer.h" />
     <ClInclude Include="src\Renderer\openGL\GLLoader\glad.h" />
     <ClInclude Include="src\Renderer\openGL\GLLoader\khrplatform.h" />
     <ClInclude Include="src\Renderer\openGL\Shader\GLShader.h" />
+    <ClInclude Include="src\Renderer\openGL\Shader\GLShaderManager.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imconfig.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imgui.h" />
