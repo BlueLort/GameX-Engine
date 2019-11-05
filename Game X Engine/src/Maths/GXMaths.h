@@ -7,8 +7,10 @@ namespace gx {
 #ifdef USING_GLM_MATHS
 	using GXMat4 = glm::mat4;
 	using GXMat3 = glm::mat3;
+	using GXMat2 = glm::mat2;
 	using GXVec4 = glm::vec4;
 	using GXVec3 = glm::vec3;
+	using GXVec2 = glm::vec2;
 	#define GXRad glm::radians;
 #else
 	/* IF USING OTHER MATHS LIBRARIES*/
