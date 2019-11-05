@@ -3,8 +3,7 @@
 #include "pch.h"
 #include "Config.h"
 #include "Window/GXWindow.h"
-#include "glad/glad.h"
-#include <glm/glm/glm.hpp>
+#include "Maths/GXMaths.h"
 
 
 namespace gx {
@@ -40,7 +39,7 @@ namespace gx {
 			glUniform1f(loc, value);
 		};
 		// ------------------------------------------------------------------------
-		inline void setVec2(const const char* name, const glm::vec2& value) const {
+		inline void setVec2(const const char* name, const GXVec2& value) const {
 			GLuint loc = glGetUniformLocation(ID, name);
 			glUniform2fv(loc, 1, &value[0]);
 		};
@@ -49,7 +48,7 @@ namespace gx {
 			glUniform2f(loc, x, y);
 		};
 		// ------------------------------------------------------------------------
-		inline void setVec3(const const char* name, const glm::vec3& value) const {
+		inline void setVec3(const const char* name, const GXVec3& value) const {
 			GLuint loc = glGetUniformLocation(ID, name); 
 			glUniform3fv(loc, 1, &value[0]);
 		};
@@ -58,7 +57,7 @@ namespace gx {
 			glUniform3f(loc, x, y, z);
 		};
 		// ------------------------------------------------------------------------
-		inline void setVec4(const const char* name, const glm::vec4& value) const { 
+		inline void setVec4(const const char* name, const GXVec4& value) const { 
 			GLuint loc = glGetUniformLocation(ID, name); 
 			glUniform4fv(loc, 1, &value[0]);
 		};
@@ -67,17 +66,17 @@ namespace gx {
 			glUniform4f(loc, x, y, z, w);
 		}
 		// ------------------------------------------------------------------------
-		inline void setMat2(const const char* name, const glm::mat2& mat) const {
+		inline void setMat2(const const char* name, const GXMat2& mat) const {
 			GLuint loc = glGetUniformLocation(ID, name); 
 			glUniformMatrix2fv(loc, 1, GL_FALSE, &mat[0][0]);
 		};
 		// ------------------------------------------------------------------------
-		inline void setMat3(const const char* name, const glm::mat3& mat) const { 
+		inline void setMat3(const const char* name, const GXMat3& mat) const { 
 			GLuint loc = glGetUniformLocation(ID, name); 
 			glUniformMatrix3fv(loc, 1, GL_FALSE, &mat[0][0]);
 		};
 		// ------------------------------------------------------------------------
-		inline void setMat4(const const char* name, const glm::mat4& mat) const {
+		inline void setMat4(const const char* name, const GXMat4& mat) const {
 			GLuint loc = glGetUniformLocation(ID, name);
 			glUniformMatrix4fv(loc, 1, GL_FALSE, &mat[0][0]);
 		}
