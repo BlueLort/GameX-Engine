@@ -8,8 +8,8 @@ namespace gx {
 		GLuint ID;
 		GLuint stride;
 		void init(uint32_t StrideLength);
-		inline void use() {
-			glBindVertexArray(ID);
+		inline static void use(GLuint id) {
+			glBindVertexArray(id);
 		}
 
 		inline static void stop() {
@@ -18,7 +18,9 @@ namespace gx {
 
 		//Assumeing Vertex Array is bound
 		void setAttribPointers(uint32_t ShaderLoc, uint32_t Count, GLenum Type, uint32_t offset);
-		void destroy();
+		inline static void destroy(GLuint id) {
+			glDeleteVertexArrays(1,&id);
+		}
 		friend class GLBufferManager;
 
 	};

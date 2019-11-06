@@ -16,11 +16,6 @@ namespace gx {
 		glEnableVertexAttribArray(ShaderLoc);
 	}
 
-	void GLVertexArray::destroy()
-	{
-		glDeleteVertexArrays(1, &ID);
-	}
-
 
 
 }
