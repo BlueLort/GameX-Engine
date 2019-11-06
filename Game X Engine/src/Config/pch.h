@@ -18,6 +18,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string.h>
+#include <map>
 //Project Classes
 #include "Logging/Logger.h"
 #include "Events/Event.h"
