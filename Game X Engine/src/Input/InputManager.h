@@ -9,8 +9,8 @@ namespace gx {
 
 		InputManager(const InputManager& inst) = delete;
 		inline void init() {
-			keyState = std::vector<bool>(GX_NUM_SCANCODES);
-			keyHeldState = std::vector<bool>(GX_NUM_SCANCODES);
+			keyState = std::vector<bool>(event::key::GX_NUM_SCANCODES);
+			keyHeldState = std::vector<bool>(event::key::GX_NUM_SCANCODES);
 			mouseLoc = std::make_pair(0, 0);//x,y
 			mouseLocRel = std::make_pair(0, 0);//xRel,yRel
 			mouseWheel = std::make_pair(0, 0);//horizontal,vertical
