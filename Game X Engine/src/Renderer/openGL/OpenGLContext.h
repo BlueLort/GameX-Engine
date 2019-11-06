@@ -1,7 +1,10 @@
 #pragma once
 #include "Config.h"
+#include "GLLoader/glad.h"
 #include "Window/GXWindow.h"
-#include "glad/glad.h"
+#include "Shader/GLShaderManager.h"
+
+
 namespace gx {
 	class GXWindow;
 	class GX_DLL OpenGLContext

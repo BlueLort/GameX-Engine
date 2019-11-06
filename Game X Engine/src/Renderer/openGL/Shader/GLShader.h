@@ -37,30 +37,30 @@ namespace gx {
 		inline void setFloat(const const char* name, float value) const {
 			GLuint loc = glGetUniformLocation(ID, name);
 			glUniform1f(loc, value);
-		};
+		}
 		// ------------------------------------------------------------------------
 		inline void setVec2(const const char* name, const GXVec2& value) const {
 			GLuint loc = glGetUniformLocation(ID, name);
 			glUniform2fv(loc, 1, &value[0]);
-		};
+		}
 		inline void setVec2(const const char* name, float x, float y) const {
 			GLuint loc = glGetUniformLocation(ID, name);
 			glUniform2f(loc, x, y);
-		};
+		}
 		// ------------------------------------------------------------------------
 		inline void setVec3(const const char* name, const GXVec3& value) const {
 			GLuint loc = glGetUniformLocation(ID, name); 
 			glUniform3fv(loc, 1, &value[0]);
-		};
+		}
 		inline void setVec3(const const char* name, float x, float y, float z) const {
 			GLuint loc = glGetUniformLocation(ID, name); 
 			glUniform3f(loc, x, y, z);
-		};
+		}
 		// ------------------------------------------------------------------------
 		inline void setVec4(const const char* name, const GXVec4& value) const { 
 			GLuint loc = glGetUniformLocation(ID, name); 
 			glUniform4fv(loc, 1, &value[0]);
-		};
+		}
 		inline void setVec4(const const char* name, float x, float y, float z, float w) const {
 			GLuint loc = glGetUniformLocation(ID, name);
 			glUniform4f(loc, x, y, z, w);
@@ -69,12 +69,12 @@ namespace gx {
 		inline void setMat2(const const char* name, const GXMat2& mat) const {
 			GLuint loc = glGetUniformLocation(ID, name); 
 			glUniformMatrix2fv(loc, 1, GL_FALSE, &mat[0][0]);
-		};
+		}
 		// ------------------------------------------------------------------------
 		inline void setMat3(const const char* name, const GXMat3& mat) const { 
 			GLuint loc = glGetUniformLocation(ID, name); 
 			glUniformMatrix3fv(loc, 1, GL_FALSE, &mat[0][0]);
-		};
+		}
 		// ------------------------------------------------------------------------
 		inline void setMat4(const const char* name, const GXMat4& mat) const {
 			GLuint loc = glGetUniformLocation(ID, name);
@@ -97,5 +97,6 @@ namespace gx {
 
 		GLuint compileShader(GLuint type, const char* code, char* log);
 		void linkProgram(char* log);
+
 	};
 }
