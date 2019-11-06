@@ -45,12 +45,14 @@ namespace gx {
 			//Render
 			Renderer::begin();
 
+	#ifdef USING_OPENGL  
 
 			UI_GL->startFrame();
 			UI_GL->onGUIRender();// for all layers
 			UI_GL->render();
 			UI_GL->endFrame();
 
+	#endif
 			Renderer::end();
 
 		}

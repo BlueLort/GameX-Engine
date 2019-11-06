@@ -6,6 +6,7 @@
 #include "UI/ImGUI_SDLGL.h"
 #include "Renderer/Renderer.h"
 #include "Input/InputManager.h"
+
 namespace gx {
 	//adapt it to whatever API im using.
 	using GX_SDLEvent = SDL_Event;

@@ -5,6 +5,7 @@ int main(int argc, char** argv) {
 	gx::GameXApp* Game = gx::CreateApp();
 	initSystems(Game);
 	Game->Start();
+	//TO DO Destroy Systems... 
 	delete Game;
 
 	return 0;
@@ -22,7 +23,9 @@ void initSystems(gx::GameXApp* gameInst) {
 	//init Graphics Context and appropriate Rendering System
 	gx::Renderer::init(); GXE_INFO("Game X Engine Renderer is Initialized Successfully !");
 #ifdef USING_OPENGL
-	gameInst->UI_GL->init(); GXE_INFO("dear ImGUI v1.73 WIP initialized for OpenGL3.0 !");
+	gameInst->UI_GL->init(); GXE_INFO("dear ImGUI v1.73 WIP initialized for OpenGL !");
+	GXE_PRINT("Initiating GLShaders");
+	gx::GLShaderManager::init(); GXE_INFO("OpenGL Shader Manager initialized !");
 #endif 
 
 }
