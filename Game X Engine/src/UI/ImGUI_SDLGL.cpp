@@ -16,8 +16,9 @@ namespace gx {
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
 		// Setup Dear ImGui style
-		ImGui::StyleColorsDark();
+		//ImGui::StyleColorsDark();
 		//ImGui::StyleColorsClassic();
+		ImGui::StyleColorsLight();
 
 		// Setup Platform/Renderer bindings
 		ImGui_ImplSDL2_InitForOpenGL(GXWindow::getSDLWindow(),OpenGLContext::getGLContext());
