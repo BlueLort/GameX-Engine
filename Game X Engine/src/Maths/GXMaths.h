@@ -23,17 +23,17 @@ namespace gx {
 	//Adding whatever function i need to the wrapper before using it in the engine.
 	class GX_DLL GXMaths {
 		GXMaths() = delete;
-
-		inline static GXMat4 Prespective(const float& FOV,const float& AR,const float& zNear,const float& zFar ) {
+	public:
+		inline static GXMat4 prespective(const float& FOV,const float& AR,const float& zNear,const float& zFar ) {
 			return glm::perspective(FOV,AR,zNear,zFar);
 		}
-		inline static GXMat4 Translate(const GXMat4& Model,const GXVec3& Amount) {
+		inline static GXMat4 translate(const GXMat4& Model,const GXVec3& Amount) {
 			return glm::translate(Model,Amount);
 		}
-		inline static GXMat4 Rotate(const GXMat4& Model,const float& Angle, const GXVec3& Axis) {
+		inline static GXMat4 rotate(const GXMat4& Model,const float& Angle, const GXVec3& Axis) {
 			return glm::rotate(Model,Angle,Axis);
 		}
-		inline static GXMat4 Scale(const GXMat4& Model,const GXVec3& Amount) {
+		inline static GXMat4 scale(const GXMat4& Model,const GXVec3& Amount) {
 			return glm::scale(Model,Amount);
 		}
 
