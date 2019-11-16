@@ -53,8 +53,8 @@ namespace gx {
 				ss << this->getName() << "|X: " + std::to_string(x) + " |Y: " + std::to_string(y) + " |";
 				return ss.str().c_str();
 			}
-			double x;
-			double y;
+			int32_t x;
+			int32_t y;
 		};
 
 		class GX_DLL MouseMoveEvent : public MouseMotionEvent {
@@ -75,14 +75,14 @@ namespace gx {
 
 		public:
 			MouseScrollEvent(int32_t xOffset, int32_t yOffset, uint32_t WindowID) : xOff(xOffset), yOff(yOffset),GXEvent(WindowID) {}
-			inline int32_t getXOffset() const { return xOff; }
-			inline int32_t getYOffset() const { return yOff; }
+			inline uint32_t getXOffset() const { return xOff; }
+			inline uint32_t getYOffset() const { return yOff; }
 			virtual inline uint32_t getEventClass() const override { return (GXEventClass::GX_INPUT | GXEventClass::GX_MOUSE); }
 			virtual inline uint32_t getEventType() const override { return GXEventType::GX_MOUSE_SCROLL; }
 			virtual inline const char* getName() const override { return "MOUSE_SCROLLED"; }
 		private:
-			double xOff;
-			double yOff;
+			uint32_t xOff;
+			uint32_t yOff;
 		};
 	}
 
