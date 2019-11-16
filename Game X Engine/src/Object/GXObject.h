@@ -11,6 +11,9 @@ namespace gx {
 		GXTransform transform;
 		virtual void update(float deltaTime) = 0;
 		virtual void destroy() = 0;
+		
+		virtual inline void GLDraw() = 0;
+
 		inline void addComponent(const std::shared_ptr<GXComponent>& component) {
 			components.push_back(component);
 		}
