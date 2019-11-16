@@ -47,14 +47,14 @@
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
     <IncludePath>
     </IncludePath>
-    <LibraryPath>$(SolutionDir)/Game X Engine/deps/lib/x64/SDL;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)/Game X Engine/deps/lib/x64/SDL;$(SolutionDir)/Game X Engine/deps/lib/x64/Assimp;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
     <IncludePath>
     </IncludePath>
-    <LibraryPath>$(SolutionDir)/Game X Engine/deps/lib/x64/SDL;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)/Game X Engine/deps/lib/x64/SDL;$(SolutionDir)/Game X Engine/deps/lib/x64/Assimp;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -72,7 +72,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -95,10 +95,12 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\IOManagement\IOManager.cpp" />
+    <ClCompile Include="src\Object\GXMeshObject\GXModelObject.cpp" />
     <ClCompile Include="src\Renderer\openGL\Buffers\GLBufferManager.cpp" />
     <ClCompile Include="src\Renderer\openGL\Buffers\GLElementBuffer.cpp" />
     <ClCompile Include="src\Renderer\openGL\Buffers\GLVertexArray.cpp" />
@@ -128,9 +130,15 @@
     <ClCompile Include="src\Window\GXWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\Component.h" />
+    <ClInclude Include="src\IOManagement\IOManager.h" />
+    <ClInclude Include="src\Maths\Data\Vertex3D.h" />
+    <ClInclude Include="src\Maths\GXTransform.h" />
     <ClInclude Include="src\Input\GXKeys.h" />
     <ClInclude Include="src\Input\InputManager.h" />
     <ClInclude Include="src\Memory\MemoryManager.h" />
+    <ClInclude Include="src\Object\GXMeshObject\GXModelObject.h" />
+    <ClInclude Include="src\Object\GXObject.h" />
     <ClInclude Include="src\Renderer\openGL\Buffers\GLBufferManager.h" />
     <ClInclude Include="src\Renderer\openGL\Buffers\GLElementBuffer.h" />
     <ClInclude Include="src\Renderer\openGL\Buffers\GLVertexArray.h" />
@@ -139,6 +147,7 @@
     <ClInclude Include="src\Renderer\openGL\GLLoader\khrplatform.h" />
     <ClInclude Include="src\Renderer\openGL\Shader\GLShader.h" />
     <ClInclude Include="src\Renderer\openGL\Shader\GLShaderManager.h" />
+    <ClInclude Include="src\Renderer\openGL\Texture\GLTexture2D.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imconfig.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imgui.h" />
