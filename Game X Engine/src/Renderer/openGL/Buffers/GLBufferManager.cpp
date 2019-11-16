@@ -23,6 +23,53 @@ namespace gx {
 		}
 	}
 
+	void GLBufferManager::init(uint32_t requiredSize, uint32_t strideLength)
+	{//NO ID SAVING
+		VAO.reset(new GLVertexArray());
+		VBO.reset(new GLVertexBuffer());
+		EBO.reset(new GLElementBuffer());
+
+		VAOID = VAO->ID;
+
+		VAO->init(strideLength);
+		VBO->init(requiredSize);
+		EBO->init();
+	}
+
+	void GLBufferManager::initFull(const std::string& ID, void* data, uint32_t requiredSize, uint32_t strideLength)
+	{
+		auto ite = storedData.find(ID);
+		if (ite != storedData.end()) {
+			VAOID = ite->second;
+		}
+		else {
+			VAO.reset(new GLVertexArray());
+			VBO.reset(new GLVertexBuffer());
+			EBO.reset(new GLElementBuffer());
+
+			VAOID = VAO->ID;
+			storedData[ID] = VAOID;
+
+			VAO->init(strideLength);
+			VBO->initFull(data,requiredSize);
+			EBO->init();
+		}
+	}
+
+	void GLBufferManager::initFull(void* data, uint32_t requiredSize, uint32_t strideLength)
+	{
+		//NO ID SAVING
+		VAO.reset(new GLVertexArray());
+		VBO.reset(new GLVertexBuffer());
+		EBO.reset(new GLElementBuffer());
+
+		VAOID = VAO->ID;
+
+		VAO->init(strideLength);
+		VBO->initFull(data,requiredSize);
+		EBO->init();
+	}
+
 	void GLBufferManager::uploadDataToBuffer(void* data, uint32_t size)
 	{
 		GLVertexArray::use(VAOID);
@@ -31,6 +78,7 @@ namespace gx {
 		GLVertexBuffer::stop();
 		GLVertexArray::stop();
 	}
+
 
 	void GLBufferManager::setAttribPointer(uint32_t loc, uint32_t count,GLenum type, uint32_t offset)
 	{

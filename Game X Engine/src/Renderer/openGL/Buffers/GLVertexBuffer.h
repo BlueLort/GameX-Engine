@@ -6,11 +6,13 @@
 namespace gx {
 
 	class GX_DLL GLVertexBuffer {
+
 	private:
 		GLuint ID;
 		uint32_t currentSize;
 		uint32_t maxSize;
 		void init(uint32_t requiredSize);
+		void initFull(void* data,uint32_t requiredSize);
 		inline void use() {
 			glBindBuffer(GL_ARRAY_BUFFER, this->ID);
 		}

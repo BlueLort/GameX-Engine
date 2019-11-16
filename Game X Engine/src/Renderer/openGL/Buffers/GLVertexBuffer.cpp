@@ -13,6 +13,16 @@ namespace gx {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+	void GLVertexBuffer::initFull(void* data, uint32_t requiredSize)
+	{
+		currentSize = requiredSize;
+		maxSize = requiredSize;
+		glGenBuffers(1, &ID);
+		glBindBuffer(GL_ARRAY_BUFFER, ID);
+		glBufferData(GL_ARRAY_BUFFER, requiredSize, data, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
 	void GLVertexBuffer::uploadData(void* data, uint32_t size)
 	{
 		glBufferSubData(GL_ARRAY_BUFFER,currentSize,size,data);
