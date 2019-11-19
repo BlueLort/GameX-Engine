@@ -32,6 +32,7 @@ namespace gx {
 		template<class T>
 		static int handleEvent(std::shared_ptr<T>& Event) { return 0; }
 		static bool isRunning;
+		
 
 	};
 	extern GameXApp* CreateApp();
