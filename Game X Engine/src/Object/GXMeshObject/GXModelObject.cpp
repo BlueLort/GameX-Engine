@@ -3,20 +3,15 @@
 
 namespace gx {
 
-
-
-
-	void GXModelObject::init(const char* filePath, const char* shaderPath) {
+	void GXModelObject::GLinit(const char* filePath, const char* fileName , const char* shaderPath) {
 	
 		//TODO SOLVE AND READ THE MODEL
-		//io::IOManager::GLAssimpRead(filePath, meshRenderIDs);
+		io::IOManager::GLAssimpRead(filePath,fileName, meshRenderIDs);
 		if (shaderPath == nullptr) {
-	#ifdef  USING_OPENGL
-			shader=GLShaderManager::getShader(GLShaderType::DEFAULT);
+			glshader=GLShaderManager::getShader(GLShaderType::DEFAULT);
 		}
 		else {
-			shader=GLShaderManager::getShader(shaderPath);
-	#endif
+			glshader=GLShaderManager::getShader(shaderPath);
 		}
 	}
 
@@ -30,6 +25,17 @@ namespace gx {
 		for (int i = 0; i < meshRenderIDs.size(); i++) {
 			meshRenderIDs[i]->destroy();
 		}
+	}
+
+	void GXModelObject::GLDraw(GLShader* sh)
+	{
+
+
+	}
+	void GXModelObject::GLDraw()
+	{
+
+
 	}
 
 }
