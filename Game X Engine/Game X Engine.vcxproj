@@ -99,6 +99,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\GXComponent.cpp" />
+    <ClCompile Include="src\IOManagement\image\stb_image.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\IOManagement\IOManager.cpp" />
     <ClCompile Include="src\Object\GXMeshObject\GXModelObject.cpp" />
     <ClCompile Include="src\Renderer\openGL\Buffers\GLBufferManager.cpp" />
@@ -112,6 +117,7 @@
     <ClCompile Include="src\Renderer\openGL\Shader\GLShader.cpp" />
     <ClCompile Include="src\Renderer\openGL\Shader\GLShaderLibrary.cpp" />
     <ClCompile Include="src\Renderer\openGL\Shader\GLShaderManager.cpp" />
+    <ClCompile Include="src\Renderer\openGL\Texture\GLTexture2D.cpp" />
     <ClCompile Include="src\Renderer\Renderer.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui_demo.cpp" />
@@ -130,7 +136,8 @@
     <ClCompile Include="src\Window\GXWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Components\Component.h" />
+    <ClInclude Include="3rdParty\stb_image\stb_image.h" />
+    <ClInclude Include="src\Components\GXComponent.h" />
     <ClInclude Include="src\IOManagement\IOManager.h" />
     <ClInclude Include="src\Maths\Data\Vertex3D.h" />
     <ClInclude Include="src\Maths\GXTransform.h" />
