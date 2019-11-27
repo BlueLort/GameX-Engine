@@ -22,7 +22,6 @@ eventName = gxEvent->getName()
 #define DISPATCH_EVENT_D3_NODATA(ev,data1,data2,data3,dispatched,name) std::shared_ptr<##ev> gxEvent = std::make_shared<##ev>(data1,data2,data3);\
 dispatchSystemEvent<##ev>(gxEvent)
 
-
 namespace gx {
 	std::unique_ptr<ImGUI_SDLGL> GameXApp::UI_GL = std::make_unique<ImGUI_SDLGL>("ImGUI Editor");
 	//std::unique_ptr<Renderer> GameXApp::renderer = std::make_unique<Renderer>();
@@ -36,24 +35,48 @@ namespace gx {
 	GameXApp::~GameXApp() {
 
 	}
-
 	void GameXApp::Start() {
+		
+	  
+		float vertices[] = {
+	  0.5f,  0.5f, 0.0f, 
+	  0.5f, -0.5f, 0.0f, 
+	 -0.5f, -0.5f, 0.0f, 
+	 -0.5f,  0.5f, 0.0f   
+		};
+		uint32_t indices[] = {
+			0, 1, 3,
+			1, 2, 3  
+		};
+
+		GLBufferManager gbm;
+		gbm.initFull(vertices, sizeof(vertices), 3 * sizeof(float));
+		uint32_t size = sizeof(indices);
+		gbm.uploadIndicesToBuffer(indices,sizeof(indices),6);
+		gbm.setAttribPointer(0, 3, GL_FLOAT, 0);
+		gbm.endStream();
+		
+		GLShader* sh = GLShaderManager::getShader(gx::GLShaderType::DEFAULT);
 		while (isRunning) {
 			timer->update();
 			InputManager::getInstance().update();
 			while (GXPollEvents(&GX_SDLEvent()) == 1);//Send events to callback
 			//Render
-			Renderer::begin();
-
 	#ifdef USING_OPENGL  
-
+			GLRenderer::getInstance().begin();
+			sh->use();
+			gbm.use();
+			GLRenderer::getInstance().draw(gbm.getNumberOfElements(), GX_TRIANGLES);
+			gbm.stop();
+		
+			//ImGUI Rendering
 			UI_GL->startFrame();
 			UI_GL->onGUIRender();// for all layers
 			UI_GL->render();
 			UI_GL->endFrame();
-
+			GLRenderer::getInstance().end();
 	#endif
-			Renderer::end();
+			
 
 		}
 	}

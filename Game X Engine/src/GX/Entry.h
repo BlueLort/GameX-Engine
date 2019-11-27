@@ -5,7 +5,7 @@ int main(int argc, char** argv) {
 	gx::GameXApp* Game = gx::CreateApp();
 	initSystems(Game);
 	Game->Start();
-	//TO DO Destroy Systems... 
+	//TODO Destroy Core Systems + Resources Systems [like IOManager] in reverse order of init... 
 	delete Game;
 
 	return 0;
@@ -21,8 +21,8 @@ void initSystems(gx::GameXApp* gameInst) {
 	gx::InputManager::getInstance().init();
 	gameInst->timer->init(); GXE_INFO("Application Timer Started using SDL_GetTicks !");
 	//init Graphics Context and appropriate Rendering System
-	gx::Renderer::init(); GXE_INFO("Game X Engine Renderer is Initialized Successfully !");
 #ifdef USING_OPENGL
+	gx::GLRenderer::getInstance().init(); GXE_INFO("Game X Engine GLRenderer is Initialized Successfully !");
 	gameInst->UI_GL->init(); GXE_INFO("dear ImGUI v1.73 WIP initialized for OpenGL !");
 	GXE_PRINT("Initiating GLShaders");
 	gx::GLShaderManager::init(); GXE_INFO("OpenGL Shader Manager initialized !");

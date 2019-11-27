@@ -6,7 +6,7 @@
 #include "UI/ImGUI_SDLGL.h"
 #include "Renderer/Renderer.h"
 #include "Input/InputManager.h"
-
+#include "Object/GXMeshObject/GXModelObject.h"
 namespace gx {
 	//adapt it to whatever API im using.
 	using GX_SDLEvent = SDL_Event;
@@ -65,7 +65,11 @@ namespace gx {
 	inline int GameXApp::handleEvent<gx::event::WindowResizeEvent>(std::shared_ptr<gx::event::WindowResizeEvent>& Event) {
 		GXWindow::windowData->width = Event->getWidth();
 		GXWindow::windowData->height = Event->getHeight();
-		Renderer::setViewPort(GXWindow::windowData->width, GXWindow::windowData->height);
+#ifdef USING_OPENGL
+		GLRenderer::getInstance().setViewPort(GXWindow::windowData->width, GXWindow::windowData->height);
+#endif
+
+		
 		
 
 		Event->handled = true;
