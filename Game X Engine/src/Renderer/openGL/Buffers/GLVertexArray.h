@@ -15,12 +15,12 @@ namespace gx {
 		inline static void stop() {
 			glBindVertexArray(0);
 		}
-
+		inline static void destroy(GLuint id) {
+			GL_CALL(glDeleteVertexArrays(1, &id));
+		}
 		//Assumeing Vertex Array is bound
 		void setAttribPointers(uint32_t ShaderLoc, uint32_t Count, GLenum Type, uint32_t offset);
-		inline static void destroy(GLuint id) {
-			glDeleteVertexArrays(1,&id);
-		}
+		
 		friend class GLBufferManager;
 
 	};

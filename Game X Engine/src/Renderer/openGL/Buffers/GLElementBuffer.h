@@ -18,7 +18,9 @@ namespace gx {
 
 		//Assumeing Element Buffer is bound
 		void uploadData(uint32_t* indices, uint32_t size);
-		void destroy();
+		inline static void destroy(GLuint id) {
+			GL_CALL(glDeleteBuffers(1, &id));
+		}
 		friend class GLBufferManager;
 	};
 }

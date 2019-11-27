@@ -23,7 +23,9 @@ namespace gx {
 
 		//Buffer Must be Bound before uploading data !
 		void uploadData(void* data,uint32_t size);
-		void destroy();
+		inline static void destroy(GLuint id) {
+			GL_CALL(glDeleteBuffers(1, &id));
+		}
 		friend class GLBufferManager;
 	};
 
