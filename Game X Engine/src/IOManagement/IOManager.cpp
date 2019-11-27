@@ -5,6 +5,7 @@
 namespace gx {
 	namespace io {
 		std::unordered_map<std::string, GLuint> IOManager::texIDs;
+		//std::unordered_map<std::string, std::shared_ptr<GLBufferManager>> IOManager::GLModelBuffers;
 		const char* IOManager::readFile(const char* filePath)
 		{
 			return nullptr;
@@ -55,6 +56,12 @@ namespace gx {
 			std::unordered_map<std::string, std::shared_ptr<GLTexture2D>> materialsLoaded;
 			GLProcessNode(filePath,scene->mRootNode, scene,materialsLoaded,meshDataArr);
 			GXE_INFO("Model has been imported successfully\nName: {0}\nPath: {1}",fileName, filePath);
+		}
+
+		void IOManager::destroy()
+		{
+			destroyGLModels();
+			destroyTextures();
 		}
 
 		
@@ -156,9 +163,9 @@ namespace gx {
 		std::shared_ptr<GLBufferManager> IOManager::GLCreateBufferLayout(std::vector<Vertex3D>& verts, std::vector<uint32_t>& indices, std::vector<std::shared_ptr<GLTexture2D>>& textures)
 		{
 			std::shared_ptr<GLBufferManager> Buffer;
-			Buffer.reset(new GLBufferManager);
+			Buffer.reset(new GLBufferManager());
 			Buffer->initFull(reinterpret_cast<void*>(&verts[0]), sizeof(Vertex3D) * verts.size(), sizeof(Vertex3D));
-			Buffer->uploadIndicesToBuffer(&indices[0], indices.size() * sizeof(uint32_t));
+			Buffer->uploadIndicesToBuffer(&indices[0], indices.size() * sizeof(uint32_t),indices.size());
 			Buffer->setAttribPointer(0, 3, GL_FLOAT, offsetof(Vertex3D, position));
 			Buffer->setAttribPointer(1, 3, GL_FLOAT, offsetof(Vertex3D, normal));
 			Buffer->setAttribPointer(2, 2, GL_FLOAT, offsetof(Vertex3D, texCoords));
@@ -168,6 +175,17 @@ namespace gx {
 				Buffer->addTexture(textures[i]);
 			}
 			return Buffer;
+		}
+		inline void IOManager::destroyGLModels() {
+			//for (auto ite : GLModelBuffers) {
+			//	ite.second->destroy();
+			//	}
+
+		}
+		inline void IOManager::destroyTextures() {
+			for (auto ite : texIDs) {
+				GLTexture2D::destroy(ite.second);
+			}
 		}
 	}
 }

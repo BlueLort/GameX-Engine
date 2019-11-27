@@ -17,7 +17,10 @@ namespace gx {
 			static const char* readFile(const char* filePath);
 			static std::shared_ptr<GLTexture2D> GLimageRead(const char* filePath, GLTexture2DType Type);
 
+			//TODO make this return GXModelObject ptr instead.
 			static void GLAssimpRead(const char* filePath, const char* fileName, std::vector<std::shared_ptr<GLBufferManager>>& meshDataArr);
+		
+			static void destroy();
 		private:
 			static void GLProcessNode(const char* filePath, aiNode* node, const aiScene* scene,std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded,std::vector<std::shared_ptr<GLBufferManager>>& meshDataArr);
 			static std::shared_ptr<GLBufferManager> GLProcessMesh(const char* filePath, aiMesh* mesh, const aiScene* scene, std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded);
@@ -25,6 +28,12 @@ namespace gx {
 			static std::shared_ptr<GLBufferManager> GLCreateBufferLayout(std::vector<Vertex3D>& verts, std::vector<uint32_t>& indices,std::vector<std::shared_ptr<GLTexture2D>>& textures);
 
 			static std::unordered_map<std::string, GLuint> texIDs;
+
+			//TODO Make a Flyweight Pattern for Objects to decrease numbers of IOs needed to load models.
+			//static std::unordered_map<std::string, std::shared_ptr<GLBufferManager>> GLModelBuffers;
+
+			static void destroyGLModels();
+			static void destroyTextures();
 		};
 	}
 }
