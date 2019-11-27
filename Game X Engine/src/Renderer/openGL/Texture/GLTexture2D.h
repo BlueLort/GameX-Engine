@@ -20,17 +20,19 @@ namespace gx {
 			type = Type;
 		}
 		void init(const uint8_t* data, int32_t width, int32_t height, GLTexture2DType Type);
+		inline static void setActiveTexture(uint32_t pos) { glActiveTexture(GL_TEXTURE0 + pos); }
 		inline void use() {
 			glBindTexture(GL_TEXTURE_2D,ID);
 		}
 		inline static void stop() {
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
-		inline void destroy() {
+		inline static void destroy(GLuint id) {
 
-			glDeleteTextures(1, &ID);
+			glDeleteTextures(1, &id);
 		}
 		inline GLuint getID()const { return ID; }
+		inline GLTexture2DType getType() const { return type; }
 	private:
 		GLuint ID;
 		GLTexture2DType type;
