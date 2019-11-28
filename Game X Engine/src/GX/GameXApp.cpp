@@ -24,8 +24,6 @@ dispatchSystemEvent<##ev>(gxEvent)
 
 namespace gx {
 	std::unique_ptr<ImGUI_SDLGL> GameXApp::UI_GL = std::make_unique<ImGUI_SDLGL>("ImGUI Editor");
-	//std::unique_ptr<Renderer> GameXApp::renderer = std::make_unique<Renderer>();
-	std::unique_ptr<Timer> GameXApp::timer = std::make_unique<Timer>();
 	bool GameXApp::isRunning = true;
 
 	GameXApp::GameXApp() {
@@ -58,13 +56,17 @@ namespace gx {
 		
 		GLShader* sh = GLShaderManager::getShader(gx::GLShaderType::DEFAULT);
 		while (isRunning) {
-			timer->update();
+			GXTimer::getAppTimer().update();
 			InputManager::getInstance().update();
 			while (GXPollEvents(&GX_SDLEvent()) == 1);//Send events to callback
+			EditorCamera::getInstance().update();
 			//Render
 	#ifdef USING_OPENGL  
 			GLRenderer::getInstance().begin();
+			
 			sh->use();
+			sh->setMat4("mvp", EditorCamera::getInstance().getPVMatrix());
+			sh->setVec3("col", GXVec3(1.0f, 0.8f, 0.2f));
 			gbm.use();
 			GLRenderer::getInstance().draw(gbm.getNumberOfElements(), GX_TRIANGLES);
 			gbm.stop();

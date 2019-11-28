@@ -7,12 +7,13 @@
 #include "Renderer/Renderer.h"
 #include "Input/InputManager.h"
 #include "Object/GXMeshObject/GXModelObject.h"
+#include "Camera/EditorCamera/EditorCamera.h"
+#include "GXTimer.h"
 namespace gx {
 	//adapt it to whatever API im using.
 	using GX_SDLEvent = SDL_Event;
 	using GXEventCallBack = SDL_EventFilter;
 #define GXPollEvents SDL_PollEvent
-	class Timer;
 	class GX_DLL GameXApp
 	{
 	public:
@@ -22,7 +23,6 @@ namespace gx {
 		GXEventCallBack getEventCallBack() const { return onEvent; }
 		//static std::unique_ptr<Renderer> renderer;
 		static std::unique_ptr<ImGUI_SDLGL> UI_GL;
-		static std::unique_ptr<Timer> timer;
 	private:
 		//EVENT HANDLING
 		static int onEvent(void* userdata, GX_SDLEvent* Event);
@@ -30,7 +30,7 @@ namespace gx {
 		static int dispatchSystemEvent(std::shared_ptr<T>& gxEvent);
 
 		template<class T>
-		static int handleEvent(std::shared_ptr<T>& Event) { return 0; }
+		inline static int handleEvent(std::shared_ptr<T>& Event) { return 0; }
 		static bool isRunning;
 		
 
@@ -40,6 +40,7 @@ namespace gx {
 	template<class T>
 	inline int GameXApp::dispatchSystemEvent(std::shared_ptr<T>& gxEvent)
 	{
+		//TODO PROFILE THIS ,OVERHEAD -> Change it !
 		bool handled = false;
 		if (InputManager::getInstance().handleEvent(gxEvent)) {
 			handled = true;
@@ -47,9 +48,11 @@ namespace gx {
 		if (UI_GL->handleEvent(gxEvent)) {
 			handled = true;
 		}
+
 		if (handleEvent(gxEvent)) {
 			handled = true;
 		}
+
 
 		return handled;
 	}
@@ -68,7 +71,10 @@ namespace gx {
 #ifdef USING_OPENGL
 		GLRenderer::getInstance().setViewPort(GXWindow::windowData->width, GXWindow::windowData->height);
 #endif
-
+#ifdef USING_EDITOR_CAMERA
+		EditorCamera::getInstance().AR = static_cast<float>(Event->getWidth()) / static_cast<float>(Event->getHeight());
+		EditorCamera::getInstance().processMouseScroll(0);//recalculate the projection matrix
+#endif
 		
 		
 
@@ -85,26 +91,6 @@ namespace gx {
 		Event->handled = true;
 		return 1;
 	}
-
-
-	class GX_DLL Timer {//Class to calculate delta time and ticks between frames using whatever windowing API
-	public:
-		void init() {
-			lastTicks = SDL_GetTicks();
-		}
-		void update() {
-			uint32_t currentTicks = SDL_GetTicks();
-			deltaTicks = currentTicks - lastTicks;
-			lastTicks = currentTicks;
-		}
-		inline uint32_t getDeltaTicks()const { return deltaTicks; }
-
-	private:
-		uint32_t deltaTicks;
-		uint32_t lastTicks;
-
-	};
-
 
 }
 
