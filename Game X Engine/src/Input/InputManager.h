@@ -10,7 +10,6 @@ namespace gx {
 		InputManager(const InputManager& inst) = delete;
 		inline void init() {
 			keyState = std::vector<bool>(event::key::GX_NUM_SCANCODES);
-			keyHeldState = std::vector<bool>(event::key::GX_NUM_SCANCODES);
 			mouseLoc = std::make_pair(0, 0);//x,y
 			mouseLocRel = std::make_pair(0, 0);//xRel,yRel
 			mouseWheel = std::make_pair(0, 0);//horizontal,vertical
@@ -33,7 +32,6 @@ namespace gx {
 
 		//INPUT POLLING 
 		inline bool isPressed(uint32_t keyVal) const { return keyState[keyVal]; }
-		inline bool isHeld(uint32_t keyVal) const { return keyHeldState[keyVal]; }
 		inline std::string getTextTyped() const { return text; }
 		//x,y
 		inline std::pair<int32_t, int32_t> getMouseLoc() const { return mouseLoc; }
@@ -44,7 +42,6 @@ namespace gx {
 	private:
 		InputManager() {}
 		std::vector<bool> keyState;
-		std::vector<bool> keyHeldState;
 		std::string text;
 		std::pair<int32_t, int32_t> mouseLoc;//x,y
 		std::pair<int32_t, int32_t> mouseLocRel;//xRel,yRel
@@ -54,13 +51,11 @@ namespace gx {
 	//EVENTS 
 	template<>
 	inline int InputManager::handleEvent<gx::event::KeyPressEvent>(std::shared_ptr<gx::event::KeyPressEvent>& Event) {
-		keyHeldState[Event->getKeyVal()] = keyState[Event->getKeyVal()];
 		keyState[Event->getKeyVal()] = true;
 		return 1;
 	}
 	template<>
 	inline int InputManager::handleEvent<gx::event::KeyReleaseEvent>(std::shared_ptr<gx::event::KeyReleaseEvent>& Event) {
-		keyHeldState[Event->getKeyVal()] = false;
 		keyState[Event->getKeyVal()] = false;
 		return 1;
 	}
@@ -77,13 +72,11 @@ namespace gx {
 	}
 	template<>
 	inline int InputManager::handleEvent<gx::event::MousePressEvent>(std::shared_ptr<gx::event::MousePressEvent>& Event) {
-		keyHeldState[Event->getKeyVal()] = keyState[Event->getKeyVal()];
 		keyState[Event->getKeyVal()] = true;
 		return 1;
 	}
 	template<>
 	inline int InputManager::handleEvent<gx::event::MouseReleaseEvent>(std::shared_ptr<gx::event::MouseReleaseEvent>& Event) {
-		keyHeldState[Event->getKeyVal()] = false;
 		keyState[Event->getKeyVal()] = false;
 		return 1;
 	}
