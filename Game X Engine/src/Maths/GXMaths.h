@@ -11,7 +11,7 @@ namespace gx {
 	using GXVec4 = glm::vec4;
 	using GXVec3 = glm::vec3;
 	using GXVec2 = glm::vec2;
-	#define GXRad glm::radians;
+	#define GXRad glm::radians
 #else
 	/* IF USING OTHER MATHS LIBRARIES*/
 	//using GXMat4;
@@ -27,6 +27,9 @@ namespace gx {
 		inline static GXMat4 prespective(const float& FOV,const float& AR,const float& zNear,const float& zFar ) {
 			return glm::perspective(FOV,AR,zNear,zFar);
 		}
+		inline static GXMat4 lookAt(const GXVec3& pos, const GXVec3& target, const GXVec3& up) {
+			return glm::lookAt(pos, target, up);
+		}
 		inline static GXMat4 translate(const GXMat4& Model,const GXVec3& Amount) {
 			return glm::translate(Model,Amount);
 		}
@@ -35,6 +38,12 @@ namespace gx {
 		}
 		inline static GXMat4 scale(const GXMat4& Model,const GXVec3& Amount) {
 			return glm::scale(Model,Amount);
+		}
+		inline static GXVec3 normalize(const GXVec3& vec) {
+			return glm::normalize(vec);
+		}
+		inline static GXVec3 cross(const GXVec3& vec1, const GXVec3& vec2) {
+			return glm::cross(vec1, vec2);
 		}
 
 	};

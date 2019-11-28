@@ -11,6 +11,7 @@ namespace gx {
 		scale(1.0f, 1.0f, 1.0f),
 		rotation(0.0f, 0.0f, 0.0f),
 		up(0.0f, 1.0f, 0.0f),
+		worldUp(0.0f,1.0f,0.0f),
 		forward(0.0f,0.0f,1.0f),
 		right(1.0f,0.0f,0.0f)
 		{
@@ -20,6 +21,7 @@ namespace gx {
 		//angles in degrees
 		GXVec3 rotation;
 		GXVec3 up;
+		GXVec3 worldUp;
 		GXVec3 forward;
 		GXVec3 right;
 

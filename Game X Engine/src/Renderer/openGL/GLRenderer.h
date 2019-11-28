@@ -9,7 +9,7 @@ namespace gx {
 	class GX_DLL GLRenderer : public Renderer {
 	public:
 		
-		inline static GLRenderer getInstance() {
+		inline static GLRenderer& getInstance() {
 			static GLRenderer g;
 			return g;
 		}
