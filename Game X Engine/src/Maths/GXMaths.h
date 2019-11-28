@@ -11,7 +11,10 @@ namespace gx {
 	using GXVec4 = glm::vec4;
 	using GXVec3 = glm::vec3;
 	using GXVec2 = glm::vec2;
-	#define GXRad glm::radians
+#define GXRad glm::radians
+#define GXCos glm::cos
+#define GXSin glm::sin
+
 #else
 	/* IF USING OTHER MATHS LIBRARIES*/
 	//using GXMat4;

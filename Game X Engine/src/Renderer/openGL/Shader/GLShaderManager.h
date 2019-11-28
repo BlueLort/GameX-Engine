@@ -5,10 +5,15 @@
 #include "GLShader.h"
 namespace gx {
 	//0 vert 1 frag 2 geo
-	extern const char* GLDefaultShader[3];
+	extern const char* GLDefaultColorShader[3];
+	extern const char* GLDefaultModelShader[3];
+	extern const char* GLDefaultLightingShader[3];
 	enum GLShaderType
 	{
-		DEFAULT = 0//ADD MORE TYPES THAT ARE PRECOMPILED FOR THE USER
+		DEFAULT_COLOR = 0,//ADD MORE TYPES THAT ARE PRECOMPILED FOR THE USER
+		DEFAULT_LIGHT,
+		DEFAULT_MODEL
+		
 	};
 	class GLShader;
 	class GX_DLL GLShaderManager {

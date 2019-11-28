@@ -143,6 +143,11 @@
     <ClInclude Include="src\Components\GXComponent.h" />
     <ClInclude Include="src\GX\GXTimer.h" />
     <ClInclude Include="src\IOManagement\IOManager.h" />
+    <ClInclude Include="src\Light\DirectionalLight.h" />
+    <ClInclude Include="src\Light\Light.h" />
+    <ClInclude Include="src\Light\PointLight.h" />
+    <ClInclude Include="src\Light\SceneLightManager.h" />
+    <ClInclude Include="src\Light\SpotLight.h" />
     <ClInclude Include="src\Maths\Data\Vertex3D.h" />
     <ClInclude Include="src\Maths\GXTransform.h" />
     <ClInclude Include="src\Input\GXKeys.h" />

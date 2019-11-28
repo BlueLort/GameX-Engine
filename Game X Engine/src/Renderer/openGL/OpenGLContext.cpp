@@ -25,6 +25,9 @@ namespace gx {
 		GXE_ASSERT(gladLoad, "Failed to init GLAD ... ");
 
 
+		//TODO MAKE A SYSTEM FOR THE FOLLOWING ENABLES
+		glEnable(GL_CULL_FACE);
+
 		glViewport(0, 0, GXWindow::windowData->width, GXWindow::windowData->height);
 
 		glClearColor(0.258f, 0.596f, 0.96f, 1.0f);

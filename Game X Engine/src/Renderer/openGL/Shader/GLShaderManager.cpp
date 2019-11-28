@@ -11,9 +11,14 @@ namespace gx {
 	void GLShaderManager::init()
 	{
 		//DEFAULT SHADER COMPILATION
-		defaultShaders.emplace_back(new GLShader(GLDefaultShader[0], GLDefaultShader[1], GLDefaultShader[2]));
-		GXE_DEBUG("Default GLShader Compiled Successfully");
-		
+		defaultShaders.emplace_back(new GLShader(GLDefaultColorShader[0], GLDefaultColorShader[1], GLDefaultColorShader[2]));
+		GXE_DEBUG("Default Color GLShader Compiled Successfully");
+		defaultShaders.emplace_back(new GLShader(GLDefaultLightingShader[0], GLDefaultLightingShader[1], GLDefaultLightingShader[2]));
+		GXE_DEBUG("Default Lighting GLShader Compiled Successfully");
+		defaultShaders.emplace_back(new GLShader(GLDefaultModelShader[0], GLDefaultModelShader[1], GLDefaultModelShader[2]));
+		GXE_DEBUG("Default Model GLShader Compiled Successfully");
+
+
 
 
 	}

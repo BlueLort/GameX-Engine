@@ -6,6 +6,8 @@
 #include "Renderer/openGL/Buffers/GLBufferManager.h"
 #include "IOManagement/IOManager.h"
 #include "Renderer/openGL/GLRenderer.h"
+#include "Camera/EditorCamera/EditorCamera.h"
+#include "Light/SceneLightManager.h"
 namespace gx {
 	constexpr uint32_t MAX_COMPONENTS = 16;
 	class GXComponent;

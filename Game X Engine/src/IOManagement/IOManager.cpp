@@ -35,16 +35,19 @@ namespace gx {
 		}
 		
 		void IOManager::GLAssimpRead(const char* filePath,const char* fileName, std::vector<std::shared_ptr<GLBufferManager>>& meshDataArr) {
+			//most of the logic can be found in learnopengl.com
 			Assimp::Importer importer;
 			std::string file(filePath);
 			file += fileName;
 			const aiScene* scene = importer.ReadFile(file.c_str(),
-				aiProcess_OptimizeGraph
+				/*aiProcess_OptimizeGraph
 				| aiProcess_OptimizeMeshes
 				| aiProcess_Triangulate
 				| aiProcess_FlipUVs
 				| aiProcess_GenNormals
 				| aiProcess_CalcTangentSpace
+				*/
+				aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace
 			);
 
 			if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)

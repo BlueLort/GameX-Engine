@@ -34,27 +34,11 @@ namespace gx {
 
 	}
 	void GameXApp::Start() {
-		
-	  
-		float vertices[] = {
-	  0.5f,  0.5f, 0.0f, 
-	  0.5f, -0.5f, 0.0f, 
-	 -0.5f, -0.5f, 0.0f, 
-	 -0.5f,  0.5f, 0.0f   
-		};
-		uint32_t indices[] = {
-			0, 1, 3,
-			1, 2, 3  
-		};
+		//Bugs in GXModelIOManager
+		GXModelObject object;
 
-		GLBufferManager gbm;
-		gbm.initFull(vertices, sizeof(vertices), 3 * sizeof(float));
-		uint32_t size = sizeof(indices);
-		gbm.uploadIndicesToBuffer(indices,sizeof(indices),6);
-		gbm.setAttribPointer(0, 3, GL_FLOAT, 0);
-		gbm.endStream();
-		
-		GLShader* sh = GLShaderManager::getShader(gx::GLShaderType::DEFAULT);
+		object.GLinit("res/models/icosphere/", "icosphere.obj");
+	
 		while (isRunning) {
 			GXTimer::getAppTimer().update();
 			InputManager::getInstance().update();
@@ -64,12 +48,7 @@ namespace gx {
 	#ifdef USING_OPENGL  
 			GLRenderer::getInstance().begin();
 			
-			sh->use();
-			sh->setMat4("mvp", EditorCamera::getInstance().getPVMatrix());
-			sh->setVec3("col", GXVec3(1.0f, 0.8f, 0.2f));
-			gbm.use();
-			GLRenderer::getInstance().draw(gbm.getNumberOfElements(), GX_TRIANGLES);
-			gbm.stop();
+			object.GLDraw();
 		
 			//ImGUI Rendering
 			UI_GL->startFrame();
