@@ -1,6 +1,5 @@
 #pragma once
 #include "Config.h"
-#include "Object/GXObject.h"
 namespace gx {
 	
 	enum GXComponentType
@@ -8,7 +7,7 @@ namespace gx {
 		GX_COLLIDER=0,
 		GX_RIGIDBODY,
 		GX_SPRITE,
-		GX_MODEL
+		GX_MESH
 		//ADD MORE LATER
 	};
 
@@ -16,10 +15,10 @@ namespace gx {
 		GX2D = 1,
 		GX_PHYSICS = 1 << 1,
 		GX_AUDIO = 1 << 2,
-		GX_GRAPHICS = 1 << 3,
+		GX_GRAPHICS = 1 << 3,//Materials , Mesh
 		GX_ANIMATION = 1 << 4
+
 	};
-	class GXObject;
 	class GX_DLL GXComponent {
 	public:
 		uint64_t componentID;
@@ -37,12 +36,11 @@ namespace gx {
 		virtual inline const char* toString() const { return this->getName(); }
 
 	protected:
-		const GXObject* owner;
 		static uint64_t counter;
-		GXComponent(const GXObject* Owner) :componentID(counter++), owner(Owner) {
+		GXComponent() :componentID(counter++) {
 
 		}
 	};
-	//uint64_t GXComponent::counter = 0;
+
 
 }

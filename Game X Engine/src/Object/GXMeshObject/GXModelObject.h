@@ -7,13 +7,8 @@ namespace gx {
 		virtual void GLinit(const char* filePath, const char* fileName,const char* shaderPath=nullptr);
 		virtual void update(float deltaTime) override;
 		virtual void destroy() override;
-
-		virtual void GLDraw(GLShader* sh) override;
-		virtual void GLDraw() override;
-
+		void setShader(GLShader* sh) { this->glshader = sh; }
 	private:
-
-		std::vector<std::shared_ptr<GLBufferManager>> meshRenderIDs;
 		GLShader* glshader;
 
 	};
