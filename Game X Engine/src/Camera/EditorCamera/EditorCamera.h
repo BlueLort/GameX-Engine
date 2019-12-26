@@ -10,7 +10,7 @@ namespace gx {
 	constexpr float YAW = -90.0f;
 	constexpr float PITCH = 0.0f;
 	constexpr float SPEED = 1.0f;
-	constexpr float SENSITIVITY = 0.5f;
+	constexpr float SENSITIVITY = 1.25f;
 	constexpr float ZOOM = 45.0f;
 	constexpr float MOVEMENT_SPEED = 16.0f;
 	// Default Projection values

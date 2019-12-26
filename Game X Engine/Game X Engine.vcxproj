@@ -100,7 +100,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Camera\EditorCamera\EditorCamera.cpp" />
-    <ClCompile Include="src\Components\GXComponent.cpp" />
+    <ClCompile Include="src\Components\GXComponentcpp.cpp" />
+    <ClCompile Include="src\GX\GameXApp.cpp" />
     <ClCompile Include="src\IOManagement\image\stb_image.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -133,7 +134,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Logging\Logger.cpp" />
-    <ClCompile Include="src\GX\GameXApp.cpp" />
     <ClCompile Include="src\Window\GXWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +141,7 @@
     <ClInclude Include="src\Camera\Camera.h" />
     <ClInclude Include="src\Camera\EditorCamera\EditorCamera.h" />
     <ClInclude Include="src\Components\GXComponent.h" />
+    <ClInclude Include="src\Components\Mesh\GXMeshComponent.h" />
     <ClInclude Include="src\GX\GXTimer.h" />
     <ClInclude Include="src\IOManagement\IOManager.h" />
     <ClInclude Include="src\Light\DirectionalLight.h" />

@@ -34,20 +34,19 @@ namespace gx {
 			return tex;
 		}
 		
-		void IOManager::GLAssimpRead(const char* filePath,const char* fileName, std::vector<std::shared_ptr<GLBufferManager>>& meshDataArr) {
+		void IOManager::GLAssimpRead(const char* filePath,const char* fileName, std::vector<std::shared_ptr<GXComponent>>& components,GLShader* glshader) {
 			//most of the logic can be found in learnopengl.com
 			Assimp::Importer importer;
 			std::string file(filePath);
 			file += fileName;
 			const aiScene* scene = importer.ReadFile(file.c_str(),
-				/*aiProcess_OptimizeGraph
+				aiProcess_OptimizeGraph
 				| aiProcess_OptimizeMeshes
 				| aiProcess_Triangulate
 				| aiProcess_FlipUVs
 				| aiProcess_GenNormals
 				| aiProcess_CalcTangentSpace
-				*/
-				aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace
+				
 			);
 
 			if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
@@ -57,7 +56,7 @@ namespace gx {
 			}
 
 			std::unordered_map<std::string, std::shared_ptr<GLTexture2D>> materialsLoaded;
-			GLProcessNode(filePath,scene->mRootNode, scene,materialsLoaded,meshDataArr);
+			GLProcessNode(filePath,scene->mRootNode, scene,materialsLoaded,components,glshader);
 			GXE_INFO("Model has been imported successfully\nName: {0}\nPath: {1}",fileName, filePath);
 		}
 
@@ -69,16 +68,17 @@ namespace gx {
 
 		
 
-		void IOManager::GLProcessNode(const char* filePath, aiNode* node, const aiScene* scene, std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded, std::vector<std::shared_ptr<GLBufferManager>>& meshDataArr)
+		void IOManager::GLProcessNode(const char* filePath, aiNode* node, const aiScene* scene, std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded, std::vector<std::shared_ptr<GXComponent>>& components, GLShader* glshader)
 		{
 			for (uint32_t i = 0; i < node->mNumMeshes; i++)
 			{
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-				meshDataArr.push_back(GLProcessMesh(filePath,mesh, scene,materialsLoaded));
+				std::shared_ptr<gx::GLBufferManager> GLBM = GLProcessMesh(filePath, mesh, scene, materialsLoaded);
+				components.emplace_back(std::make_shared<GXMeshComponent>(GLBM, glshader));
 			}
 			for (uint32_t i = 0; i < node->mNumChildren; i++)
 			{
-				GLProcessNode(filePath,node->mChildren[i], scene,materialsLoaded,meshDataArr);
+				GLProcessNode(filePath,node->mChildren[i], scene,materialsLoaded,components,glshader);
 			}
 			
 		}
@@ -100,7 +100,6 @@ namespace gx {
 				vert.normal.z = mesh->mNormals[i].z;
 				if (mesh->mTextureCoords[0]) 
 				{
-					glm::vec2 vec;
 					vert.texCoords.x = mesh->mTextureCoords[0][i].x;
 					vert.texCoords.y = mesh->mTextureCoords[0][i].y;
 				}
@@ -120,9 +119,12 @@ namespace gx {
 			for (uint32_t i = 0; i < mesh->mNumFaces; i++)
 			{
 				aiFace face = mesh->mFaces[i];
+				indices.reserve(face.mNumIndices);
 				for (uint32_t j = 0; j < face.mNumIndices; j++)
 					indices.push_back(face.mIndices[j]);
 			}
+
+			
 			//Materials/Textures
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
@@ -138,8 +140,6 @@ namespace gx {
 			//height
 			std::vector<std::shared_ptr<GLTexture2D>> height = GLImportTextures2D(filePath,material, aiTextureType_AMBIENT, materialsLoaded, GLTexture2DType::HEIGHT);
 			textures.insert(textures.end(), height.begin(), height.end());
-
-
 			return GLCreateBufferLayout(verts, indices, textures);
 		}
 		std::vector<std::shared_ptr<GLTexture2D>> IOManager::GLImportTextures2D(const char* filePath, aiMaterial* mat, aiTextureType type, std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded, GLTexture2DType glTexType)
@@ -167,16 +167,19 @@ namespace gx {
 		{
 			std::shared_ptr<GLBufferManager> Buffer;
 			Buffer.reset(new GLBufferManager());
-			Buffer->initFull(reinterpret_cast<void*>(&verts[0]), sizeof(Vertex3D) * verts.size(), sizeof(Vertex3D));
+			Buffer->initFull(&verts[0], sizeof(Vertex3D) * verts.size(), sizeof(Vertex3D));
 			Buffer->uploadIndicesToBuffer(&indices[0], indices.size() * sizeof(uint32_t),indices.size());
 			Buffer->setAttribPointer(0, 3, GL_FLOAT, offsetof(Vertex3D, position));
 			Buffer->setAttribPointer(1, 3, GL_FLOAT, offsetof(Vertex3D, normal));
 			Buffer->setAttribPointer(2, 2, GL_FLOAT, offsetof(Vertex3D, texCoords));
+			Buffer->setAttribPointer(3, 3, GL_FLOAT, offsetof(Vertex3D, tangent));
+			Buffer->setAttribPointer(4, 3, GL_FLOAT, offsetof(Vertex3D, bitangent));
 			//TODO Add Tangents bitangents later
 			Buffer->endStream();
 			for(int i=0;i<textures.size();i++){
 				Buffer->addTexture(textures[i]);
 			}
+			verts.clear();
 			return Buffer;
 		}
 		inline void IOManager::destroyGLModels() {

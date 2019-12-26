@@ -27,6 +27,7 @@ namespace gx {
 
 		//TODO MAKE A SYSTEM FOR THE FOLLOWING ENABLES
 		glEnable(GL_CULL_FACE);
+		glEnable(GL_DEPTH_TEST);
 
 		glViewport(0, 0, GXWindow::windowData->width, GXWindow::windowData->height);
 

@@ -58,12 +58,11 @@ namespace gx {
 	void GLBufferManager::endStream()
 	{
 		
-		GLVertexBuffer::stop();
+
 		//CAN'T UNBIND THE EBO BEFORE THE GLVERTEX ARRAY.
 		GLVertexArray::stop();
 		GLElementBuffer::stop();
-		
-		GLVertexBuffer::destroy(VBOID);
+		GLVertexBuffer::stop();
 		delete VAO.release();
 		delete VBO.release();
 		delete EBO.release();

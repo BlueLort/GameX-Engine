@@ -14,6 +14,7 @@ namespace gx {
 	using GX_SDLEvent = SDL_Event;
 	using GXEventCallBack = SDL_EventFilter;
 #define GXPollEvents SDL_PollEvent
+
 	class GX_DLL GameXApp
 	{
 	public:

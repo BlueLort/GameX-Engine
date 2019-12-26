@@ -11,6 +11,9 @@
 namespace gx {
 	class GX_DLL GLBufferManager {
 	public:
+		GLBufferManager() {
+
+		}
 		void init(uint32_t requiredSize, uint32_t strideSize);
 		void initFull(void* data,uint32_t requiredSize, uint32_t strideSize);
 		void uploadDataToBuffer(void* data, uint32_t size);

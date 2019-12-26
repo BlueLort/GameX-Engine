@@ -8,6 +8,7 @@
 #include "Renderer/openGL/Buffers/GLBufferManager.h"
 #include "Renderer/openGL/Texture/GLTexture2D.h"
 #include "Maths/Data/Vertex3D.h"
+#include "Components/Mesh/GXMeshComponent.h"
 namespace gx {
 	namespace io {
 		class GX_DLL IOManager {
@@ -18,11 +19,11 @@ namespace gx {
 			static std::shared_ptr<GLTexture2D> GLimageRead(const char* filePath, GLTexture2DType Type);
 
 			//TODO make this return GXModelObject ptr instead.
-			static void GLAssimpRead(const char* filePath, const char* fileName, std::vector<std::shared_ptr<GLBufferManager>>& meshDataArr);
+			static void GLAssimpRead(const char* filePath, const char* fileName, std::vector<std::shared_ptr<GXComponent>>& components, GLShader* glshader);
 		
 			static void destroy();
 		private:
-			static void GLProcessNode(const char* filePath, aiNode* node, const aiScene* scene,std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded,std::vector<std::shared_ptr<GLBufferManager>>& meshDataArr);
+			static void GLProcessNode(const char* filePath, aiNode* node, const aiScene* scene,std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded, std::vector<std::shared_ptr<GXComponent>>& components, GLShader* glshader);
 			static std::shared_ptr<GLBufferManager> GLProcessMesh(const char* filePath, aiMesh* mesh, const aiScene* scene, std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded);
 			static std::vector<std::shared_ptr<GLTexture2D>> GLImportTextures2D(const char* filePath, aiMaterial* mat, aiTextureType type, std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded, GLTexture2DType glTexType);
 			static std::shared_ptr<GLBufferManager> GLCreateBufferLayout(std::vector<Vertex3D>& verts, std::vector<uint32_t>& indices,std::vector<std::shared_ptr<GLTexture2D>>& textures);
