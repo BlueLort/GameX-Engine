@@ -19,7 +19,7 @@ namespace gx {
 			ID = id;
 			type = Type;
 		}
-		void init(const uint8_t* data, int32_t width, int32_t height, GLTexture2DType Type);
+		void init(const uint8_t* data, int32_t width, int32_t height,bool hasAlpha, GLTexture2DType Type);
 		inline static void setActiveTexture(uint32_t pos) { glActiveTexture(GL_TEXTURE0 + pos); }
 		inline void use() {
 			glBindTexture(GL_TEXTURE_2D,ID);

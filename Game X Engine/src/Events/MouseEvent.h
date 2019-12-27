@@ -75,14 +75,14 @@ namespace gx {
 
 		public:
 			MouseScrollEvent(int32_t xOffset, int32_t yOffset, uint32_t WindowID) : xOff(xOffset), yOff(yOffset),GXEvent(WindowID) {}
-			inline uint32_t getXOffset() const { return xOff; }
-			inline uint32_t getYOffset() const { return yOff; }
+			inline int32_t getXOffset() const { return xOff; }
+			inline int32_t getYOffset() const { return yOff; }
 			virtual inline uint32_t getEventClass() const override { return (GXEventClass::GX_INPUT | GXEventClass::GX_MOUSE); }
 			virtual inline uint32_t getEventType() const override { return GXEventType::GX_MOUSE_SCROLL; }
 			virtual inline const char* getName() const override { return "MOUSE_SCROLLED"; }
 		private:
-			uint32_t xOff;
-			uint32_t yOff;
+			int32_t xOff;
+			int32_t yOff;
 		};
 	}
 

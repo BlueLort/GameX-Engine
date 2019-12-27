@@ -40,8 +40,8 @@ namespace gx {
 		// render the mesh
 		void GLDraw()
 		{
-			uint32_t nDiffuse = 0;
-			uint32_t nSpecular = 0;
+			uint32_t nDiffuse = 1;
+			uint32_t nSpecular = 1;
 			auto textures = GLBM->getTextures();
 			for (uint32_t i = 0; i < textures.size(); i++)
 			{
@@ -67,10 +67,13 @@ namespace gx {
 				default:
 					break;
 				}
-				this->glshader->setFloat(name.c_str(), i);
+				this->glshader->setInt(name.c_str(), i);
+				
 				textures[i]->use();
 
 			}
+			
+			
 			// draw mesh
 			GLBM->use();
 			GLRenderer::getInstance().draw(GLBM->getNumberOfElements(), RenderType::GX_TRIANGLES);

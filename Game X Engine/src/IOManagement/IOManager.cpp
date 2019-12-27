@@ -5,7 +5,6 @@
 namespace gx {
 	namespace io {
 		std::unordered_map<std::string, GLuint> IOManager::texIDs;
-		//std::unordered_map<std::string, std::shared_ptr<GLBufferManager>> IOManager::GLModelBuffers;
 		const char* IOManager::readFile(const char* filePath)
 		{
 			return nullptr;
@@ -21,7 +20,7 @@ namespace gx {
 			int32_t width, height, nChannels;
 			uint8_t* data= stbi_load(filePath, &width, &height, &nChannels, 0);
 			if (data) {
-				tex->init(data, width, height, Type);
+				tex->init(data, width, height,nChannels==4, Type);
 				GXE_DEBUG("Texture imported successfully\nPath: {0}", filePath);
 				texIDs[fPath] = tex->getID();
 			}
@@ -55,8 +54,7 @@ namespace gx {
 				return;
 			}
 
-			std::unordered_map<std::string, std::shared_ptr<GLTexture2D>> materialsLoaded;
-			GLProcessNode(filePath,scene->mRootNode, scene,materialsLoaded,components,glshader);
+			GLProcessNode(filePath,scene->mRootNode, scene,components,glshader);
 			GXE_INFO("Model has been imported successfully\nName: {0}\nPath: {1}",fileName, filePath);
 		}
 
@@ -68,21 +66,21 @@ namespace gx {
 
 		
 
-		void IOManager::GLProcessNode(const char* filePath, aiNode* node, const aiScene* scene, std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded, std::vector<std::shared_ptr<GXComponent>>& components, GLShader* glshader)
+		void IOManager::GLProcessNode(const char* filePath, aiNode* node, const aiScene* scene, std::vector<std::shared_ptr<GXComponent>>& components, GLShader* glshader)
 		{
 			for (uint32_t i = 0; i < node->mNumMeshes; i++)
 			{
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-				std::shared_ptr<gx::GLBufferManager> GLBM = GLProcessMesh(filePath, mesh, scene, materialsLoaded);
+				std::shared_ptr<gx::GLBufferManager> GLBM = GLProcessMesh(filePath, mesh, scene);
 				components.emplace_back(std::make_shared<GXMeshComponent>(GLBM, glshader));
 			}
 			for (uint32_t i = 0; i < node->mNumChildren; i++)
 			{
-				GLProcessNode(filePath,node->mChildren[i], scene,materialsLoaded,components,glshader);
+				GLProcessNode(filePath,node->mChildren[i], scene,components,glshader);
 			}
 			
 		}
-		std::shared_ptr<GLBufferManager> IOManager::GLProcessMesh(const char* filePath, aiMesh* mesh, const aiScene* scene, std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded)
+		std::shared_ptr<GLBufferManager> IOManager::GLProcessMesh(const char* filePath, aiMesh* mesh, const aiScene* scene)
 		{
 			std::vector<Vertex3D> verts;
 			std::vector<uint32_t> indices;
@@ -129,20 +127,20 @@ namespace gx {
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
 			//diffuse
-			std::vector<std::shared_ptr<GLTexture2D>> diffuse = GLImportTextures2D(filePath,material, aiTextureType_DIFFUSE,materialsLoaded,GLTexture2DType::DIFFUSE);
+			std::vector<std::shared_ptr<GLTexture2D>> diffuse = GLImportTextures2D(filePath,material, aiTextureType_DIFFUSE,GLTexture2DType::DIFFUSE);
 			textures.insert(textures.end(), diffuse.begin(), diffuse.end());
 			//specular
-			std::vector<std::shared_ptr<GLTexture2D>> specular = GLImportTextures2D(filePath,material, aiTextureType_SPECULAR, materialsLoaded, GLTexture2DType::SPECULAR);
+			std::vector<std::shared_ptr<GLTexture2D>> specular = GLImportTextures2D(filePath,material, aiTextureType_SPECULAR,  GLTexture2DType::SPECULAR);
 			textures.insert(textures.end(), specular.begin(), specular.end());
 			//normal
-			std::vector<std::shared_ptr<GLTexture2D>> normal = GLImportTextures2D(filePath,material, aiTextureType_HEIGHT, materialsLoaded, GLTexture2DType::NORMAL);
+			std::vector<std::shared_ptr<GLTexture2D>> normal = GLImportTextures2D(filePath,material, aiTextureType_HEIGHT,  GLTexture2DType::NORMAL);
 			textures.insert(textures.end(), normal.begin(), normal.end());
 			//height
-			std::vector<std::shared_ptr<GLTexture2D>> height = GLImportTextures2D(filePath,material, aiTextureType_AMBIENT, materialsLoaded, GLTexture2DType::HEIGHT);
+			std::vector<std::shared_ptr<GLTexture2D>> height = GLImportTextures2D(filePath,material, aiTextureType_AMBIENT,  GLTexture2DType::HEIGHT);
 			textures.insert(textures.end(), height.begin(), height.end());
 			return GLCreateBufferLayout(verts, indices, textures);
 		}
-		std::vector<std::shared_ptr<GLTexture2D>> IOManager::GLImportTextures2D(const char* filePath, aiMaterial* mat, aiTextureType type, std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded, GLTexture2DType glTexType)
+		std::vector<std::shared_ptr<GLTexture2D>> IOManager::GLImportTextures2D(const char* filePath, aiMaterial* mat, aiTextureType type, GLTexture2DType glTexType)
 		{
 			std::vector<std::shared_ptr<GLTexture2D>> textures;
 			for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
@@ -151,15 +149,8 @@ namespace gx {
 				mat->GetTexture(type, i, &fileName);
 				aiString file(filePath);
 				file.Append(fileName.C_Str());
-				std::string mkey(fileName.C_Str());
-				if (materialsLoaded[mkey] != nullptr) {
-					textures.push_back(materialsLoaded[mkey]);
-				}
-				else {
-					std::shared_ptr<GLTexture2D> Texture = GLimageRead(file.C_Str(), glTexType);
-					textures.push_back(Texture);
-					materialsLoaded[fileName.C_Str()] = Texture;
-				}
+				std::shared_ptr<GLTexture2D> Texture = GLimageRead(file.C_Str(), glTexType);
+				textures.push_back(Texture);
 			}
 			return textures;
 		}
@@ -183,9 +174,7 @@ namespace gx {
 			return Buffer;
 		}
 		inline void IOManager::destroyGLModels() {
-			//for (auto ite : GLModelBuffers) {
-			//	ite.second->destroy();
-			//	}
+
 
 		}
 		inline void IOManager::destroyTextures() {

@@ -23,15 +23,14 @@ namespace gx {
 		
 			static void destroy();
 		private:
-			static void GLProcessNode(const char* filePath, aiNode* node, const aiScene* scene,std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded, std::vector<std::shared_ptr<GXComponent>>& components, GLShader* glshader);
-			static std::shared_ptr<GLBufferManager> GLProcessMesh(const char* filePath, aiMesh* mesh, const aiScene* scene, std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded);
-			static std::vector<std::shared_ptr<GLTexture2D>> GLImportTextures2D(const char* filePath, aiMaterial* mat, aiTextureType type, std::unordered_map<std::string, std::shared_ptr<GLTexture2D>>& materialsLoaded, GLTexture2DType glTexType);
+			static void GLProcessNode(const char* filePath, aiNode* node, const aiScene* scene, std::vector<std::shared_ptr<GXComponent>>& components, GLShader* glshader);
+			static std::shared_ptr<GLBufferManager> GLProcessMesh(const char* filePath, aiMesh* mesh, const aiScene* scene);
+			static std::vector<std::shared_ptr<GLTexture2D>> GLImportTextures2D(const char* filePath, aiMaterial* mat, aiTextureType type, GLTexture2DType glTexType);
 			static std::shared_ptr<GLBufferManager> GLCreateBufferLayout(std::vector<Vertex3D>& verts, std::vector<uint32_t>& indices,std::vector<std::shared_ptr<GLTexture2D>>& textures);
 
 			static std::unordered_map<std::string, GLuint> texIDs;
 
 			//TODO Make a Flyweight Pattern for Objects to decrease numbers of IOs needed to load models.
-			//static std::unordered_map<std::string, std::shared_ptr<GLBufferManager>> GLModelBuffers;
 
 			static void destroyGLModels();
 			static void destroyTextures();

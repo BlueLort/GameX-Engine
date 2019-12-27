@@ -29,7 +29,7 @@ namespace gx {
 				zoom = 1.0f;
 			if (zoom >= 45.0f)
 				zoom = 45.0f;
-			projection = GXMaths::prespective(zoom, AR, zNEAR, zFAR);
+			projection = GXMaths::prespective(GXRad(zoom), AR, zNEAR, zFAR);
 			PVMatrix = projection * view;
 	}
 

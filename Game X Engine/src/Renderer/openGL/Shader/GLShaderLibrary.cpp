@@ -53,7 +53,7 @@ void main()
     Normal = mat3(transpose(inverse(model))) * aNormal;  
     TexCoords = aTexCoords;
     
-    gl_Position = vp *model* vec4(FragPos, 1.0);
+    gl_Position = vp * vec4(FragPos, 1.0);
 }
 )"
 ,
@@ -142,7 +142,8 @@ void main()
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);    
     // phase 3: spot light
     result += CalcSpotLight(spotLight, norm, FragPos, viewDir);    
-    FragColor = vec4(result,1.0);
+    //FragColor = vec4(result,1.0);
+	FragColor = vec4(totalDiffuse,1.0);
 }
 
 // calculates the color when using a directional light.
@@ -219,11 +220,22 @@ const char* GLDefaultModelShader[] = {
 	R"( 
 #version 330 core
 layout (location = 0) in vec3 aPos;
-uniform mat4 vp;
+layout (location = 1) in vec3 aNormal;
+layout (location = 2) in vec2 aTexCoords;
+
+out vec3 FragPos;
+out vec3 Normal;
+out vec2 TexCoords;
+
 uniform mat4 model;
+uniform mat4 vp;
 void main()
 {
-    gl_Position = vp*model * vec4(aPos, 1.0);
+     FragPos = vec3(model * vec4(aPos, 1.0));
+    Normal = mat3(transpose(inverse(model))) * aNormal;  
+    TexCoords = aTexCoords;
+    
+    gl_Position = vp * vec4(FragPos, 1.0);
 }
 
 )"
@@ -232,10 +244,16 @@ void main()
 R"( 
 #version 330 core
 out vec4 FragColor;
-uniform vec3 col;
+
+uniform sampler2D texture_diffuse;
+
+in vec3 FragPos;
+in vec3 Normal;
+in vec2 TexCoords;
+
 void main()
 {
-    FragColor = vec4(col, 1.0f);
+    FragColor = texture(texture_diffuse,TexCoords);
 } 
 )"
 ,

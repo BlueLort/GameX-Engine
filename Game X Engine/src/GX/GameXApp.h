@@ -28,7 +28,7 @@ namespace gx {
 		//EVENT HANDLING
 		static int onEvent(void* userdata, GX_SDLEvent* Event);
 		template<class T>
-		static int dispatchSystemEvent(std::shared_ptr<T>& gxEvent);
+		static int dispatchSystemEvent(std::shared_ptr<T>& gxEvent,uint32_t windowID);
 
 		template<class T>
 		inline static int handleEvent(std::shared_ptr<T>& Event) { return 0; }
@@ -39,11 +39,12 @@ namespace gx {
 	extern GameXApp* CreateApp();
 
 	template<class T>
-	inline int GameXApp::dispatchSystemEvent(std::shared_ptr<T>& gxEvent)
+	inline int GameXApp::dispatchSystemEvent(std::shared_ptr<T>& gxEvent,uint32_t windowID)
 	{
 		//TODO PROFILE THIS ,OVERHEAD -> Change it !
 		bool handled = false;
-		if (InputManager::getInstance().handleEvent(gxEvent)) {
+		//input manager can only manage main window inputs
+		if (windowID==GXWindow::windowData->id&&InputManager::getInstance().handleEvent(gxEvent)) {
 			handled = true;
 		}
 		if (UI_GL->handleEvent(gxEvent)) {
