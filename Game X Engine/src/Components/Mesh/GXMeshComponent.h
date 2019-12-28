@@ -46,7 +46,7 @@ namespace gx {
 			for (uint32_t i = 0; i < textures.size(); i++)
 			{
 				GLTexture2D::setActiveTexture(i);
-				GLTexture2DType type = textures[i]->getType();
+				GXTexture2DType type = textures[i]->getType();
 				std::string name;
 				switch (type)
 				{

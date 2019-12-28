@@ -11,8 +11,11 @@ namespace gx {
 		else {
 			glshader = GLShaderManager::getShader(shaderPath);
 		}
-		io::IOManager::GLAssimpRead(filePath,fileName,components,glshader);
-
+		std::vector<std::shared_ptr<GXMeshComponent>> comps=io::IOManager::importModel(filePath,fileName,glshader);
+		for (auto comp : comps) {
+			addComponent(comp);
+		}
+		
 		
 	}
 

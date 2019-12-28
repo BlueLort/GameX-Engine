@@ -33,7 +33,6 @@ namespace gx {
 	#ifdef USING_OPENGL  
 			GLRenderer::getInstance().begin();
 			object.update(1.0f/GXTimer::getAppTimer().getDeltaTicks());
-	
 			//ImGUI Rendering
 			UI_GL->startFrame();
 			UI_GL->onGUIRender();// for all layers

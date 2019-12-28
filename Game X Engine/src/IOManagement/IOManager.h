@@ -11,25 +11,50 @@
 #include "Components/Mesh/GXMeshComponent.h"
 namespace gx {
 	namespace io {
+		struct GX_DLL ImageData {
+			char filePath[256];
+			uint8_t* data = nullptr;
+			int32_t width = -1;
+			int32_t height = -1;
+			int32_t nChannels = -1;
+			GXTexture2DType type = NONE;
+			~ImageData() {
+				stbi_image_free(data);
+			}
+		};
+		struct GX_DLL MeshData {
+			std::vector<Vertex3D> verts;
+			std::vector<uint32_t> indices;
+			std::vector<std::shared_ptr<ImageData>> texturesData;
+		};
 		class GX_DLL IOManager {
 		public:
 			IOManager() = delete;
 			//TODO implement this to read custom shaders or any files.
 			static const char* readFile(const char* filePath);
-			static std::shared_ptr<GLTexture2D> GLimageRead(const char* filePath, GLTexture2DType Type);
+
+			static std::shared_ptr<ImageData> imageRead(const char* filePath, GXTexture2DType Type);
+			//Cached GLTexture reading.
+			static std::shared_ptr<GLTexture2D> GLReadTexture(std::shared_ptr<ImageData>& iData);
 
 			//TODO make this return GXModelObject ptr instead.
-			static void GLAssimpRead(const char* filePath, const char* fileName, std::vector<std::shared_ptr<GXComponent>>& components, GLShader* glshader);
-		
+			//opengl context is obstacle for multithreaded loading for now only multithread processing
+			static std::vector<std::shared_ptr<GXMeshComponent>> importModel(const char* filePath, const char* fileName, GLShader* glshader);
+
 			static void destroy();
 		private:
-			static void GLProcessNode(const char* filePath, aiNode* node, const aiScene* scene, std::vector<std::shared_ptr<GXComponent>>& components, GLShader* glshader);
-			static std::shared_ptr<GLBufferManager> GLProcessMesh(const char* filePath, aiMesh* mesh, const aiScene* scene);
-			static std::vector<std::shared_ptr<GLTexture2D>> GLImportTextures2D(const char* filePath, aiMaterial* mat, aiTextureType type, GLTexture2DType glTexType);
-			static std::shared_ptr<GLBufferManager> GLCreateBufferLayout(std::vector<Vertex3D>& verts, std::vector<uint32_t>& indices,std::vector<std::shared_ptr<GLTexture2D>>& textures);
+			static std::vector<std::shared_ptr<MeshData>> assimpRead(const char* filePath, const char* fileName);
+			static std::vector<std::shared_ptr<MeshData>> assimpProcessNode(const char* filePath, aiNode* node, const aiScene* scene);
+			static std::shared_ptr<MeshData> assimpProcessMesh(const char* filePath, aiMesh* mesh, const aiScene* scene);
+			
+			static std::vector<std::shared_ptr<ImageData>> assimpImportTextures2D(const char* filePath, aiMaterial* mat, aiTextureType type, GXTexture2DType gxTexType);
+			
+
+
+			static std::shared_ptr<GLBufferManager> GLCreateBufferLayout(std::vector<Vertex3D>& verts, std::vector<uint32_t>& indices, std::vector<std::shared_ptr<GLTexture2D>>& textures);
 
 			static std::unordered_map<std::string, GLuint> texIDs;
-
+			static std::unordered_map<std::string, std::vector<std::shared_ptr<GXMeshComponent>>> modelsImported;
 			//TODO Make a Flyweight Pattern for Objects to decrease numbers of IOs needed to load models.
 
 			static void destroyGLModels();

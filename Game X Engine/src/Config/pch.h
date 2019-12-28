@@ -19,6 +19,10 @@
 #include <cstdlib>
 #include <string.h>
 #include <map>
+//Threading
+#include <thread>
+#include <mutex>
+#include <future>
 //Project Classes
 #include "Logging/Logger.h"
 #include "Events/Event.h"

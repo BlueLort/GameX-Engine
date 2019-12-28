@@ -3,7 +3,7 @@
 #include "Config.h"
 #include "../OpenGLContext.h"
 namespace gx {
-	enum GLTexture2DType {
+	enum GXTexture2DType {//TODO move this from here
 		NONE=0,
 		DIFFUSE,
 		SPECULAR,
@@ -15,11 +15,11 @@ namespace gx {
 	class GX_DLL GLTexture2D
 	{
 	public:
-		inline void init(GLuint id, GLTexture2DType Type) {
+		inline void init(GLuint id, GXTexture2DType Type) {
 			ID = id;
 			type = Type;
 		}
-		void init(const uint8_t* data, int32_t width, int32_t height,bool hasAlpha, GLTexture2DType Type);
+		void init(const uint8_t* data, int32_t width, int32_t height,bool hasAlpha, GXTexture2DType Type);
 		inline static void setActiveTexture(uint32_t pos) { glActiveTexture(GL_TEXTURE0 + pos); }
 		inline void use() {
 			glBindTexture(GL_TEXTURE_2D,ID);
@@ -32,9 +32,9 @@ namespace gx {
 			glDeleteTextures(1, &id);
 		}
 		inline GLuint getID()const { return ID; }
-		inline GLTexture2DType getType() const { return type; }
+		inline GXTexture2DType getType() const { return type; }
 	private:
 		GLuint ID;
-		GLTexture2DType type;
+		GXTexture2DType type;
 	};
 }
