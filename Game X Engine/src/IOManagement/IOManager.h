@@ -55,7 +55,6 @@ namespace gx {
 
 			static std::unordered_map<std::string, GLuint> texIDs;
 			static std::unordered_map<std::string, std::vector<std::shared_ptr<GXMeshComponent>>> modelsImported;
-			//TODO Make a Flyweight Pattern for Objects to decrease numbers of IOs needed to load models.
 
 			static void destroyGLModels();
 			static void destroyTextures();

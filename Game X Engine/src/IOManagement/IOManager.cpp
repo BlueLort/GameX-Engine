@@ -216,7 +216,11 @@ namespace gx {
 		}
 
 		inline void IOManager::destroyGLModels() {
-
+			for (auto ite : modelsImported) {
+				for (auto meshComp : ite.second) {
+					meshComp->destroy();
+				}
+			}
 
 		}
 		inline void IOManager::destroyTextures() {
