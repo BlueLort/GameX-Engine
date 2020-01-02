@@ -1,6 +1,5 @@
 #pragma once
 #include "Config.h"
-#include "Window/Layer.h"
 #include "Renderer/openGL/OpenGLContext.h"
 #include "IMGUI_FILES/imgui.h"
 #include "IMGUI_FILES/imgui_impl_sdl.h"
