@@ -10,7 +10,8 @@
 namespace gx {
 	std::unique_ptr<ImGUI_SDLGL> GameXApp::UI_GL = std::make_unique<ImGUI_SDLGL>("ImGUI Editor");
 	bool GameXApp::isRunning = true;
-
+	constexpr int32_t SCENE_WIDTH = 1920;
+	constexpr int32_t SCENE_HEIGHT = 1080;
 	GameXApp::GameXApp() {
 
 	}
@@ -21,9 +22,12 @@ namespace gx {
 
 	void GameXApp::Start() {
 		//OBJECT FOR DEBUGGING
-		GXModelObject object;
-		object.GLinit("res/models/nanosuit/", "nanosuit.obj");
-		
+		std::shared_ptr<GXModelObject> object=std::make_shared<GXModelObject>();
+		object->GLinit("res/models/nanosuit/", "nanosuit.obj");
+		std::shared_ptr<MainScene> mainSceneLayer= std::make_shared<MainScene>("Scene");
+		mainSceneLayer->init(SCENE_WIDTH,SCENE_HEIGHT);
+		layers.add(std::make_pair( 999/*high Priority -> Drawn first*/,mainSceneLayer));
+		mainSceneLayer->addModelObject(object);
 		while (isRunning) {
 			GXTimer::getAppTimer().update();
 			InputManager::getInstance().update();
@@ -31,15 +35,15 @@ namespace gx {
 			EditorCamera::getInstance().update();
 			//Render
 	#ifdef USING_OPENGL  
-			GLRenderer::getInstance().begin();
-			object.update(1.0f / GXTimer::getAppTimer().getDeltaTicks());
+			layers.renderUpdateLayers(1.0f/GXTimer::getAppTimer().getDeltaTicks());
 			//ImGUI Rendering
 			UI_GL->startFrame();
-			UI_GL->onGUIRender();// for all layers
+			UI_GL->onGUIRender();
+			layers.onGUIRender();
 			UI_GL->render();
 			UI_GL->endFrame();
 		
-			GLRenderer::getInstance().end();
+			GXWindow::swapWindow_GL();
 	#endif
 			
 

@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "Config.h"
 #include "Events/Event.h"
-#include "Layers/Layer.h"
+#include "Layers/Main/MainScene.h"
 #include "UI/ImGUI_SDLGL.h"
 #include "Renderer/Renderer.h"
 #include "Input/InputManager.h"
@@ -27,6 +27,10 @@ namespace gx {
 	private:
 		//EVENT HANDLING
 		static int onEvent(void* userdata, GX_SDLEvent* Event);
+
+		LayerQueue layers;
+
+
 		template<class T>
 		static int dispatchSystemEvent(std::shared_ptr<T>& gxEvent,uint32_t windowID);
 
@@ -70,9 +74,6 @@ namespace gx {
 	inline int GameXApp::handleEvent<gx::event::WindowResizeEvent>(std::shared_ptr<gx::event::WindowResizeEvent>& Event) {
 		GXWindow::windowData->width = Event->getWidth();
 		GXWindow::windowData->height = Event->getHeight();
-#ifdef USING_OPENGL
-		GLRenderer::getInstance().setViewPort(GXWindow::windowData->width, GXWindow::windowData->height);
-#endif
 #ifdef USING_EDITOR_CAMERA
 		EditorCamera::getInstance().AR = static_cast<float>(Event->getWidth()) / static_cast<float>(Event->getHeight());
 		EditorCamera::getInstance().processMouseScroll(0);//recalculate the projection matrix

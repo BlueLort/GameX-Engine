@@ -11,18 +11,8 @@ namespace gx {
 	}
 
 
-	void GLRenderer::begin()
-	{
-		gx::OpenGLContext::begin();
-	}
-
 	void GLRenderer::draw(uint32_t nElements, RenderType type)
 	{
 		GL_CALL(glDrawElements(type, nElements, GL_UNSIGNED_INT, 0));
 	}
-	void GLRenderer::end()
-	{
-		gx::OpenGLContext::end();
-	}
-
 }

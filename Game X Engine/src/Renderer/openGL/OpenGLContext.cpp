@@ -23,27 +23,6 @@ namespace gx {
 
 		int gladLoad = gladLoadGLLoader(SDL_GL_GetProcAddress);
 		GXE_ASSERT(gladLoad, "Failed to init GLAD ... ");
-
-
-		//TODO MAKE A SYSTEM FOR THE FOLLOWING ENABLES
-		glEnable(GL_CULL_FACE);
-		glEnable(GL_DEPTH_TEST);
-
-		glViewport(0, 0, GXWindow::windowData->width, GXWindow::windowData->height);
-
-		glClearColor(0.258f, 0.596f, 0.96f, 1.0f);
-	}
-
-	
-	void OpenGLContext::begin()
-	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	}
-
-	void OpenGLContext::end()
-	{
-		GXWindow::swapWindow_GL();
 	}
 
 

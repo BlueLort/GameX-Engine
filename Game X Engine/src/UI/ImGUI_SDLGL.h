@@ -24,7 +24,7 @@ namespace gx {
 		template<class T>
 		inline static int handleEvent(std::shared_ptr<T>& Event){ return 0; }
 	private:
-
+		void showDockspace();
 
 	};
 	inline void ImGUI_SDLGL::startFrame() {

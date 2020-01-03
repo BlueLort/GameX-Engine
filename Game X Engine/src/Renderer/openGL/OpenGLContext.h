@@ -11,8 +11,6 @@ namespace gx {
 	{
 	public:
 		static void init();
-		static void begin();
-		static void end();
 		inline static SDL_GLContext getGLContext() { return glContext; }
 		inline static const GLubyte* getVendorName() { return glGetString(GL_VENDOR); }
 		inline static const GLubyte* getGLVersion() { return glGetString(GL_VERSION); }
