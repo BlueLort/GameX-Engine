@@ -4,6 +4,8 @@
 namespace gx {
 	void MainScene::init(int width,int height)
 	{
+		this->width = width;
+		this->height = height;
 		GLFBO.reset(new GLFrameBuffer());
 		GLFBO->init(width,height);
 		
@@ -25,6 +27,7 @@ namespace gx {
 	void MainScene::start()
 	{
 		GLFBO->use();
+		glViewport(0, 0, width, height);//let layers make glviewport according to their resolution
 		for (auto ite : GLFlags) {
 			glEnable(ite);
 		}

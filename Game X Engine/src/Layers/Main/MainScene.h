@@ -20,6 +20,7 @@ namespace gx {
 	private:
 		std::vector<std::shared_ptr<GXModelObject>> sceneObjects;
 		ImGuiWindowFlags windowFlags;
+		int32_t width, height;
 	};
 
 }
