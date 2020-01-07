@@ -65,6 +65,9 @@ namespace gx {
 			ImGui::End();
 			return;
 		}
+
+		selected=ImGui::IsWindowFocused();
+
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);

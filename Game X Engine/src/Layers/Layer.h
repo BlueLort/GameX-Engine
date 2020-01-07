@@ -19,9 +19,10 @@ namespace gx {
 		virtual void onUpdate(float deltaTime) {}
 		virtual void onGUIRender() {}
 		inline std::string getName() const { return this->name; }
-
+		virtual inline bool isSelected()const { return selected; }
 	protected:
 		std::string name;
+		bool selected;
 		//just the openGL FBO for now
 		std::vector<GLenum> GLFlags;
 		std::unique_ptr<GLFrameBuffer> GLFBO;

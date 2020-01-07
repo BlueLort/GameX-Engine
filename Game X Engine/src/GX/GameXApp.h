@@ -29,7 +29,7 @@ namespace gx {
 		static int onEvent(void* userdata, GX_SDLEvent* Event);
 
 		LayerQueue layers;
-
+		static bool mainSceneSelected;
 
 		template<class T>
 		static int dispatchSystemEvent(std::shared_ptr<T>& gxEvent,uint32_t windowID);
@@ -37,6 +37,7 @@ namespace gx {
 		template<class T>
 		inline static int handleEvent(std::shared_ptr<T>& Event) { return 0; }
 		static bool isRunning;
+		
 		
 
 	};
@@ -48,7 +49,7 @@ namespace gx {
 		//TODO PROFILE THIS ,OVERHEAD -> Change it !
 		bool handled = false;
 		//input manager can only manage main window inputs
-		if (windowID==GXWindow::windowData->id&&InputManager::getInstance().handleEvent(gxEvent)) {
+		if (mainSceneSelected&&mainSceneSelected&&InputManager::getInstance().handleEvent(gxEvent)) {
 			handled = true;
 		}
 		if (UI_GL->handleEvent(gxEvent)) {

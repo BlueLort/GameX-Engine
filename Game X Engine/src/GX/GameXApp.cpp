@@ -10,8 +10,10 @@
 namespace gx {
 	std::unique_ptr<ImGUI_SDLGL> GameXApp::UI_GL = std::make_unique<ImGUI_SDLGL>("ImGUI Editor");
 	bool GameXApp::isRunning = true;
+	bool GameXApp::mainSceneSelected = false;
 	constexpr int32_t SCENE_WIDTH = 1920;
 	constexpr int32_t SCENE_HEIGHT = 1080;
+
 	GameXApp::GameXApp() {
 
 	}
@@ -33,6 +35,7 @@ namespace gx {
 			InputManager::getInstance().update();
 			while (GXPollEvents(&GX_SDLEvent()) == 1);//Send events to callback
 			EditorCamera::getInstance().update();
+			mainSceneSelected=mainSceneLayer->isSelected();
 			//Render
 	#ifdef USING_OPENGL  
 			layers.renderUpdateLayers(1.0f/GXTimer::getAppTimer().getDeltaTicks());
