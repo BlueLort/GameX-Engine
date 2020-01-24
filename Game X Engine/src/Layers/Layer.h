@@ -23,9 +23,7 @@ namespace gx {
 	protected:
 		std::string name;
 		bool selected;
-		//just the openGL FBO for now
-		std::vector<GLenum> GLFlags;
-		std::unique_ptr<GLFrameBuffer> GLFBO;
+		bool isOpen;
 	};
 	//Priority Queue for Layers to store them by priority highest processed first
 	class GX_DLL LayerQueue {

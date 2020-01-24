@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "Config.h"
 #include "Events/Event.h"
-#include "Layers/Main/MainScene.h"
+#include "Layers/LayerManager.h"
 #include "UI/ImGUI_SDLGL.h"
 #include "Renderer/Renderer.h"
 #include "Input/InputManager.h"
@@ -28,7 +28,6 @@ namespace gx {
 		//EVENT HANDLING
 		static int onEvent(void* userdata, GX_SDLEvent* Event);
 
-		LayerQueue layers;
 		static bool mainSceneSelected;
 
 		template<class T>

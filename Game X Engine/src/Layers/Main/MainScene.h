@@ -21,6 +21,9 @@ namespace gx {
 		std::vector<std::shared_ptr<GXModelObject>> sceneObjects;
 		ImGuiWindowFlags windowFlags;
 		int32_t width, height;
+		//just the openGL FBO for now
+		std::vector<GLenum> GLFlags;
+		std::unique_ptr<GLFrameBuffer> GLFBO;
 	};
 
 }

@@ -99,6 +99,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Layers\Debug\Logging\LogLayer.cpp" />
     <ClCompile Include="src\Layers\Main\MainScene.cpp" />
     <ClCompile Include="src\Camera\EditorCamera\EditorCamera.cpp" />
     <ClCompile Include="src\Components\GXComponentcpp.cpp" />
@@ -139,6 +140,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rdParty\stb_image\stb_image.h" />
+    <ClInclude Include="src\Layers\Debug\Logging\LogLayer.h" />
+    <ClInclude Include="src\Layers\LayerManager.h" />
     <ClInclude Include="src\Layers\Main\MainScene.h" />
     <ClInclude Include="src\Camera\Camera.h" />
     <ClInclude Include="src\Camera\EditorCamera\EditorCamera.h" />

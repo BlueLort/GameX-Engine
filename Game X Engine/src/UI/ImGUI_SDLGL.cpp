@@ -24,7 +24,7 @@ namespace gx {
 		ImGui_ImplSDL2_InitForOpenGL(GXWindow::getSDLWindow(),OpenGLContext::getGLContext());
 		
 		
-		constexpr const char* GLSL_VER = "#version 330";
+		constexpr const char* GLSL_VER = "#version 430";
 		ImGui_ImplOpenGL3_Init(GLSL_VER);
 
 		// Load Fonts
