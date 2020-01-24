@@ -25,21 +25,21 @@ namespace gx {
 		//OBJECT FOR DEBUGGING
 		std::shared_ptr<GXModelObject> object=std::make_shared<GXModelObject>();
 		object->GLinit("res/models/nanosuit/", "nanosuit.obj");
-		
-		LayerManager::addObject(object);
+		LManager.init();
+		LManager.addObject(object);
 		while (isRunning) {
 			GXTimer::getAppTimer().update();
 			InputManager::getInstance().update();
 			while (GXPollEvents(&GX_SDLEvent()) == 1);//Send events to callback
 			EditorCamera::getInstance().update();
-			mainSceneSelected= LayerManager::isMainSceneSelected();
+			mainSceneSelected=LManager.isMainSceneSelected();
 			//Render
 	#ifdef USING_OPENGL  
-			LayerManager::renderUpdateLayers(1.0f/GXTimer::getAppTimer().getDeltaTicks());
+			LManager.renderUpdateLayers(1.0f/GXTimer::getAppTimer().getDeltaTicks());
 			//ImGUI Rendering
 			UI_GL->startFrame();
 			UI_GL->onGUIRender();
-			LayerManager::onGUIRender();
+			LManager.onGUIRender();
 			UI_GL->render();
 			UI_GL->endFrame();
 		

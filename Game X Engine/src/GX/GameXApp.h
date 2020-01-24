@@ -28,6 +28,7 @@ namespace gx {
 		//EVENT HANDLING
 		static int onEvent(void* userdata, GX_SDLEvent* Event);
 
+		LayerManager LManager;
 		static bool mainSceneSelected;
 
 		template<class T>
