@@ -26,7 +26,7 @@ namespace gx {
 		GXMat4 model = GXMat4(1.0f);
 		this->glshader->setMat4("model", model);
 		this->glshader->setMat4("vp", EditorCamera::getInstance().getPVMatrix());
-		this->glshader->setFloat("material.shininess", 8.0f);
+		this->glshader->setFloat("material.shininess", 32.0f);
 		for (auto component : components) {
 			component->update(deltaTime);
 		}

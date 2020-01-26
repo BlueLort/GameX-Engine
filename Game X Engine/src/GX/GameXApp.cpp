@@ -24,22 +24,21 @@ namespace gx {
 	void GameXApp::Start() {
 		//OBJECT FOR DEBUGGING
 		std::shared_ptr<GXModelObject> object=std::make_shared<GXModelObject>();
-		object->GLinit("res/models/nanosuit/", "nanosuit.obj");
-		LManager.init();
-		LManager.addObject(object);
+		object->GLinit("res/models/sphere/", "spheres.obj");
+		LayerManager::getInstance().addObject(object);
 		while (isRunning) {
 			GXTimer::getAppTimer().update();
 			InputManager::getInstance().update();
 			while (GXPollEvents(&GX_SDLEvent()) == 1);//Send events to callback
 			EditorCamera::getInstance().update();
-			mainSceneSelected=LManager.isMainSceneSelected();
+			mainSceneSelected= LayerManager::getInstance().isMainSceneSelected();
 			//Render
 	#ifdef USING_OPENGL  
-			LManager.renderUpdateLayers(1.0f/GXTimer::getAppTimer().getDeltaTicks());
+			LayerManager::getInstance().renderUpdateLayers(1.0f/GXTimer::getAppTimer().getDeltaTicks());
 			//ImGUI Rendering
 			UI_GL->startFrame();
 			UI_GL->onGUIRender();
-			LManager.onGUIRender();
+			LayerManager::getInstance().onGUIRender();
 			UI_GL->render();
 			UI_GL->endFrame();
 		

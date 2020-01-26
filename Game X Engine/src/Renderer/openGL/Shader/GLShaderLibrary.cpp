@@ -5,7 +5,7 @@ namespace gx {
 const char* GLDefaultColorShader[] = {
 //Vertex Shader
 R"( 
-#version 330 core
+#version 430 core
 layout (location = 0) in vec3 aPos;
 uniform mat4 model;
 uniform mat4 vp;
@@ -18,7 +18,7 @@ void main()
 ,
 //Fragment Shader
 R"( 
-#version 330 core
+#version 430 core
 out vec4 FragColor;
 uniform vec3 col;
 void main()
@@ -35,7 +35,7 @@ const char* GLDefaultLightingShader[] = {
 	//Shader Example Logic from learnopengl.com [with some modifications]
 	//Vertex Shader
 	R"( 
-#version 330 core
+#version 430 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
@@ -59,7 +59,7 @@ void main()
 ,
 //Fragment Shader
 R"( 
-#version 330 core
+#version 430 core
 out vec4 FragColor;
 
 struct Material {
@@ -131,19 +131,19 @@ void main()
 
 	totalDiffuse=vec3(texture(material.diffuse1,TexCoords)+texture(material.diffuse2,TexCoords)+texture(material.diffuse3,TexCoords));
 	totalSpecular=vec3(texture(material.specular1,TexCoords)+texture(material.specular2,TexCoords));
-
-    // properties
+   // totalDiffuse=vec3(1.0,1.0,1.0); 
+	//totalSpecular=vec3(0.4,0.4,0.4);
+	// properties
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
     // phase 1: directional lighting
     vec3 result = CalcDirLight(dirLight, norm, viewDir);
     // phase 2: point lights
-    for(int i = 0; i < NR_POINT_LIGHTS; i++)
-        result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);    
+    //for(int i = 0; i < NR_POINT_LIGHTS; i++)
+      //  result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);    
     // phase 3: spot light
-    result += CalcSpotLight(spotLight, norm, FragPos, viewDir);    
-    //FragColor = vec4(result,1.0);
-	FragColor = vec4(totalDiffuse,1.0);
+   // result += CalcSpotLight(spotLight, norm, FragPos, viewDir);    
+    FragColor = vec4(result,1.0);
 }
 
 // calculates the color when using a directional light.
@@ -218,7 +218,7 @@ nullptr
 const char* GLDefaultModelShader[] = {
 	//Vertex Shader
 	R"( 
-#version 330 core
+#version 430 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
@@ -242,7 +242,7 @@ void main()
 ,
 //Fragment Shader
 R"( 
-#version 330 core
+#version 430 core
 out vec4 FragColor;
 
 uniform sampler2D texture_diffuse;

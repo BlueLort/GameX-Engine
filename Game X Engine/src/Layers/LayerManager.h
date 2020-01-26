@@ -6,13 +6,9 @@ namespace gx {
 	constexpr int32_t SCENE_HEIGHT = 1080;
 	class GX_DLL LayerManager {
 	public:
-		inline void init() {
-			mainSceneLayer = std::make_shared<MainScene>("Scene");
-			mainSceneLayer->init(SCENE_WIDTH, SCENE_HEIGHT);
-			logLayer = std::make_shared<LogLayer>("Log");
-			logLayer->init(400, 300);
-			layers.add(std::make_pair(1/*high Priority -> Drawn first*/, mainSceneLayer));
-			layers.add(std::make_pair(0, logLayer));
+		inline static LayerManager getInstance(){
+			static LayerManager LM=LayerManager();
+			return LM;
 		}
 		inline void addObject(std::shared_ptr<GXModelObject>& obj) {
 			mainSceneLayer->addModelObject(obj);
@@ -30,6 +26,15 @@ namespace gx {
 			layers.onGUIRender();
 		}
 	private:
+		inline LayerManager() {
+			mainSceneLayer = std::make_shared<MainScene>("Scene");
+			mainSceneLayer->init(SCENE_WIDTH, SCENE_HEIGHT);
+			logLayer = std::make_shared<LogLayer>("Log");
+			logLayer->init(400, 300);
+			layers.add(std::make_pair(1/*high Priority -> Drawn first*/, mainSceneLayer));
+			layers.add(std::make_pair(0, logLayer));
+		}
+		
 		std::shared_ptr<MainScene> mainSceneLayer;
 		std::shared_ptr<LogLayer> logLayer;
 		LayerQueue layers;

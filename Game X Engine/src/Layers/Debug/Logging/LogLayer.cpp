@@ -52,19 +52,6 @@ namespace gx {
 			ImGui::End();
 			return;
 		}
-		if (ImGui::SmallButton("[Debug] Add 5 entries"))
-		{
-			static int counter = 0;
-			for (int n = 0; n < 5; n++)
-			{
-				const char* categories[3] = { "info", "warn", "error" };
-				const char* words[] = { "Bumfuzzled", "Cattywampus", "Snickersnee", "Abibliophobia", "Absquatulate", "Nincompoop", "Pauciloquent" };
-				addLog("[%05d] [%s] Hello, current time is %.1f, here's a word: '%s'\n",
-					ImGui::GetFrameCount(), categories[counter % IM_ARRAYSIZE(categories)], ImGui::GetTime(), words[counter % IM_ARRAYSIZE(words)]);
-				counter++;
-			}
-		}
-		//ImGui::End();
 
 		// Actually call in the regular Log helper (which will Begin() into the same window as we just did)
 		

@@ -42,6 +42,7 @@ namespace gx {
 		{
 			uint32_t nDiffuse = 1;
 			uint32_t nSpecular = 1;
+			
 			auto textures = GLBM->getTextures();
 			for (uint32_t i = 0; i < textures.size(); i++)
 			{

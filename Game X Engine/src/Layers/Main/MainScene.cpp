@@ -75,6 +75,7 @@ namespace gx {
 		,ImVec2(1,1),ImVec2(0,0));
 		ImGui::PopStyleVar(3);
 		ImGui::End();
+		GLTexture2D::stop();
 		
 	}
 
