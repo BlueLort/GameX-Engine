@@ -18,6 +18,12 @@ namespace gx {
 		virtual inline void setViewPort(uint32_t Width, uint32_t Height) override {
 			gx::OpenGLContext::setViewPort(Width, Height);
 		}
+		virtual inline void setDepthFunc(DepthFunc func) override {
+			glDepthFunc(func);
+		}
+		virtual inline void setWindingOrder(WindingOrder type) override {
+			glFrontFace(type);
+		}
 	private:
 		GLRenderer() {
 

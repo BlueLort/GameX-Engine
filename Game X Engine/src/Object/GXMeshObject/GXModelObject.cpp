@@ -21,12 +21,13 @@ namespace gx {
 
 	void GXModelObject::update(float deltaTime) {
 		//For rendering as rendering happens in GXMeshComponent
+#ifdef USING_OPENGL
 		this->glshader->use();
 		SceneLightManager::getInstance().setLightValues(this->glshader);
-		GXMat4 model = GXMat4(1.0f);
-		this->glshader->setMat4("model", model);
+		this->glshader->setMat4("model", transform.getModel());
 		this->glshader->setMat4("vp", EditorCamera::getInstance().getPVMatrix());
 		this->glshader->setFloat("material.shininess", 32.0f);
+#endif
 		for (auto component : components) {
 			component->update(deltaTime);
 		}

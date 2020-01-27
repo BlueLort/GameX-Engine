@@ -8,7 +8,8 @@ namespace gx {
 		this->height = height;
 		GLFBO.reset(new GLFrameBuffer());
 		GLFBO->init(width,height);
-		
+		skydome.reset(new GXSkydomeObject());
+		skydome->GLinit("res/models/sphere/", "spheres.obj");
 
 		glViewport(0, 0, width,height);
 
@@ -55,7 +56,7 @@ namespace gx {
 		for (auto obj : sceneObjects) {
 			obj->update(deltaTime);
 		}
-
+		skydome->update(deltaTime);
 	}
 
 	void MainScene::onGUIRender()

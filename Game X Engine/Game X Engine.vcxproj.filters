@@ -186,6 +186,9 @@
     <ClInclude Include="src\Layers\LayerManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Object\GXBackgroundObject\GXSkydomeObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window\GXWindow.cpp">
@@ -273,6 +276,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Layers\Debug\Logging\LogLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Object\GXBackgroundObject\GXSkydomeObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

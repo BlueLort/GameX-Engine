@@ -24,7 +24,7 @@ namespace gx {
 	void GameXApp::Start() {
 		//OBJECT FOR DEBUGGING
 		std::shared_ptr<GXModelObject> object=std::make_shared<GXModelObject>();
-		object->GLinit("res/models/sphere/", "spheres.obj");
+		object->GLinit("res/models/nanosuit/", "nanosuit.obj");
 		LayerManager::getInstance().addObject(object);
 		while (isRunning) {
 			GXTimer::getAppTimer().update();

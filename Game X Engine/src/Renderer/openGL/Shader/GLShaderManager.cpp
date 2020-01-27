@@ -17,7 +17,8 @@ namespace gx {
 		GXE_DEBUG("Default Lighting GLShader Compiled Successfully");
 		defaultShaders.emplace_back(new GLShader(GLDefaultModelShader[0], GLDefaultModelShader[1], GLDefaultModelShader[2]));
 		GXE_DEBUG("Default Model GLShader Compiled Successfully");
-
+		defaultShaders.emplace_back(new GLShader(GLDefaultSkydomeShader[0], GLDefaultSkydomeShader[1], GLDefaultSkydomeShader[2]));
+		GXE_DEBUG("Default Skydome GLShader Compiled Successfully");
 
 
 

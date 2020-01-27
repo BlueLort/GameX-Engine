@@ -19,7 +19,7 @@ void initSystems(gx::GameXApp* gameInst) {
 	gx::GXWindow::init("Game X Engine", WINDOW_WIDTH, WINDOW_HEIGHT, SDL_FLAGS); GXE_INFO("Window initialized successfully using SDL2.0 !");
 	gx::GXWindow::addEventsCallBack(gameInst->getEventCallBack(), nullptr); GXE_INFO("Event CallBack Attached to SDL2.0 Event Queue !");
 	gx::InputManager::getInstance().init(); GXE_INFO("InputManager initialized successfully!");
-	gx::SceneLightManager::getInstance().init();  GXE_PRINT("Lighting information is Initialized for Some TESTing Lights");
+	gx::SceneLightManager::getInstance().init();  GXE_PRINT("Lighting information is Initialized for debugging");
 #ifdef USING_GLM_MATHS
 	GXE_INFO("Using GLM for Maths library!");
 #endif

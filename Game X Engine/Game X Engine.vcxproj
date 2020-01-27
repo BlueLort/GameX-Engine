@@ -109,6 +109,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\IOManagement\IOManager.cpp" />
+    <ClCompile Include="src\Object\GXBackgroundObject\GXSkydomeObject.cpp" />
     <ClCompile Include="src\Object\GXMeshObject\GXModelObject.cpp" />
     <ClCompile Include="src\Renderer\openGL\Buffers\GLBufferManager.cpp" />
     <ClCompile Include="src\Renderer\openGL\Buffers\GLElementBuffer.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="src\Input\GXKeys.h" />
     <ClInclude Include="src\Input\InputManager.h" />
     <ClInclude Include="src\Memory\MemoryManager.h" />
+    <ClInclude Include="src\Object\GXBackgroundObject\GXSkydomeObject.h" />
     <ClInclude Include="src\Object\GXMeshObject\GXModelObject.h" />
     <ClInclude Include="src\Object\GXObject.h" />
     <ClInclude Include="src\Renderer\openGL\Buffers\GLBufferManager.h" />

@@ -2,6 +2,7 @@
 #include "Config.h"
 #include "../Layer.h"
 #include "Object/GXMeshObject/GXModelObject.h"
+#include "Object/GXBackgroundObject/GXSkydomeObject.h"
 
 namespace gx {
 	class GX_DLL MainScene :public Layer {
@@ -19,6 +20,7 @@ namespace gx {
 
 	private:
 		std::vector<std::shared_ptr<GXModelObject>> sceneObjects;
+		std::shared_ptr<GXSkydomeObject> skydome;
 		ImGuiWindowFlags windowFlags;
 		int32_t width, height;
 		//just the openGL FBO for now

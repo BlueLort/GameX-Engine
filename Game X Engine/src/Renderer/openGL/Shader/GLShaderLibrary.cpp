@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "GLShaderManager.h"
 namespace gx {
-//Default Color Shader
-const char* GLDefaultColorShader[] = {
-//Vertex Shader
-R"( 
+	//Default Color Shader
+	const char* GLDefaultColorShader[] = {
+		//Vertex Shader
+		R"( 
 #version 430 core
 layout (location = 0) in vec3 aPos;
 uniform mat4 model;
@@ -30,11 +30,11 @@ void main()
 //Geometry Shader
 nullptr
 	};
-//Default Object Lighting Shader
-const char* GLDefaultLightingShader[] = {
-	//Shader Example Logic from learnopengl.com [with some modifications]
-	//Vertex Shader
-	R"( 
+	//Default Object Lighting Shader
+	const char* GLDefaultLightingShader[] = {
+		//Shader Example Logic from learnopengl.com [with some modifications]
+		//Vertex Shader
+		R"( 
 #version 430 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
@@ -213,11 +213,11 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 ,
 //Geometry Shader
 nullptr
-};
-//Default Model Shader
-const char* GLDefaultModelShader[] = {
-	//Vertex Shader
-	R"( 
+	};
+	//Default Model Shader
+	const char* GLDefaultModelShader[] = {
+		//Vertex Shader
+		R"( 
 #version 430 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
@@ -259,5 +259,47 @@ void main()
 ,
 //Geometry Shader
 nullptr
-};
+	};
+	const char* GLDefaultSkydomeShader[] = {
+		//Vertex Shader
+		R"( 
+#version 430 core
+layout (location = 0) in vec3 aPos;
+
+out vec3 FragPos;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+void main()
+{
+	 vec4 worldPos=model*vec4(aPos,1.0);
+     FragPos = vec3(worldPos);
+	 vec4 PVPos=projection* mat4(mat3(view)) * worldPos;
+	
+	 gl_Position = PVPos.xyww;
+}
+
+)"
+,
+//Fragment Shader
+R"( 
+#version 430 core
+out vec4 FragColor;
+
+in vec3 FragPos;
+void main()
+{
+	const vec3 baseColor=vec3(0.203,0.596,0.921);
+	float factor=FragPos.y-1000;
+	float r= -0.0002*factor+baseColor.r;
+	float g= -0.00022*factor+baseColor.g;
+	float b= -0.0001*factor+baseColor.b;
+    FragColor = vec4(r,g,b,1.0);
+} 
+)"
+,
+//Geometry Shader
+nullptr
+	};
 }

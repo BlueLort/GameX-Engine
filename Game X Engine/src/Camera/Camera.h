@@ -22,7 +22,7 @@ namespace gx {
 		float movementSpeed;
 		float mouseSensitivity;
 		float zoom;
-		virtual inline GXMat4 GetViewMatrix()
+		virtual inline GXMat4 calculateViewMatrix()
 		{
 			return GXMaths::lookAt(transform.position, transform.position + transform.forward, transform.up);
 		}
@@ -31,6 +31,7 @@ namespace gx {
 		virtual void processMouseScroll(float yoffset) = 0;
 		virtual void update() = 0;
 	protected:
+		
 		virtual void updateCameraVectors()
 		{
 			GXVec3 front;
