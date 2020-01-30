@@ -1,5 +1,5 @@
 #pragma once
-#include "../GXMaths.h"
+#include "Maths/GXMaths.h"
 namespace gx {
 	struct Vertex3D {
 		GXVec3 position;

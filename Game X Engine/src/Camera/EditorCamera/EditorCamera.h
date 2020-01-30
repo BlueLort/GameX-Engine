@@ -1,7 +1,7 @@
 #pragma once
 #include "Config.h"
 #include "pch.h"
-#include "../Camera.h"
+#include "Camera/Camera.h"
 //TODO ADD CONTROL LOGIC
 namespace gx {
 	/*Most logic copied from learnopengl.com ...just a change in the convention.*/

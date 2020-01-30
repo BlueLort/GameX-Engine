@@ -3,7 +3,7 @@
 #include <glad/glad.h> // holds all OpenGL type declarations
 
 #include <Maths/GXMaths.h>
-#include "../GXComponent.h"
+#include "Components/GXComponent.h"
 #include "Renderer/openGL/Shader/GLShader.h"
 #include "Renderer/openGL/Buffers/GLBufferManager.h"
 #include "Renderer/openGL/GLRenderer.h"

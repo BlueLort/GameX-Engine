@@ -1,6 +1,6 @@
 #pragma once
 #include "Config.h"
-#include "../Layer.h"
+#include "Layers/Layer.h"
 #include "Object/GXMeshObject/GXModelObject.h"
 #include "Object/GXBackgroundObject/GXSkydomeObject.h"
 
