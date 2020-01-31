@@ -8,6 +8,7 @@
 #include "Input/InputManager.h"
 #include "Object/GXMeshObject/GXModelObject.h"
 #include "Camera/EditorCamera/EditorCamera.h"
+#include "Terrain/HeightGenerators/NoiseGenerator.h"
 #include "GXTimer.h"
 namespace gx {
 	//adapt it to whatever API im using.
@@ -25,11 +26,12 @@ namespace gx {
 		//static std::unique_ptr<Renderer> renderer;
 		static std::unique_ptr<ImGUI_SDLGL> UI_GL;
 	private:
+		
 		//EVENT HANDLING
 		static int onEvent(void* userdata, GX_SDLEvent* Event);
 
 		static bool mainSceneSelected;
-
+		
 		template<class T>
 		static int dispatchSystemEvent(std::shared_ptr<T>& gxEvent,uint32_t windowID);
 

@@ -5,6 +5,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <stb_image/stb_image.h>
+#include <stb_image/stb_image_write.h>
 #include "Renderer/openGL/Buffers/GLBufferManager.h"
 #include "Renderer/openGL/Texture/GLTexture2D.h"
 #include "Maths/Data/Vertex3D.h"

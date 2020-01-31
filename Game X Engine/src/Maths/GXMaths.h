@@ -27,6 +27,8 @@ namespace gx {
 	class GX_DLL GXMaths {
 		GXMaths() = delete;
 	public:
+		inline static double inverseLerp(double val,double a,double b){ return (val - a) / (b - a); }
+		inline static double lerp(double f, double a, double b) { return a + f * (b - a); }
 		inline static GXMat4 prespective(const float& FOV,const float& AR,const float& zNear,const float& zFar ) {
 			return glm::perspective(FOV,AR,zNear,zFar);
 		}

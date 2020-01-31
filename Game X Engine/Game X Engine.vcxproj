@@ -109,6 +109,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\IOManagement\IOManager.cpp" />
+    <ClCompile Include="src\Layers\Utility\NoiseGeneratorLayer.cpp" />
     <ClCompile Include="src\Object\GXBackgroundObject\GXSkydomeObject.cpp" />
     <ClCompile Include="src\Object\GXMeshObject\GXModelObject.cpp" />
     <ClCompile Include="src\Renderer\openGL\Buffers\GLBufferManager.cpp" />
@@ -141,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rdParty\stb_image\stb_image.h" />
+    <ClInclude Include="3rdParty\stb_image\stb_image_write.h" />
     <ClInclude Include="src\Layers\Debug\Logging\LogLayer.h" />
     <ClInclude Include="src\Layers\LayerManager.h" />
     <ClInclude Include="src\Layers\Main\MainScene.h" />
@@ -150,6 +152,7 @@
     <ClInclude Include="src\Components\Mesh\GXMeshComponent.h" />
     <ClInclude Include="src\GX\GXTimer.h" />
     <ClInclude Include="src\IOManagement\IOManager.h" />
+    <ClInclude Include="src\Layers\Utility\NoiseGeneratorLayer.h" />
     <ClInclude Include="src\Light\DirectionalLight.h" />
     <ClInclude Include="src\Light\Light.h" />
     <ClInclude Include="src\Light\PointLight.h" />
@@ -159,6 +162,7 @@
     <ClInclude Include="src\Maths\GXTransform.h" />
     <ClInclude Include="src\Input\GXKeys.h" />
     <ClInclude Include="src\Input\InputManager.h" />
+    <ClInclude Include="src\Maths\Random\PerlinNoise.h" />
     <ClInclude Include="src\Memory\MemoryManager.h" />
     <ClInclude Include="src\Object\GXBackgroundObject\GXSkydomeObject.h" />
     <ClInclude Include="src\Object\GXMeshObject\GXModelObject.h" />
@@ -175,6 +179,9 @@
     <ClInclude Include="src\Renderer\openGL\Shader\GLShaderManager.h" />
     <ClInclude Include="src\Renderer\openGL\Texture\GLTexture2D.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
+    <ClInclude Include="src\Terrain\HeightGenerators\HeightMapGenerator.h" />
+    <ClInclude Include="src\Terrain\HeightGenerators\NoiseGenerator.h" />
+    <ClInclude Include="src\Terrain\HeightGenerators\TextureMapGenerator.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imconfig.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imgui.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imgui_impl_opengl3.h" />
