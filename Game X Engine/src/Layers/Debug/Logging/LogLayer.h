@@ -11,7 +11,7 @@ namespace gx {
 			AutoScroll = true;
 			clear();
 		}
-		virtual void init(int width, int height)override;
+		virtual void init()override;
 		virtual void destroy()override;
 	
 		virtual void start()override;

@@ -7,18 +7,23 @@ namespace gx {
 		HeightMapGenerator(int Width, int Height, float Scale)
 			:width(Width), height(Height), scale(Scale)
 		{
-			heights = new float[Width * Height];
+			heightsNormalized = new float[Width * Height*3];
+			heightsColor = new uint8_t[Width * Height*3];
 		}
-		inline double getValue(int x, int y) const {
-			return heights[width * y + x];
+		inline float getValueNormalized(int x, int y) const {
+			return heightsNormalized[width * y + x];
+		}
+		inline float getValueColor(int x, int y) const {
+			return heightsColor[width * y + x];
 		}
 		virtual inline void init() = 0;
-		virtual void destroy() { delete[] heights; }
-		float* getHeightValues()const { return heights; }
+		float* getHeightsNormalized()const { return heightsNormalized; }
+		uint8_t* getHeightsColor()const { return heightsColor; }
 		int getWidth()const { return width; }
 		int getHeight()const { return height; }
 	protected:
-		float* heights;
+		float* heightsNormalized;
+		uint8_t* heightsColor;
 		int width;
 		int height;
 		float scale;

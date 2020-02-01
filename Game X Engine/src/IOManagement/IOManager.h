@@ -18,7 +18,7 @@ namespace gx {
 			int32_t width = -1;
 			int32_t height = -1;
 			int32_t nChannels = -1;
-			GXTexture2DType type = NONE;
+			GXTexture2DType type = GX_NONE;
 			~ImageData() {
 				stbi_image_free(data);
 			}

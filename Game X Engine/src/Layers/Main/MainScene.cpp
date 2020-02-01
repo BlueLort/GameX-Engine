@@ -2,10 +2,8 @@
 #include "MainScene.h"
 
 namespace gx {
-	void MainScene::init(int width,int height)
+	void MainScene::init()
 	{
-		this->width = width;
-		this->height = height;
 		GLFBO.reset(new GLFrameBuffer());
 		GLFBO->init(width,height);
 		skydome.reset(new GXSkydomeObject());
@@ -62,10 +60,7 @@ namespace gx {
 	void MainScene::onGUIRender()
 	{
 		
-		if (!ImGui::Begin("Scene", NULL, windowFlags)) {
-			ImGui::End();
-			return;
-		}
+		ImGui::Begin(name.c_str(), NULL, windowFlags);
 
 		selected=ImGui::IsWindowFocused();
 

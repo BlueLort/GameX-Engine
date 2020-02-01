@@ -1,6 +1,7 @@
 #pragma once
 #include "Layers/Main/MainScene.h"
 #include "Layers/Debug/Logging/LogLayer.h"
+#include "Layers/Utility/NoiseGeneratorLayer.h"
 namespace gx {
 	constexpr int32_t SCENE_WIDTH = 1920;
 	constexpr int32_t SCENE_HEIGHT = 1080;
@@ -27,16 +28,19 @@ namespace gx {
 		}
 	private:
 		inline LayerManager() {
-			mainSceneLayer = std::make_shared<MainScene>("Scene");
-			mainSceneLayer->init(SCENE_WIDTH, SCENE_HEIGHT);
+			mainSceneLayer = std::make_shared<MainScene>("Scene", SCENE_WIDTH, SCENE_HEIGHT);
+			mainSceneLayer->init();
 			logLayer = std::make_shared<LogLayer>("Log");
-			logLayer->init(400, 300);
-			layers.add(std::make_pair(1/*high Priority -> Drawn first*/, mainSceneLayer));
+			logLayer->init();
+			ngLayer = std::make_shared<NoiseGeneratorLayer>("Height Map Settings");
+			layers.add(std::make_pair(1/*high Priority -> Handled first*/, mainSceneLayer));
 			layers.add(std::make_pair(0, logLayer));
+			layers.add(std::make_pair(0, ngLayer));
 		}
 		
 		std::shared_ptr<MainScene> mainSceneLayer;
 		std::shared_ptr<LogLayer> logLayer;
+		std::shared_ptr<NoiseGeneratorLayer> ngLayer;
 		LayerQueue layers;
 	};
 

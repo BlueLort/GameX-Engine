@@ -7,8 +7,8 @@
 namespace gx {
 	class GX_DLL MainScene :public Layer {
 	public:
-		inline MainScene(const std::string& layerName) : Layer(layerName) {}
-		virtual void init(int width, int height)override;
+		inline MainScene(const std::string& layerName, int Width, int Height) : Layer(layerName),width(Width),height(Height) {}
+		virtual void init()override;
 		virtual void destroy()override;
 		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) { sceneObjects.emplace_back(obj); };
 		

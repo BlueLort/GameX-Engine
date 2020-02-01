@@ -4,13 +4,18 @@
 #include "../OpenGLContext.h"
 namespace gx {
 	enum GXTexture2DType {//TODO move this from here
-		NONE=0,
-		DIFFUSE,
-		SPECULAR,
-		SPECULAR_MAP,
-		NORMAL,
-		HEIGHT,
-		AMBIENT
+		GX_NONE=0,
+		GX_DIFFUSE,
+		GX_SPECULAR,
+		GX_SPECULAR_MAP,
+		GX_NORMAL,
+		GX_HEIGHT,
+		GX_AMBIENT
+	};
+	enum GXTexture2DColorType {//TODO move this from here
+		GX_RGBA=GL_RGBA,
+		GX_RGB=GL_RGB,
+		GX_RED=GL_RED
 	};
 	class GX_DLL GLTexture2D
 	{
@@ -19,7 +24,7 @@ namespace gx {
 			ID = id;
 			type = Type;
 		}
-		void init(const uint8_t* data, int32_t width, int32_t height,bool hasAlpha, GXTexture2DType Type);
+		void init(const uint8_t* data, int32_t width, int32_t height, GXTexture2DColorType colorType, GXTexture2DType Type);
 		inline static void setActiveTexture(uint32_t pos) { glActiveTexture(GL_TEXTURE0 + pos); }
 		inline void use() {
 			glBindTexture(GL_TEXTURE_2D,ID);

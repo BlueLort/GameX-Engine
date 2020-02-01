@@ -4,11 +4,8 @@
 namespace gx {
 	/*COPIED FROM IMGUI LIB*/
 
-	void LogLayer::init(int width, int height)
+	void LogLayer::init()
 	{
-		this->width = width;
-		this->height = height;
-
 		windowFlags = 0;
 	}
 
@@ -47,7 +44,7 @@ namespace gx {
 		// We take advantage of a rarely used feature: multiple calls to Begin()/End() are appending to the _same_ window.
 		// Most of the contents of the window will be added by the log.Draw() call.
 		
-		if (!ImGui::Begin("Log", &isOpen))
+		if (!ImGui::Begin(name.c_str(), &isOpen))
 		{
 			ImGui::End();
 			return;

@@ -29,7 +29,7 @@ namespace gx {
 				return tex;
 			}
 			if (iData->data) {
-				tex->init(iData->data, iData->width,iData->height,iData->nChannels==4,iData->type);
+				tex->init(iData->data, iData->width,iData->height,iData->nChannels==4?GX_RGBA:GX_RGB,iData->type);
 				GXE_DEBUG("GLTexture2D imported successfully\nPath: {0}", iData->filePath);
 				texIDs[fPath] = tex->getID();
 			}
@@ -160,16 +160,16 @@ namespace gx {
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
 			//diffuse
-			std::vector<std::shared_ptr<ImageData>> diffuse = assimpImportTextures2D(filePath,material, aiTextureType_DIFFUSE,GXTexture2DType::DIFFUSE);
+			std::vector<std::shared_ptr<ImageData>> diffuse = assimpImportTextures2D(filePath,material, aiTextureType_DIFFUSE,GXTexture2DType::GX_DIFFUSE);
 			mData->texturesData.insert(mData->texturesData.end(), diffuse.begin(), diffuse.end());
 			//specular
-			std::vector<std::shared_ptr<ImageData>> specular = assimpImportTextures2D(filePath,material, aiTextureType_SPECULAR,  GXTexture2DType::SPECULAR);
+			std::vector<std::shared_ptr<ImageData>> specular = assimpImportTextures2D(filePath,material, aiTextureType_SPECULAR,  GXTexture2DType::GX_SPECULAR);
 			mData->texturesData.insert(mData->texturesData.end(), specular.begin(), specular.end());
 			//normal
-			std::vector<std::shared_ptr<ImageData>> normal = assimpImportTextures2D(filePath,material, aiTextureType_HEIGHT,  GXTexture2DType::NORMAL);
+			std::vector<std::shared_ptr<ImageData>> normal = assimpImportTextures2D(filePath,material, aiTextureType_HEIGHT,  GXTexture2DType::GX_NORMAL);
 			mData->texturesData.insert(mData->texturesData.end(), normal.begin(), normal.end());
 			//height
-			std::vector<std::shared_ptr<ImageData>> height = assimpImportTextures2D(filePath,material, aiTextureType_AMBIENT,  GXTexture2DType::HEIGHT);
+			std::vector<std::shared_ptr<ImageData>> height = assimpImportTextures2D(filePath,material, aiTextureType_AMBIENT,  GXTexture2DType::GX_HEIGHT);
 			mData->texturesData.insert(mData->texturesData.end(), height.begin(), height.end());
 			
 			return mData;

@@ -51,19 +51,19 @@ namespace gx {
 				std::string name;
 				switch (type)
 				{
-				case gx::DIFFUSE:
+				case gx::GX_DIFFUSE:
 					name = "material.diffuse" + std::to_string(nDiffuse++);
 					break;
-				case gx::SPECULAR:
+				case gx::GX_SPECULAR:
 					name = "material.specular" + std::to_string(nSpecular++);
 					break;
-				case gx::SPECULAR_MAP:
+				case gx::GX_SPECULAR_MAP:
 					break;
-				case gx::NORMAL:
+				case gx::GX_NORMAL:
 					break;
-				case gx::HEIGHT:
+				case gx::GX_HEIGHT:
 					break;
-				case gx::AMBIENT:
+				case gx::GX_AMBIENT:
 					break;
 				default:
 					break;
