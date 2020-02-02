@@ -6,11 +6,14 @@ namespace gx {
 	
 		std::unordered_map<std::string, GLuint> IOManager::texIDs;
 		std::unordered_map<std::string, std::vector<std::shared_ptr<GXMeshComponent>>> IOManager::modelsImported;
+		std::vector <std::future<void>> IOManager::asyncTasks;
+		std::queue< std::pair<std::string, std::vector< std::shared_ptr<MeshData> > > > IOManager::meshesNeedToBeProcessed;
+		std::queue< std::shared_ptr<ImageData> > IOManager::texturesNeedToBeProcessed;
 		const char* IOManager::readFile(const char* filePath)
 		{
 			return nullptr;
 		}
-		std::shared_ptr<ImageData> IOManager::imageRead(const char* filePath, GXTexture2DType Type)
+		std::shared_ptr<ImageData> IOManager::imageRead(const char* filePath, GXTexture2DType Type,bool async)
 		{
 			std::lock_guard<std::mutex> locker(IMAGE_READ_GAURD);
 			std::shared_ptr<ImageData> iData;
@@ -18,6 +21,7 @@ namespace gx {
 			iData->data=stbi_load(filePath, &iData->width, &iData->height, &iData->nChannels, 0);
 			iData->type = Type;
 			strcpy_s(iData->filePath,filePath);
+			if(async)texturesNeedToBeProcessed.emplace(iData);
 			return iData;
 		}
 		std::shared_ptr<GLTexture2D> IOManager::GLReadTexture(std::shared_ptr<ImageData>& iData) {
@@ -41,34 +45,19 @@ namespace gx {
 			return tex;
 		}
 		
-		std::vector<std::shared_ptr<GXMeshComponent>> IOManager::importModel(const char* filePath, const char* fileName, GLShader* glshader)
+		void IOManager::importModel(const char* filePath, const char* fileName )
 		{
 			std::string sFilePath = std::string(filePath);
 			auto ite = modelsImported.find(sFilePath);
 			if (ite != modelsImported.end()) {
-				return ite->second;
-			} else {
-
-				std::vector<std::shared_ptr<MeshData>> meshes = assimpRead(filePath, fileName);
-				std::vector<std::shared_ptr<GXMeshComponent>> components;
-
-				for (auto mesh : meshes) {
-					std::vector<std::shared_ptr<GLTexture2D>> textures;
-					for (auto tex : mesh->texturesData) {
-						textures.emplace_back(GLReadTexture(tex));
-					}
-					components.emplace_back(new GXMeshComponent(GLCreateBufferLayout(mesh->verts, mesh->indices, textures), glshader));
-				}
-
-				GXE_INFO("Model has been imported successfully\nName: {0}\nPath: {1}", fileName, filePath);
-
-				modelsImported[sFilePath] = components;
-
-				return components;
-			}
+				return;
+			} 
+			asyncTasks.emplace_back(std::async(std::launch::async, assimpRead, filePath, fileName));
 		}
+
 		
-		std::vector<std::shared_ptr<MeshData>> IOManager::assimpRead(const char* filePath,const char* fileName) {	
+		
+		void IOManager::assimpRead(const char* filePath,const char* fileName) {
 			//most of the logic can be found in learnopengl.com
 			Assimp::Importer importer;
 			std::string file(filePath);
@@ -86,18 +75,18 @@ namespace gx {
 			{
 				GXE_ERROR("Failed to load Assimp model..\nPath: {0}\n{1}", filePath, importer.GetErrorString());
 
-				return std::vector<std::shared_ptr<MeshData>>();
+				return;
 			}
-			return assimpProcessNode(filePath, scene->mRootNode, scene);
+			meshesNeedToBeProcessed.emplace(assimpProcessNode(filePath, scene->mRootNode, scene));
 		}
 
 		
 		
 		
-		std::vector<std::shared_ptr<MeshData>> IOManager::assimpProcessNode(const char* filePath, aiNode* node, const aiScene* scene)
+		std::pair<std::string, std::vector< std::shared_ptr<MeshData> > > IOManager::assimpProcessNode(const char* filePath, aiNode* node, const aiScene* scene)
 		{
 			std::vector<std::shared_ptr<MeshData>> currentNodeMeshes;
-			std::vector<std::future<std::vector<std::shared_ptr<MeshData>>>> loadedMeshes;
+			std::vector< std::future< std::pair<std::string, std::vector< std::shared_ptr<MeshData>> > > > loadedMeshes;
 			for (uint32_t i = 0; i < node->mNumChildren; i++)
 			{
 				loadedMeshes.emplace_back(std::async(std::launch::async,assimpProcessNode,filePath,node->mChildren[i], scene));
@@ -108,10 +97,10 @@ namespace gx {
 				currentNodeMeshes.emplace_back(assimpProcessMesh(filePath, mesh, scene));
 			}
 			for (int32_t i = 0; i < loadedMeshes.size(); i++) {
-				std::vector<std::shared_ptr<MeshData>> childNodeMeshes = loadedMeshes[i].get();
+				std::vector<std::shared_ptr<MeshData>> childNodeMeshes = loadedMeshes[i].get().second;
 				currentNodeMeshes.insert(currentNodeMeshes.end(),childNodeMeshes.begin(), childNodeMeshes.end());
 			}
-			return currentNodeMeshes;
+			return {std::string(filePath) ,currentNodeMeshes };
 		}
 		
 		
@@ -171,7 +160,6 @@ namespace gx {
 			//height
 			std::vector<std::shared_ptr<ImageData>> height = assimpImportTextures2D(filePath,material, aiTextureType_AMBIENT,  GXTexture2DType::GX_HEIGHT);
 			mData->texturesData.insert(mData->texturesData.end(), height.begin(), height.end());
-			
 			return mData;
 		}
 		
@@ -184,10 +172,12 @@ namespace gx {
 				mat->GetTexture(type, i, &fileName);
 				aiString file(filePath);
 				file.Append(fileName.C_Str());
-				textures.push_back(imageRead(file.C_Str(), gxTexType));
+				textures.push_back(imageRead(file.C_Str(), gxTexType,false));
 			}
 			return textures;
 		}
+
+	
 		
 		std::shared_ptr<GLBufferManager> IOManager::GLCreateBufferLayout(std::vector<Vertex3D>& verts, std::vector<uint32_t>& indices, std::vector<std::shared_ptr<GLTexture2D>>& textures)
 		{
@@ -208,7 +198,32 @@ namespace gx {
 			verts.clear();
 			return Buffer;
 		}
+		void IOManager::update()
+		{
+			if (!meshesNeedToBeProcessed.empty()) {
+				auto meshes = meshesNeedToBeProcessed.front();
+				meshesNeedToBeProcessed.pop();
+				std::vector<std::shared_ptr<GXMeshComponent>> components;
+				for (auto mesh : meshes.second) {
+					std::vector<std::shared_ptr<GLTexture2D>> textures;
+					for (auto tex : mesh->texturesData) {
+						textures.emplace_back(GLReadTexture(tex));
+					}
+					components.emplace_back(new GXMeshComponent(GLCreateBufferLayout(mesh->verts, mesh->indices, textures)));
+				}
 
+				GXE_INFO("Model has been imported successfully ,File Path: {0} ", meshes.first);
+
+				modelsImported[meshes.first] = components;
+			}
+
+			if (!texturesNeedToBeProcessed.empty()) {
+				auto tex = texturesNeedToBeProcessed.front();
+				texturesNeedToBeProcessed.pop();
+				GLReadTexture(tex);
+			}
+
+		}
 		void IOManager::destroy()
 		{
 			destroyGLModels();

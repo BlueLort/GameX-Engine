@@ -24,14 +24,15 @@ namespace gx {
 	void GameXApp::Start() {
 		//OBJECT FOR DEBUGGING
 		std::shared_ptr<GXModelObject> object=std::make_shared<GXModelObject>();
-		object->GLinit("res/models/monkey/", "monkey.obj");
-		LayerManager::getInstance().addObject(object);
+		object->GLinit("res/models/nanosuit/nanosuit.obj");
+		LayerManager::getInstance().addModelObject(object);
 		while (isRunning) {
 			GXTimer::getAppTimer().update();
 			InputManager::getInstance().update();
 			while (GXPollEvents(&GX_SDLEvent()) == 1);//Send events to callback
 			EditorCamera::getInstance().update();
 			mainSceneSelected= LayerManager::getInstance().isMainSceneSelected();
+			io::IOManager::update();//check if something is imported and init it using openGL context
 			//Render
 	#ifdef USING_OPENGL  
 			LayerManager::getInstance().renderUpdateLayers(1.0f/GXTimer::getAppTimer().getDeltaTicks());

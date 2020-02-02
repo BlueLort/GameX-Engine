@@ -3,16 +3,16 @@
 
 namespace gx {
 
-	void GXSkydomeObject::GLinit(const char* filePath, const char* fileName) {
+	void GXSkydomeObject::GLinit(const char* fileName) {
 
 		glshader = GLShaderManager::getShader(GLShaderType::DEFAULT_SKYDOME);
-		std::vector<std::shared_ptr<GXMeshComponent>> comps = io::IOManager::importModel(filePath, fileName, glshader);
-		for (auto comp : comps) {
-			addComponent(comp);
-		}
-		
 		transform.scale = GXVec3(3000.0f, 3000.0f, 3000.0f);//enlarge the sphere
 		staticModelMat4 = transform.getModel();
+		//GET THE MODEL DATA
+		auto comps = io::IOManager::getModel(fileName);
+		for (auto comp : comps) {
+			components.emplace_back(comp);
+		}
 	}
 
 	void GXSkydomeObject::update(float deltaTime) {
@@ -28,6 +28,7 @@ namespace gx {
 #endif
 		for (auto component : components) {
 			component->update(deltaTime);
+			component->draw(glshader);
 		}
 #ifdef USING_OPENGL
 		//reset values to default

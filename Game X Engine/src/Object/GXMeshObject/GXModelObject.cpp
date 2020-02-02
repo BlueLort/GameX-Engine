@@ -3,7 +3,7 @@
 
 namespace gx {
 
-	void GXModelObject::GLinit(const char* filePath, const char* fileName , const char* shaderPath) {
+	void GXModelObject::GLinit(const char* fileName, const char* shaderPath) {
 	
 		if (shaderPath == nullptr) {
 			glshader = GLShaderManager::getShader(GLShaderType::DEFAULT_LIGHT);
@@ -11,12 +11,12 @@ namespace gx {
 		else {
 			glshader = GLShaderManager::getShader(shaderPath);
 		}
-		std::vector<std::shared_ptr<GXMeshComponent>> comps=io::IOManager::importModel(filePath,fileName,glshader);
+
+		//GET THE MODEL DATA.
+		auto comps = io::IOManager::getModel(fileName);
 		for (auto comp : comps) {
-			addComponent(comp);
+			components.emplace_back(comp);
 		}
-		
-		
 	}
 
 	void GXModelObject::update(float deltaTime) {
@@ -30,6 +30,7 @@ namespace gx {
 #endif
 		for (auto component : components) {
 			component->update(deltaTime);
+			component->draw(glshader);
 		}
 	}
 

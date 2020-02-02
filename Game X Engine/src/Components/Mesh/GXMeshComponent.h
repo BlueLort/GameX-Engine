@@ -4,18 +4,16 @@
 
 #include <Maths/GXMaths.h>
 #include "Components/GXComponent.h"
-#include "Renderer/openGL/Shader/GLShader.h"
-#include "Renderer/openGL/Buffers/GLBufferManager.h"
-#include "Renderer/openGL/GLRenderer.h"
+
+
 namespace gx {
 	class GX_DLL GXMeshComponent : public GXComponent {
 	public:
 
-		GXMeshComponent(const std::shared_ptr<gx::GLBufferManager>& GLBM,GLShader* sh) : GXComponent()
+		GXMeshComponent(const std::shared_ptr<gx::GLBufferManager>& GLBM) : GXComponent()
 		{
 			//TODO make input base shader and use macros to define which shader to use
 			this->GLBM = GLBM;
-			this->glshader = sh;
 		}
 		virtual inline const char* getName() const override {
 			return "GXMeshComponent";
@@ -30,19 +28,16 @@ namespace gx {
 			GLBM->destroy();
 		}
 		virtual void update(float deltaTime)override {
-#ifdef USING_OPENGL
-			this->GLDraw();
-#endif
 		}
+
 	private:
 		std::shared_ptr<GLBufferManager> GLBM;
-		GLShader* glshader;//points to model owner Shader for now
+
 		// render the mesh
-		void GLDraw()
-		{
+		void draw(GLShader* glshader) {
 			uint32_t nDiffuse = 1;
 			uint32_t nSpecular = 1;
-			
+
 			auto textures = GLBM->getTextures();
 			for (uint32_t i = 0; i < textures.size(); i++)
 			{
@@ -68,13 +63,13 @@ namespace gx {
 				default:
 					break;
 				}
-				this->glshader->setInt(name.c_str(), i);
-				
+				glshader->setInt(name.c_str(), i);
+
 				textures[i]->use();
 
 			}
-			
-			
+
+
 			// draw mesh
 			GLBM->use();
 			GLRenderer::getInstance().draw(GLBM->getNumberOfElements(), RenderType::GX_TRIANGLES);

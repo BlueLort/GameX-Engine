@@ -2,6 +2,7 @@
 #include "Layers/Main/MainScene.h"
 #include "Layers/Debug/Logging/LogLayer.h"
 #include "Layers/Utility/NoiseGeneratorLayer.h"
+
 namespace gx {
 	constexpr int32_t SCENE_WIDTH = 1920;
 	constexpr int32_t SCENE_HEIGHT = 1080;
@@ -11,7 +12,7 @@ namespace gx {
 			static LayerManager LM=LayerManager();
 			return LM;
 		}
-		inline void addObject(std::shared_ptr<GXModelObject>& obj) {
+		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) {
 			mainSceneLayer->addModelObject(obj);
 		}
 		inline void addLog(const char* txt) {
@@ -36,6 +37,7 @@ namespace gx {
 			layers.add(std::make_pair(1/*high Priority -> Handled first*/, mainSceneLayer));
 			layers.add(std::make_pair(0, logLayer));
 			layers.add(std::make_pair(0, ngLayer));
+			
 		}
 		
 		std::shared_ptr<MainScene> mainSceneLayer;

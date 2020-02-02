@@ -28,37 +28,41 @@ namespace gx {
 			std::vector<uint32_t> indices;
 			std::vector<std::shared_ptr<ImageData>> texturesData;
 		};
+		
 		class GX_DLL IOManager {
 		public:
 			IOManager() = delete;
 			//TODO implement this to read custom shaders or any files.
 			static const char* readFile(const char* filePath);
 
-			static std::shared_ptr<ImageData> imageRead(const char* filePath, GXTexture2DType Type);
+			static std::shared_ptr<ImageData> imageRead(const char* filePath, GXTexture2DType Type,bool async);
 			//Cached GLTexture reading.
 			static std::shared_ptr<GLTexture2D> GLReadTexture(std::shared_ptr<ImageData>& iData);
-
-			//TODO make this return GXModelObject ptr instead.
-			//opengl context is obstacle for multithreaded loading for now only multithread processing
-			static std::vector<std::shared_ptr<GXMeshComponent>> importModel(const char* filePath, const char* fileName, GLShader* glshader);
-
+			inline static std::vector<std::shared_ptr<GXMeshComponent>> getModel(const char* fileName) {
+				auto ite = modelsImported.find(std::string(fileName));
+				GXE_ASSERT(ite != modelsImported.end(),"Model is not available in the system",fileName);
+				return ite->second;
+			}
+			static void importModel(const char* filePath, const char* fileName);
+			static void finishAllTasks() { for(int i=0;i<asyncTasks.size();i++)asyncTasks[i].get(); }
+			static void update();
 			static void destroy();
 		private:
-			static std::vector<std::shared_ptr<MeshData>> assimpRead(const char* filePath, const char* fileName);
-			static std::vector<std::shared_ptr<MeshData>> assimpProcessNode(const char* filePath, aiNode* node, const aiScene* scene);
+			static void assimpRead(const char* filePath, const char* fileName);
+			static std::pair<std::string, std::vector< std::shared_ptr<MeshData> > > assimpProcessNode(const char* filePath, aiNode* node, const aiScene* scene);
 			static std::shared_ptr<MeshData> assimpProcessMesh(const char* filePath, aiMesh* mesh, const aiScene* scene);
-			
 			static std::vector<std::shared_ptr<ImageData>> assimpImportTextures2D(const char* filePath, aiMaterial* mat, aiTextureType type, GXTexture2DType gxTexType);
-			
-
-
 			static std::shared_ptr<GLBufferManager> GLCreateBufferLayout(std::vector<Vertex3D>& verts, std::vector<uint32_t>& indices, std::vector<std::shared_ptr<GLTexture2D>>& textures);
+			static void destroyGLModels();
+			static void destroyTextures();
 
 			static std::unordered_map<std::string, GLuint> texIDs;
 			static std::unordered_map<std::string, std::vector<std::shared_ptr<GXMeshComponent>>> modelsImported;
 
-			static void destroyGLModels();
-			static void destroyTextures();
+			static std::vector <std::future<void>> asyncTasks;
+			static std::queue< std::pair<std::string,std::vector< std::shared_ptr<MeshData> > > > meshesNeedToBeProcessed;
+			static std::queue< std::shared_ptr<ImageData> > texturesNeedToBeProcessed;
+
 		};
 	}
 }

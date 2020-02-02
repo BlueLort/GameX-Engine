@@ -1,17 +1,17 @@
 #pragma once
 #include "Config.h"
 #include "Layers/Layer.h"
-#include "Object/GXMeshObject/GXModelObject.h"
+#include "Object/GXObject.h"
 #include "Object/GXBackgroundObject/GXSkydomeObject.h"
-
+#include "IOManagement/IOManager.h"
 namespace gx {
 	class GX_DLL MainScene :public Layer {
 	public:
 		inline MainScene(const std::string& layerName, int Width, int Height) : Layer(layerName),width(Width),height(Height) {}
 		virtual void init()override;
 		virtual void destroy()override;
-		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) { sceneObjects.emplace_back(obj); };
-		
+		//IOManagers add the object after it has been instantiated
+		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) { sceneModelObjects.emplace_back(obj); };
 		virtual void start()override;
 		virtual void end()override;
 		virtual int onEvent(const gx::event::GXEventType& eventType)override;
@@ -19,7 +19,7 @@ namespace gx {
 		virtual void onGUIRender()override;
 
 	private:
-		std::vector<std::shared_ptr<GXModelObject>> sceneObjects;
+		std::vector<std::shared_ptr<GXModelObject>> sceneModelObjects;
 		std::shared_ptr<GXSkydomeObject> skydome;
 		ImGuiWindowFlags windowFlags;
 		int32_t width, height;

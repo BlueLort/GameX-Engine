@@ -7,7 +7,7 @@ namespace gx {
 		GLFBO.reset(new GLFrameBuffer());
 		GLFBO->init(width,height);
 		skydome.reset(new GXSkydomeObject());
-		skydome->GLinit("res/models/sphere/", "spheres.obj");
+		skydome->GLinit("res/models/sphere/spheres.obj");//will wait until it has been imported
 
 		glViewport(0, 0, width,height);
 
@@ -15,6 +15,7 @@ namespace gx {
 		GLFlags.push_back(GL_CULL_FACE);
 		GLFlags.push_back(GL_DEPTH_TEST);
 		windowFlags = 0;
+
 	}
 
 	void MainScene::destroy()
@@ -51,7 +52,7 @@ namespace gx {
 	void MainScene::onUpdate(float deltaTime)
 	{
 
-		for (auto obj : sceneObjects) {
+		for (auto obj : sceneModelObjects) {
 			obj->update(deltaTime);
 		}
 		skydome->update(deltaTime);

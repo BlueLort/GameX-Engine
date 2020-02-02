@@ -1,7 +1,10 @@
 #pragma once
 #include "Config.h"
+#include "Renderer/openGL/Shader/GLShader.h"
+#include "Renderer/openGL/Shader/GLShader.h"
+#include "Renderer/openGL/Buffers/GLBufferManager.h"
+#include "Renderer/openGL/GLRenderer.h"
 namespace gx {
-	
 	enum GXComponentType
 	{
 		GX_COLLIDER=0,
@@ -25,8 +28,8 @@ namespace gx {
 		virtual inline const char* getName() const = 0;
 		virtual inline uint32_t getEventType() const = 0;
 		virtual inline uint32_t getEventClass() const = 0;
-
 		virtual void update(float deltaTime) = 0;
+		virtual void draw(GLShader* glshader) {};
 		virtual void destroy() = 0;
 
 		inline bool isSameClassAs(GXComponentClass componentClass) const {
