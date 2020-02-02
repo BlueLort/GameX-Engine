@@ -18,13 +18,14 @@ After Finishing the 3D Side i will work on the 2D Side.
 - [x] Timer using SDL Timing operation.
 - [x] imGUI windows are separated into Layers
 - [x] Rendering to Texture to view it in imGUI Window.
-- [x] IOManager Multithreaded processing of imported objects (but unfortunately no opengl context switching on the other threads for now)
+- [x] IOManager Multithreaded processing of imported objects.
 - [x] GXMaths wrapper for GLM.
 - [x] GLShader Manager & GLShader Library.
 - [x] Camera
 - [x] Rendering to Texture to view it in imGUI Window.
 - [x] Skydome.
 - [ ] Skybox.
+- [x] Height Map Settings Editor (Supported:Perlin noise)
 - [ ] Terrain Rendering using LOD Techniques.
 - [ ] Planet Rendering using LOD Techniques.
 - [ ] Frustum Culling.
