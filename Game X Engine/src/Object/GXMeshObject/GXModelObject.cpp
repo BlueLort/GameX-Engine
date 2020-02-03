@@ -12,11 +12,8 @@ namespace gx {
 			glshader = GLShaderManager::getShader(shaderPath);
 		}
 
-		//GET THE MODEL DATA.
-		auto comps = io::IOManager::getModel(fileName);
-		for (auto comp : comps) {
-			components.emplace_back(comp);
-		}
+		io::IORequestHandler::getModel(fileName, &components, &isReady);
+
 	}
 
 	void GXModelObject::update(float deltaTime) {

@@ -23,7 +23,11 @@ namespace gx {
 
 	void GameXApp::Start() {
 		//OBJECT FOR DEBUGGING
-		std::shared_ptr<GXModelObject> object=std::make_shared<GXModelObject>();
+		
+		io::IORequestHandler::importModel("res/models/sphere/", "spheres.obj");
+		io::IORequestHandler::waitTasks();
+		LayerManager::getInstance().init();//instantiate a layer manager.[first ref]
+		std::shared_ptr<GXModelObject> object = std::make_shared<GXModelObject>();
 		object->GLinit("res/models/nanosuit/nanosuit.obj");
 		LayerManager::getInstance().addModelObject(object);
 		while (isRunning) {
@@ -32,7 +36,7 @@ namespace gx {
 			while (GXPollEvents(&GX_SDLEvent()) == 1);//Send events to callback
 			EditorCamera::getInstance().update();
 			mainSceneSelected= LayerManager::getInstance().isMainSceneSelected();
-			io::IOManager::update();//check if something is imported and init it using openGL context
+			io::IORequestHandler::update();//check if something is imported and init it using openGL context
 			//Render
 	#ifdef USING_OPENGL  
 			LayerManager::getInstance().renderUpdateLayers(1.0f/GXTimer::getAppTimer().getDeltaTicks());

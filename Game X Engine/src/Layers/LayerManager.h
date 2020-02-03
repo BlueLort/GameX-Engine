@@ -8,27 +8,11 @@ namespace gx {
 	constexpr int32_t SCENE_HEIGHT = 1080;
 	class GX_DLL LayerManager {
 	public:
-		inline static LayerManager getInstance(){
+		inline static LayerManager& getInstance(){
 			static LayerManager LM=LayerManager();
 			return LM;
 		}
-		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) {
-			mainSceneLayer->addModelObject(obj);
-		}
-		inline void addLog(const char* txt) {
-			logLayer->addLog(txt);
-		}
-		inline bool isMainSceneSelected() {
-			return mainSceneLayer->isSelected();
-		}
-		inline void renderUpdateLayers(float deltaTime) {
-			layers.renderUpdateLayers(deltaTime);
-		}
-		inline void onGUIRender() {
-			layers.onGUIRender();
-		}
-	private:
-		inline LayerManager() {
+		inline void init() {
 			mainSceneLayer = std::make_shared<MainScene>("Scene", SCENE_WIDTH, SCENE_HEIGHT);
 			mainSceneLayer->init();
 			logLayer = std::make_shared<LogLayer>("Log");
@@ -37,9 +21,36 @@ namespace gx {
 			layers.add(std::make_pair(1/*high Priority -> Handled first*/, mainSceneLayer));
 			layers.add(std::make_pair(0, logLayer));
 			layers.add(std::make_pair(0, ngLayer));
-			
 		}
-		
+		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) {
+			if (obj->isReady)
+				mainSceneLayer->addModelObject(obj);
+			else {
+				modelObjectRequests.emplace(obj);
+			}
+				
+		}
+		inline void addLog(const char* txt) {
+			logLayer->addLog(txt);
+		}
+		inline bool isMainSceneSelected() {
+			return mainSceneLayer->isSelected();
+		}
+		inline void renderUpdateLayers(float deltaTime) {
+			if (!modelObjectRequests.empty()) {
+				if (modelObjectRequests.front()->isReady) {
+					mainSceneLayer->addModelObject(modelObjectRequests.front());
+					modelObjectRequests.pop();
+				}
+			}
+			layers.renderUpdateLayers(deltaTime);
+		}
+		inline void onGUIRender() {
+			layers.onGUIRender();
+		}
+	private:
+		inline LayerManager() {	}
+		std::queue<std::shared_ptr<GXModelObject>> modelObjectRequests;
 		std::shared_ptr<MainScene> mainSceneLayer;
 		std::shared_ptr<LogLayer> logLayer;
 		std::shared_ptr<NoiseGeneratorLayer> ngLayer;

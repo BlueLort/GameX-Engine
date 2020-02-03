@@ -9,10 +9,7 @@ namespace gx {
 		transform.scale = GXVec3(3000.0f, 3000.0f, 3000.0f);//enlarge the sphere
 		staticModelMat4 = transform.getModel();
 		//GET THE MODEL DATA
-		auto comps = io::IOManager::getModel(fileName);
-		for (auto comp : comps) {
-			components.emplace_back(comp);
-		}
+		io::IORequestHandler::getModel(fileName, &components, &isReady);
 	}
 
 	void GXSkydomeObject::update(float deltaTime) {

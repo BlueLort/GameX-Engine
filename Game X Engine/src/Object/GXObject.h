@@ -8,11 +8,12 @@
 #include "Renderer/openGL/GLRenderer.h"
 #include "Camera/EditorCamera/EditorCamera.h"
 #include "Light/SceneLightManager.h"
+#include "IOManagement/IORequestHandler.h"
 namespace gx {
 	enum GXObjectType { GX_MODEL, GX_SKYDOME };
 	class GX_DLL GXObject {
 	public:
-		inline GXObject(GXObjectType ObjectType) :objType(ObjectType) {
+		inline GXObject(GXObjectType ObjectType) :objType(ObjectType), isReady(false){
 
 		}
 		GXTransform transform;
@@ -25,6 +26,8 @@ namespace gx {
 		inline GXObjectType getType()const { return objType; }
 		void setShader(GLShader* sh) { this->glshader = sh; }
 		GLShader* getShader() const { return glshader; }
+
+		bool isReady;
 	protected:
 		std::vector<std::shared_ptr<GXComponent>> components;
 		GXObjectType objType;

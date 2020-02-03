@@ -99,6 +99,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\IOManagement\IORequestHandler.cpp" />
     <ClCompile Include="src\Layers\Debug\Logging\LogLayer.cpp" />
     <ClCompile Include="src\Layers\Main\MainScene.cpp" />
     <ClCompile Include="src\Camera\EditorCamera\EditorCamera.cpp" />
@@ -143,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="3rdParty\stb_image\stb_image.h" />
     <ClInclude Include="3rdParty\stb_image\stb_image_write.h" />
+    <ClInclude Include="src\IOManagement\IORequestHandler.h" />
     <ClInclude Include="src\Layers\Debug\Logging\LogLayer.h" />
     <ClInclude Include="src\Layers\LayerManager.h" />
     <ClInclude Include="src\Layers\Main\MainScene.h" />

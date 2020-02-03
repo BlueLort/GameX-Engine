@@ -47,17 +47,19 @@ namespace gx {
 		
 		void IOManager::importModel(const char* filePath, const char* fileName )
 		{
-			std::string sFilePath = std::string(filePath);
-			auto ite = modelsImported.find(sFilePath);
+			std::string sFilePath(filePath);
+			std::string sFileName(fileName);
+			auto ite = modelsImported.find(sFilePath+sFileName);
 			if (ite != modelsImported.end()) {
 				return;
 			} 
-			asyncTasks.emplace_back(std::async(std::launch::async, assimpRead, filePath, fileName));
+			asyncTasks.emplace_back(std::async(std::launch::async, assimpRead, sFilePath, sFileName));
 		}
 
 		
 		
-		void IOManager::assimpRead(const char* filePath,const char* fileName) {
+		//make a copy of the string to avoid garbage on threading
+		void IOManager::assimpRead(std::string filePath,std::string fileName) {
 			//most of the logic can be found in learnopengl.com
 			Assimp::Importer importer;
 			std::string file(filePath);
@@ -77,34 +79,36 @@ namespace gx {
 
 				return;
 			}
-			meshesNeedToBeProcessed.emplace(assimpProcessNode(filePath, scene->mRootNode, scene));
+			meshesNeedToBeProcessed.emplace(assimpProcessNode(filePath.c_str(), fileName.c_str() , scene->mRootNode, scene));
 		}
 
 		
 		
 		
-		std::pair<std::string, std::vector< std::shared_ptr<MeshData> > > IOManager::assimpProcessNode(const char* filePath, aiNode* node, const aiScene* scene)
+		std::pair<std::string, std::vector< std::shared_ptr<MeshData> > > IOManager::assimpProcessNode(const char* filePath, const char* fileName, aiNode* node, const aiScene* scene)
 		{
 			std::vector<std::shared_ptr<MeshData>> currentNodeMeshes;
 			std::vector< std::future< std::pair<std::string, std::vector< std::shared_ptr<MeshData>> > > > loadedMeshes;
 			for (uint32_t i = 0; i < node->mNumChildren; i++)
 			{
-				loadedMeshes.emplace_back(std::async(std::launch::async,assimpProcessNode,filePath,node->mChildren[i], scene));
+				loadedMeshes.emplace_back(std::async(std::launch::async,assimpProcessNode,filePath,fileName,node->mChildren[i], scene));
 			}
 			for (uint32_t i = 0; i < node->mNumMeshes; i++)
 			{
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-				currentNodeMeshes.emplace_back(assimpProcessMesh(filePath, mesh, scene));
+				currentNodeMeshes.emplace_back(assimpProcessMesh(filePath,fileName, mesh, scene));
 			}
 			for (int32_t i = 0; i < loadedMeshes.size(); i++) {
 				std::vector<std::shared_ptr<MeshData>> childNodeMeshes = loadedMeshes[i].get().second;
 				currentNodeMeshes.insert(currentNodeMeshes.end(),childNodeMeshes.begin(), childNodeMeshes.end());
 			}
-			return {std::string(filePath) ,currentNodeMeshes };
+			std::string file = std::string(filePath);
+			file += fileName;
+			return {file ,currentNodeMeshes };
 		}
 		
 		
-		std::shared_ptr<MeshData> IOManager::assimpProcessMesh(const char* filePath, aiMesh* mesh, const aiScene* scene)
+		std::shared_ptr<MeshData> IOManager::assimpProcessMesh(const char* filePath, const char* fileName, aiMesh* mesh, const aiScene* scene)
 		{
 			std::shared_ptr<MeshData> mData;
 			mData.reset(new MeshData());
