@@ -35,7 +35,7 @@ namespace gx {
 		
 		private:
 			//TODO implement this to read custom shaders or any files.
-			static const char* readFile(const char* filePath);
+			static std::string readFile(const char* filePath);
 
 			static std::shared_ptr<ImageData> imageRead(const char* filePath, GXTexture2DType Type, bool addToGLTextures);
 			//Cached GLTexture reading.
@@ -55,6 +55,7 @@ namespace gx {
 
 			static std::unordered_map<std::string, GLuint> texIDs;
 			static std::unordered_map<std::string, std::vector<std::shared_ptr<GXMeshComponent>>> modelsImported;
+			static std::unordered_map<std::string,std::string> textImported;
 
 			static std::vector <std::future<void>> asyncTasks;
 			static std::queue< std::pair<std::string,std::vector< std::shared_ptr<MeshData> > > > meshesNeedToBeProcessed;

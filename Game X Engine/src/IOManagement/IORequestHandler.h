@@ -25,14 +25,26 @@ namespace gx {
 			inline static void importTexture(const char* filePath, GXTexture2DType Type) {
 				IOManager::imageRead(filePath, Type, true);
 			}
-			//NON ASYNC
-			inline static std::shared_ptr<ImageData> getImage(const char* filePath, GXTexture2DType Type) {
-				return IOManager::imageRead(filePath, Type, false);
-			}
+		
 			inline static void waitTasks() {
 				IOManager::finishAllTasks();
 				update();
 			}
+
+			//NON ASYNC
+			inline static std::shared_ptr<ImageData> getImage(const char* filePath, GXTexture2DType Type) {
+				return IOManager::imageRead(filePath, Type, false);
+			}
+			inline static std::string getTextFile(const char* filePath) {
+				std::string sFilePath(filePath);
+				auto ite = IOManager::textImported.find(sFilePath);
+				if (ite != IOManager::textImported.end()) {
+					return ite->second;
+				}
+				return IOManager::readFile(filePath);
+
+			}
+		
 			inline static  void getModel(const char* fileName, std::vector<std::shared_ptr<GXComponent>>* appendToThis, bool* isReady) {
 				std::string sFileName(fileName);
 				auto ite = IOManager::modelsImported.find(sFileName);

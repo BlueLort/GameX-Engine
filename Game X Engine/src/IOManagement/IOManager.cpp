@@ -6,12 +6,26 @@ namespace gx {
 	
 		std::unordered_map<std::string, GLuint> IOManager::texIDs;
 		std::unordered_map<std::string, std::vector<std::shared_ptr<GXMeshComponent>>> IOManager::modelsImported;
+		std::unordered_map<std::string, std::string> IOManager::textImported;
 		std::vector <std::future<void>> IOManager::asyncTasks;
 		std::queue< std::pair<std::string, std::vector< std::shared_ptr<MeshData> > > > IOManager::meshesNeedToBeProcessed;
 		std::queue< std::shared_ptr<ImageData> > IOManager::texturesNeedToBeProcessed;
-		const char* IOManager::readFile(const char* filePath)
+		std::string IOManager::readFile(const char* filePath)
 		{
-			return nullptr;
+			std::fstream fin(filePath, std::ios::in);
+			std::string out = "";
+			if (fin.is_open()) {
+				std::string line;
+				while (std::getline(fin, line))
+				{
+					out += line;
+				}
+				GXE_DEBUG("Text File imported successfully\nPath: {0}",filePath);
+				textImported[std::string(filePath)] = out;
+				return out;
+			}
+			GXE_ERROR("Failed to import text file\nPath: {0}", filePath);
+			return out;
 		}
 		std::shared_ptr<ImageData> IOManager::imageRead(const char* filePath, GXTexture2DType Type,bool async)
 		{

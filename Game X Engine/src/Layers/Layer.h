@@ -45,7 +45,6 @@ namespace gx {
 				layer.second->onGUIRender();
 			}
 		}
-		//TODO MAKE THE REST OF LAYER FUNCs
 		inline void remove(const std::string& name) {
 			for (int i = 0; i < layers.size(); i++) {
 				if (layers[i].second->getName() == name) {
