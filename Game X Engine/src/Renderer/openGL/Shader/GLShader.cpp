@@ -5,37 +5,25 @@
 namespace gx {
 
 
-	GLShader::GLShader(const char* vertexShaderCode, const char* fragmentShaderCode, const char* geometryShaderCode)
+	GLShader::GLShader()
 	{
-		bool geoExist = geometryShaderCode != nullptr;
-		uint32_t vertex, fragment, geometry;
-		char infoLog[1024];
-		// Compile vertex and fragment shaders
-		vertex = compileShader(GL_VERTEX_SHADER, vertexShaderCode, infoLog);
-		fragment = compileShader(GL_FRAGMENT_SHADER, fragmentShaderCode, infoLog);
-
-		// if geometry shader is given, compile geometry shader
-		if (geoExist)
-		{
-			geometry = compileShader(GL_GEOMETRY_SHADER, geometryShaderCode, infoLog);
-		}
 		// shader Program
 		ID = glCreateProgram();
-		glAttachShader(ID, vertex);
-		glAttachShader(ID, fragment);
-		if (geoExist)
-			glAttachShader(ID, geometry);
-
-		linkProgram(infoLog);
-		
-		// delete the shaders as they're linked into our program now and no longer necessery
-		glDeleteShader(vertex);
-		glDeleteShader(fragment);
-		if (geoExist)
-			glDeleteShader(geometry);
 
 	}
-	GLuint GLShader::compileShader(GLuint type, const char* code, char* log)
+	void GLShader::addShader(GXShaderType shaderType, const char* shaderCode)
+	{
+		if (shaderCode == nullptr)return;
+		uint32_t shaderID;
+		char infoLog[1024];
+		// Compile vertex and fragment shaders
+		shaderID = compileShader(shaderType, shaderCode, infoLog);
+		glAttachShader(ID, shaderID);
+		linkProgram(infoLog);
+		// delete the shaders as they're linked into our program now and no longer necessery
+		glDeleteShader(shaderID);
+	}
+	GLuint GLShader::compileShader(GXShaderType type, const char* code, char* log)
 	{
 
 		GLuint shader = glCreateShader(type);

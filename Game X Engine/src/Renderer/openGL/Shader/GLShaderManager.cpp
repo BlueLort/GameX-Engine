@@ -10,14 +10,33 @@ namespace gx {
 
 	void GLShaderManager::init()
 	{
-		//DEFAULT SHADER COMPILATION
-		defaultShaders.emplace_back(new GLShader(GLDefaultColorShader[0], GLDefaultColorShader[1], GLDefaultColorShader[2]));
+		//DEFAULT SHADERS COMPILATION
+
+		GLShader* sh = new GLShader();
+		sh->addShader(GX_VERTEX_SHADER, GLDefaultColorShader[0]);
+		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultColorShader[1]);
+		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultColorShader[2]);
+		defaultShaders.emplace_back(sh);
 		GXE_DEBUG("Default Color GLShader Compiled Successfully");
-		defaultShaders.emplace_back(new GLShader(GLDefaultLightingShader[0], GLDefaultLightingShader[1], GLDefaultLightingShader[2]));
+
+		sh = new GLShader();
+		sh->addShader(GX_VERTEX_SHADER, GLDefaultLightingShader[0]);
+		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultLightingShader[1]);
+		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultLightingShader[2]);
+		defaultShaders.emplace_back(sh);
 		GXE_DEBUG("Default Lighting GLShader Compiled Successfully");
-		defaultShaders.emplace_back(new GLShader(GLDefaultModelShader[0], GLDefaultModelShader[1], GLDefaultModelShader[2]));
+		sh = new GLShader();
+		sh->addShader(GX_VERTEX_SHADER, GLDefaultModelShader[0]);
+		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultModelShader[1]);
+		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultModelShader[2]);
+		defaultShaders.emplace_back(sh);
 		GXE_DEBUG("Default Model GLShader Compiled Successfully");
-		defaultShaders.emplace_back(new GLShader(GLDefaultSkydomeShader[0], GLDefaultSkydomeShader[1], GLDefaultSkydomeShader[2]));
+
+		sh = new GLShader();
+		sh->addShader(GX_VERTEX_SHADER, GLDefaultSkydomeShader[0]);
+		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultSkydomeShader[1]);
+		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultSkydomeShader[2]);
+		defaultShaders.emplace_back(sh);
 		GXE_DEBUG("Default Skydome GLShader Compiled Successfully");
 
 
@@ -34,16 +53,20 @@ namespace gx {
 		}
 	}
 
+	//TODO EDIT THIS TO MAKE IT ADAPT WITH NEW SHADER LINKAGE METHOD
 	GLShader* GLShaderManager::createShader(const char* filePath)
 	{
+		/*
 		const char* cusotmShader[3];
 		//GET THE CUSTOM SHADER .. 
 
 		//TODO READ IT FROM FILE AND PARSE IT USING IOManager
 
 		customShaders[filePath] = new GLShader(cusotmShader[0], cusotmShader[1], cusotmShader[2]);
-		GXE_DEBUG("Custom GLShader Compiled Successfully,\nPath: {0}",filePath);
+		GXE_DEBUG("Custom GLShader Compiled Successfully,\nPath: {0}", filePath);
 		return customShaders[filePath];
+		*/
+		return new GLShader();
 	}
 
 }
