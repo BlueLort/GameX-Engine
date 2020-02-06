@@ -30,7 +30,11 @@ namespace gx {
 				IOManager::finishAllTasks();
 				update();
 			}
-
+			inline static GLuint getTexID(const char* filePath) {
+				auto ite = IOManager::texIDs.find(std::string(filePath));
+				if (ite == IOManager::texIDs.end())return 0;
+				return ite->second;
+			}
 			//NON ASYNC
 			inline static std::shared_ptr<ImageData> getImage(const char* filePath, GXTexture2DType Type) {
 				return IOManager::imageRead(filePath, Type, false);

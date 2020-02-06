@@ -10,6 +10,7 @@ namespace gx {
 			heightsNormalized = new float[Width * Height*3];
 			heightsColor = new uint8_t[Width * Height*3];
 		}
+		HeightMapGenerator() {}
 		inline float getValueNormalized(int x, int y) const {
 			return heightsNormalized[width * y + x];
 		}

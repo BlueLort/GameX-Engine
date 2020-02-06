@@ -4,8 +4,12 @@
 namespace gx {
 	bool NoiseGeneratorLayer::isUpdated = false;
 	bool NoiseGeneratorLayer::canUpdate = true;
+	bool NoiseGeneratorLayer::errorLoading = false;
 	uint8_t* NoiseGeneratorLayer::heightValues = nullptr;
 	float* NoiseGeneratorLayer::heightsNormalized = nullptr;
+	int NoiseGeneratorLayer::texWidth;
+	int NoiseGeneratorLayer::texHeight;
+	
 	void NoiseGeneratorLayer::init()
 	{
 	}
@@ -35,7 +39,7 @@ namespace gx {
 			canUpdate = true;
 			GLTexture2D::destroy(this->texID);
 			GLTexture2D tex;
-			tex.init(heightValues, texWidth, texHeight, GX_RGB, GX_HEIGHT);
+			tex.init(heightValues, texWidth, texHeight,GX_RGB, GX_HEIGHT);
 			this->texID = tex.getID();
 		}
 	}
@@ -66,24 +70,20 @@ namespace gx {
 			ImGui::SliderFloat("Z-Plane[Seed]", &z, 0.0f, 1000.0f);
 		}
 		if (ImGui::Button("Update")&& canUpdate) {
-			if (heightValues != nullptr) {
-				delete[] heightValues;
-				delete[] heightsNormalized;
-				heightValues = nullptr;
-			}
+			resetHeightValues();
 			createPerlinTex(); 
 		}
 
 		ImGui::Separator();
 		ImGui::Text("Height Map Settings");
 		ImGui::InputText("File Path", filePathBuffer, 1024);
-		if (ImGui::Button("Load File")) {
-			if (heightValues != nullptr) {
-				delete[] heightValues;
-				delete[] heightsNormalized;
-				heightValues = nullptr;
-			}
-			createHMapTex();
+		if (ImGui::Button("Load File")&&canUpdate) {
+			resetHeightValues();
+			createHMapTex(filePathBuffer);
+		}
+		if (errorLoading) {
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(255, 0, 0, 255), "Error Loading File ...");
 		}
 
 		ImGui::Image(reinterpret_cast<void*>(texID), ImGui::GetContentRegionAvail()

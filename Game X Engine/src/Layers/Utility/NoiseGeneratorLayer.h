@@ -2,13 +2,15 @@
 #include "Config.h"
 #include "Layers/Layer.h"
 #include "Terrain/HeightGenerators/NoiseGenerator.h"
+#include "Terrain/HeightGenerators/TextureMapGenerator.h"
 
+constexpr int PERLIN_WIDTH = 256;
+constexpr int PERLIN_HEIGHT = 256;
 namespace gx {
 	class GX_DLL NoiseGeneratorLayer :public Layer {
 	public:
 		inline NoiseGeneratorLayer(const std::string& layerName) : Layer(layerName),
-			scale(27.0f), nOctaves(4), persistence(0.5f), lacunarity(2.9f), z(24.0f), currentState(0) ,texID(0)
-			,texWidth(256),texHeight(256){
+			scale(27.0f), nOctaves(4), persistence(0.5f), lacunarity(2.9f), z(24.0f), currentState(0) ,texID(0){
 			filePathBuffer[0] = '\0';
 		}
 		virtual void init()override;
@@ -26,11 +28,23 @@ namespace gx {
 		static float* heightsNormalized;
 		static bool isUpdated;
 		static bool canUpdate;
+		static bool errorLoading;
+		static int texWidth;
+		static int texHeight;
 		int currentState;//0 is perlin , 1 is heightmap image
-		int texWidth, texHeight, nOctaves;
+		int nOctaves;
 		float scale, persistence,lacunarity,z;
 		char filePathBuffer[1024];
-		
+		inline void resetHeightValues() {
+			errorLoading = false;
+			texWidth = PERLIN_WIDTH;
+			texHeight = PERLIN_HEIGHT;
+			if (heightValues != nullptr) {
+				delete[] heightValues;
+				delete[] heightsNormalized;
+				heightValues = nullptr;
+			}
+		}
 		static inline void generateNoiseMap(int width, int height, float scale,int nOctaves, float persistence, float lacunarity, float z) {
 			NoiseGenerator ng(width, height, scale, nOctaves, persistence, lacunarity, z);
 			ng.init();
@@ -39,16 +53,32 @@ namespace gx {
 			isUpdated = true;
 			
 		}
+		static inline void createHeightMapAsync(const char* filePath,GXTexture2DType type) {
+			
+			TextureMapGenerator tmg(filePath);
+			tmg.init();
+			heightValues = tmg.getHeightsColor();
+			if (heightValues == nullptr) {
+				errorLoading = true;
+				canUpdate = true;
+				return;
+			}
+			heightsNormalized =tmg.getHeightsNormalized();
+			texWidth = tmg.getWidth();
+			texHeight = tmg.getHeight();
+			isUpdated = true;
+
+		}
 		std::future<void> asyncTask;
 		std::thread generationThread;
 		inline void createPerlinTex() {
 			canUpdate = false;
-			//t=std::thread(generateNoiseMap, texWidth, texHeight, scale, nOctaves, persistence, lacunarity, z);
 			asyncTask=std::async(std::launch::async, generateNoiseMap, texWidth, texHeight, scale, nOctaves, persistence, lacunarity, z);
-			//generateNoiseMap(texWidth, texHeight, scale, nOctaves, persistence, lacunarity, z);
 		}
-		inline void createHMapTex() {
-			//std::async(std::launch::async, generateNoiseMap, texWidth, texHeight, scale, nOctaves, persistence, lacunarity, z);
+		inline void createHMapTex(const char* filePath) {
+			canUpdate = false;
+			asyncTask = std::async(std::launch::async, createHeightMapAsync, filePath,GX_HEIGHT);
+		
 		}
 		
 
