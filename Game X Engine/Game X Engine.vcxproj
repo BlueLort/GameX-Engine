@@ -126,6 +126,7 @@
     <ClCompile Include="src\Renderer\openGL\Shader\GLShaderLibrary.cpp" />
     <ClCompile Include="src\Renderer\openGL\Shader\GLShaderManager.cpp" />
     <ClCompile Include="src\Renderer\openGL\Texture\GLTexture2D.cpp" />
+    <ClCompile Include="src\Terrain\Plane\Plane.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui_demo.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui_draw.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="src\Terrain\HeightGenerators\HeightMapGenerator.h" />
     <ClInclude Include="src\Terrain\HeightGenerators\NoiseGenerator.h" />
     <ClInclude Include="src\Terrain\HeightGenerators\TextureMapGenerator.h" />
+    <ClInclude Include="src\Terrain\Plane\Plane.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imconfig.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imgui.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imgui_impl_opengl3.h" />

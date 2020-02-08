@@ -52,9 +52,10 @@ namespace gx {
 	void MainScene::onUpdate(float deltaTime)
 	{
 
-		for (auto obj : sceneModelObjects) {
-			obj->update(deltaTime);
+		for (int i = 0; i < sceneModelObjects.size();i++) {
+			sceneModelObjects[i]->update(deltaTime);
 		}
+		plane->update(deltaTime);
 		skydome->update(deltaTime);
 	}
 

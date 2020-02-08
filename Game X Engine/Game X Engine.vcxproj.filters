@@ -210,6 +210,9 @@
     <ClInclude Include="src\IOManagement\IORequestHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Terrain\Plane\Plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window\GXWindow.cpp">
@@ -306,6 +309,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\IOManagement\IORequestHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Terrain\Plane\Plane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

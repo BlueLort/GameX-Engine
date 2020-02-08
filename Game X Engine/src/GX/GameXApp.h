@@ -10,6 +10,8 @@
 #include "Camera/EditorCamera/EditorCamera.h"
 #include "Terrain/HeightGenerators/NoiseGenerator.h"
 #include "GXTimer.h"
+#include "Terrain/Plane/Plane.h"
+
 namespace gx {
 	//adapt it to whatever API im using.
 	using GX_SDLEvent = SDL_Event;

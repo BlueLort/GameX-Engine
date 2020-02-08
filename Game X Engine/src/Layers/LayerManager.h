@@ -30,6 +30,14 @@ namespace gx {
 			}
 				
 		}
+		inline void setPlane(std::shared_ptr<GXPlane>& plane) {
+			if (plane->isReady)
+				mainSceneLayer->setPlane(plane);
+			else {
+				//modelObjectRequests.emplace(obj);
+			}
+
+		}
 		inline void addLog(const char* txt) {
 			logLayer->addLog(txt);
 		}

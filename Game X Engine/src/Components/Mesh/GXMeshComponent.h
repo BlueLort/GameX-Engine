@@ -37,7 +37,6 @@ namespace gx {
 		void draw(GLShader* glshader) {
 			uint32_t nDiffuse = 1;
 			uint32_t nSpecular = 1;
-
 			auto textures = GLBM->getTextures();
 			for (uint32_t i = 0; i < textures.size(); i++)
 			{
@@ -66,7 +65,6 @@ namespace gx {
 				glshader->setInt(name.c_str(), i);
 
 				textures[i]->use();
-
 			}
 
 
@@ -74,8 +72,10 @@ namespace gx {
 			GLBM->use();
 			GLRenderer::getInstance().draw(GLBM->getNumberOfElements(), RenderType::GX_TRIANGLES);
 			GLBM->stop();
-
+			
+			
 			GLTexture2D::setActiveTexture(0);
+			GLTexture2D::stop();
 		}
 	};
 }

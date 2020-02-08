@@ -10,7 +10,7 @@
 #include "Light/SceneLightManager.h"
 #include "IOManagement/IORequestHandler.h"
 namespace gx {
-	enum GXObjectType { GX_MODEL, GX_SKYDOME };
+	enum GXObjectType { GX_MODEL, GX_SKYDOME,GX_PLANE };
 	class GX_DLL GXObject {
 	public:
 		inline GXObject(GXObjectType ObjectType) :objType(ObjectType), isReady(false){
