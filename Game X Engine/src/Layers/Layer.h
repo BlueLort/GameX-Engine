@@ -34,14 +34,14 @@ namespace gx {
 			std::sort(layers.begin(), layers.end(), comparator);
 		}
 		inline void	renderUpdateLayers(float deltaTime) {
-			for (auto layer : layers) {
+			for (auto& layer : layers) {
 				layer.second->start();
 				layer.second->onUpdate(deltaTime);
 				layer.second->end();
 			}
 		}
 		inline void onGUIRender() {
-			for (auto layer : layers) {
+			for (auto& layer : layers) {
 				layer.second->onGUIRender();
 			}
 		}

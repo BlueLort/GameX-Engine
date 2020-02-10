@@ -32,7 +32,13 @@ void initSystems(gx::GameXApp* gameInst) {
 	gameInst->UI_GL->init(); GXE_INFO("dear ImGUI v1.73 WIP initialized for OpenGL !");
 	GXE_PRINT("Initiating GLShaders");
 	gx::GLShaderManager::init(); GXE_INFO("OpenGL Shader Manager initialized !");
+
 #endif 
+	//preload models
+	gx::io::IORequestHandler::importModel("res/models/sphere/", "spheres.obj");
+	gx::io::IORequestHandler::waitTasks();
+	gx::LayerManager::getInstance().init();//instantiate a layer manager.[first ref]
+	GXE_INFO("Layers Manager Initialized !");
 
 }
 

@@ -37,7 +37,7 @@ namespace gx {
 		if (isUpdated) {
 			isUpdated = false;
 			canUpdate = true;
-			GLTexture2D::destroy(this->texID);
+			if(this->texID!=0)GLTexture2D::destroy(this->texID);
 			GLTexture2D tex;
 			tex.init(heightValues, texWidth, texHeight,GX_RGB, GX_HEIGHT);
 			this->texID = tex.getID();
@@ -86,7 +86,7 @@ namespace gx {
 			ImGui::TextColored(ImVec4(255, 0, 0, 255), "Error Loading File ...");
 		}
 
-		ImGui::Image(reinterpret_cast<void*>(texID), ImGui::GetContentRegionAvail()
+		ImGui::Image(reinterpret_cast<void*>(this->texID), ImGui::GetContentRegionAvail()
 			, ImVec2(1, 1), ImVec2(0, 0));
 		ImGui::PopStyleVar(3);
 		ImGui::End();

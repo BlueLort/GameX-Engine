@@ -222,9 +222,9 @@ namespace gx {
 				auto meshes = meshesNeedToBeProcessed.front();
 				meshesNeedToBeProcessed.pop();
 				std::vector<std::shared_ptr<GXMeshComponent>> components;
-				for (auto mesh : meshes.second) {
+				for (auto& mesh : meshes.second) {
 					std::vector<std::shared_ptr<GLTexture2D>> textures;
-					for (auto tex : mesh->texturesData) {
+					for (auto& tex : mesh->texturesData) {
 						textures.emplace_back(GLReadTexture(tex));
 					}
 					components.emplace_back(new GXMeshComponent(GLCreateBufferLayout(mesh->verts, mesh->indices, textures)));
@@ -249,15 +249,15 @@ namespace gx {
 		}
 
 		inline void IOManager::destroyGLModels() {
-			for (auto ite : modelsImported) {
-				for (auto meshComp : ite.second) {
+			for (auto& ite : modelsImported) {
+				for (auto& meshComp : ite.second) {
 					meshComp->destroy();
 				}
 			}
 
 		}
 		inline void IOManager::destroyTextures() {
-			for (auto ite : texIDs) {
+			for (auto& ite : texIDs) {
 				GLTexture2D::destroy(ite.second);
 			}
 		}

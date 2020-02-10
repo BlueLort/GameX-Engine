@@ -23,15 +23,12 @@ namespace gx {
 
 	void GameXApp::Start() {
 		//OBJECT FOR DEBUGGING
-		
-		io::IORequestHandler::importModel("res/models/sphere/", "spheres.obj");
-		io::IORequestHandler::waitTasks();
-		LayerManager::getInstance().init();//instantiate a layer manager.[first ref]
 		std::shared_ptr<GXModelObject> object = std::make_shared<GXModelObject>();
 		object->GLinit("res/models/nanosuit/nanosuit.obj");
 		LayerManager::getInstance().addModelObject(object);
+
 		std::shared_ptr<GXPlane> plane = std::make_shared<GXPlane>(128, 128);
-		plane->init();
+		plane->init(LayerManager::getInstance().getHeightsNormalized());
 		plane->isReady = true;
 		LayerManager::getInstance().setPlane(plane);
 		while (isRunning) {

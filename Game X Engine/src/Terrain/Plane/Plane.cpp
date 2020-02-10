@@ -2,8 +2,10 @@
 #include "Plane.h"
 
 namespace gx {
-	void GXPlane::init()
+	//heights must be bigger in width & height than plane
+	void GXPlane::init(const float* heights)
 	{
+	
 		std::vector<Vertex3D> verts;
 		verts.reserve(width * depth);
 		int widthMinusOne = width - 1;
@@ -13,30 +15,29 @@ namespace gx {
 		int topLeftZ = depthMinusOne / -2.0f;
 		int totalIndicesSize = widthMinusOne * depthMinusOne * 6;
 		indices = new uint32_t[totalIndicesSize];
-	
-		for (int x = 0; x < width; x++) {
-			float u = static_cast<float>(x) / width;
-			for (int z = 0; z < depth; z++) {
-				float v = static_cast<float>(z) / depth;
-								
+		for (int z = 0; z < depth; z++) {
+			float v = static_cast<float>(z) / depth;
+			for (int x = 0; x < width; x++) {
+				float u = static_cast<float>(x) / width;			
 				verts.emplace_back(
-					GXVec3(topLeftX + x, 1.0f, topLeftZ + z)// POS
+					GXVec3(topLeftX + x, heights[z*width+x], topLeftZ + z)// POS
 					, GXVec3(0.0f, 1.0f, 0.0f)//NORMAL
 					, GXVec2(u, v));// TEXCOORDS
 			}
 		}
-		//index one quad at a time
 		int k = 0;
-		int loc = 0;
-		while(k<totalIndicesSize){
-				indices[k] = loc;
-				indices[k + 1] = loc + width + 1;
-				indices[k + 2] = loc + 1;
-				indices[k + 3] = loc;
-				indices[k + 4] = loc + width;
-				indices[k + 5] = loc + width + 1;
-				k += 6;
-				loc++;
+		for (int z = 0; z < depthMinusOne;z++)
+		{
+			for (int x = 0; x < widthMinusOne;x++)
+			{
+				indices[k] = z * width + x;
+				indices[k + 1] = (z + 1) * width + x;
+				indices[k + 2] = z * width + x + 1;
+				indices[k + 3] = (z + 1) * width + x;
+				indices[k + 4] = (z + 1) * width + x + 1;
+				indices[k + 5] = z * width + x + 1;
+				k += 6; // next quad
+			}
 		}
 		std::shared_ptr<GLBufferManager> Buffer;
 		Buffer.reset(new GLBufferManager());
@@ -67,7 +68,7 @@ namespace gx {
 		this->glshader->setMat4("vp", EditorCamera::getInstance().getPVMatrix());
 		this->glshader->setFloat("material.shininess", 32.0f);
 #endif
-		for (auto component : components) {
+		for (auto& component : components) {
 			component->update(deltaTime);
 			component->draw(glshader);
 		}

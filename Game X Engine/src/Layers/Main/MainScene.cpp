@@ -28,7 +28,7 @@ namespace gx {
 	{
 		GLFBO->use();
 		glViewport(0, 0, width, height);//let layers make glviewport according to their resolution
-		for (auto ite : GLFlags) {
+		for (auto& ite : GLFlags) {
 			glEnable(ite);
 		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -39,7 +39,7 @@ namespace gx {
 	void MainScene::end()
 	{
 		GLFrameBuffer::stop();
-		for (auto ite : GLFlags) {
+		for (auto& ite : GLFlags) {
 			glDisable(ite);
 		}
 	}

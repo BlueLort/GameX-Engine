@@ -1,6 +1,7 @@
 #pragma once
 #include "Config.h"
 #include "Object/GXObject.h"
+#include "Terrain/HeightGenerators/HeightMapGenerator.h"
 namespace gx {
 	class GX_DLL GXPlane : public GXObject {
 	public:
@@ -12,7 +13,7 @@ namespace gx {
 				glshader = GLShaderManager::getShader(shaderPath);
 			}
 		}
-		void init();
+		void init(const float* heights);
 		virtual void update(float deltaTime) override;
 		virtual void destroy() override;
 		~GXPlane() { if (indices != nullptr)delete[] indices; }

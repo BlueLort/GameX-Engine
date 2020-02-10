@@ -21,6 +21,8 @@ namespace gx {
 			layers.add(std::make_pair(1/*high Priority -> Handled first*/, mainSceneLayer));
 			layers.add(std::make_pair(0, logLayer));
 			layers.add(std::make_pair(0, ngLayer));
+			ngLayer->generateNoiseMap();//generate some noisemap initially.
+			//ngLayer->onUpdate(0.0f);//update the gui and create texture for some random height map
 		}
 		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) {
 			if (obj->isReady)
@@ -56,8 +58,11 @@ namespace gx {
 		inline void onGUIRender() {
 			layers.onGUIRender();
 		}
+		inline const float* getHeightsNormalized()const { return NoiseGeneratorLayer::getHeightsNormalized(); }
 	private:
-		inline LayerManager() {	}
+		inline LayerManager() { 
+			
+		}
 		std::queue<std::shared_ptr<GXModelObject>> modelObjectRequests;
 		std::shared_ptr<MainScene> mainSceneLayer;
 		std::shared_ptr<LogLayer> logLayer;

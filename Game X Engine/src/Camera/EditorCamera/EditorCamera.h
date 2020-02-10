@@ -25,7 +25,7 @@ namespace gx {
 			static EditorCamera ecam;
 			return ecam;
 		}
-		void init(const GXVec3& position = GXVec3(0.0f, 0.0f, 10.0f), const GXVec3& up = GXVec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH, float AR=ASPECT_RATIO, float zNear=zNEAR, float zFar=zFAR);
+		void init(const GXVec3& position = GXVec3(0.0f, 10.0f, 10.0f), const GXVec3& up = GXVec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH, float AR=ASPECT_RATIO, float zNear=zNEAR, float zFar=zFAR);
 
 		virtual void processKeyboard(CameraMovement direction,float deltaTime)override;
 		virtual void processMouseMovement(float xoffset, float yoffset, bool constrainPitch = true) override;

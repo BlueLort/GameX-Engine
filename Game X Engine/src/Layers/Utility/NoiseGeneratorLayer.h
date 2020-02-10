@@ -10,7 +10,7 @@ namespace gx {
 	class GX_DLL NoiseGeneratorLayer :public Layer {
 	public:
 		inline NoiseGeneratorLayer(const std::string& layerName) : Layer(layerName),
-			scale(27.0f), nOctaves(4), persistence(0.5f), lacunarity(2.9f), z(24.0f), currentState(0) ,texID(0){
+			scale(27.0f), nOctaves(4), persistence(0.5f), lacunarity(2.9f), z(24.0f),texID(0){
 			filePathBuffer[0] = '\0';
 		}
 		virtual void init()override;
@@ -20,7 +20,31 @@ namespace gx {
 		virtual int onEvent(const gx::event::GXEventType& eventType)override;
 		virtual void onUpdate(float deltaTime)override;
 		virtual void onGUIRender()override;
-		
+		static const float* getHeightsNormalized(){ return heightsNormalized; }
+		static inline void generateNoiseMap(int width=PERLIN_WIDTH, int height = PERLIN_HEIGHT, float scale=27.0f, int nOctaves=4, float persistence=0.33f, float lacunarity=2.9f, float z=0.0f) {
+			NoiseGenerator ng(width, height, scale, nOctaves, persistence, lacunarity, z);
+			ng.init();
+			heightValues = ng.getHeightsColor();
+			heightsNormalized = ng.getHeightsNormalized();
+			isUpdated = true;
+
+		}
+		static inline void createHeightMapAsync(const char* filePath, GXTexture2DType type) {
+
+			TextureMapGenerator tmg(filePath);
+			tmg.init();
+			heightValues = tmg.getHeightsColor();
+			if (heightValues == nullptr) {
+				errorLoading = true;
+				canUpdate = true;
+				return;
+			}
+			heightsNormalized = tmg.getHeightsNormalized();
+			texWidth = tmg.getWidth();
+			texHeight = tmg.getHeight();
+			isUpdated = true;
+
+		}
 	private:
 		ImGuiWindowFlags windowFlags;
 		uint32_t texID;
@@ -31,7 +55,6 @@ namespace gx {
 		static bool errorLoading;
 		static int texWidth;
 		static int texHeight;
-		int currentState;//0 is perlin , 1 is heightmap image
 		int nOctaves;
 		float scale, persistence,lacunarity,z;
 		char filePathBuffer[1024];
@@ -45,30 +68,7 @@ namespace gx {
 				heightValues = nullptr;
 			}
 		}
-		static inline void generateNoiseMap(int width, int height, float scale,int nOctaves, float persistence, float lacunarity, float z) {
-			NoiseGenerator ng(width, height, scale, nOctaves, persistence, lacunarity, z);
-			ng.init();
-			heightValues = ng.getHeightsColor();
-			heightsNormalized = ng.getHeightsNormalized();
-			isUpdated = true;
-			
-		}
-		static inline void createHeightMapAsync(const char* filePath,GXTexture2DType type) {
-			
-			TextureMapGenerator tmg(filePath);
-			tmg.init();
-			heightValues = tmg.getHeightsColor();
-			if (heightValues == nullptr) {
-				errorLoading = true;
-				canUpdate = true;
-				return;
-			}
-			heightsNormalized =tmg.getHeightsNormalized();
-			texWidth = tmg.getWidth();
-			texHeight = tmg.getHeight();
-			isUpdated = true;
-
-		}
+	
 		std::future<void> asyncTask;
 		std::thread generationThread;
 		inline void createPerlinTex() {
