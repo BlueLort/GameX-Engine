@@ -26,11 +26,6 @@ namespace gx {
 		std::shared_ptr<GXModelObject> object = std::make_shared<GXModelObject>();
 		object->GLinit("res/models/nanosuit/nanosuit.obj");
 		LayerManager::getInstance().addModelObject(object);
-
-		std::shared_ptr<GXPlane> plane = std::make_shared<GXPlane>(128, 128);
-		plane->init(LayerManager::getInstance().getHeightsNormalized());
-		plane->isReady = true;
-		LayerManager::getInstance().setPlane(plane);
 		while (isRunning) {
 			GXTimer::getAppTimer().update();
 			InputManager::getInstance().update();
@@ -53,6 +48,7 @@ namespace gx {
 			
 
 		}
+		io::IORequestHandler::destroy();//destroy models and wait all tasks to finish.
 	}
 
 	int GameXApp::onEvent(void* userdata, GX_SDLEvent* Event)

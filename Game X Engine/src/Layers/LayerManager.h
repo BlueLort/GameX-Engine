@@ -2,7 +2,7 @@
 #include "Layers/Main/MainScene.h"
 #include "Layers/Debug/Logging/LogLayer.h"
 #include "Layers/Utility/NoiseGeneratorLayer.h"
-
+#include "Layers/Plane/PlaneEditorLayer.h"
 namespace gx {
 	constexpr int32_t SCENE_WIDTH = 1920;
 	constexpr int32_t SCENE_HEIGHT = 1080;
@@ -17,11 +17,13 @@ namespace gx {
 			mainSceneLayer->init();
 			logLayer = std::make_shared<LogLayer>("Log");
 			logLayer->init();
-			ngLayer = std::make_shared<NoiseGeneratorLayer>("Height Map Settings");
-			layers.add(std::make_pair(1/*high Priority -> Handled first*/, mainSceneLayer));
-			layers.add(std::make_pair(0, logLayer));
-			layers.add(std::make_pair(0, ngLayer));
-			ngLayer->generateNoiseMap();//generate some noisemap initially.
+			noiseGenerationLayer = std::make_shared<NoiseGeneratorLayer>("Height Map Settings");
+			planeEditorLayer= std::make_shared<PlaneEditorLayer>("Terrain Settings");
+			layers.add(std::make_pair(0/*low number -> Drawn first*/, mainSceneLayer));
+			layers.add(std::make_pair(1, logLayer));
+			layers.add(std::make_pair(1, noiseGenerationLayer));
+			layers.add(std::make_pair(1, planeEditorLayer));
+			noiseGenerationLayer->generateNoiseMap();//generate some noisemap initially.
 			//ngLayer->onUpdate(0.0f);//update the gui and create texture for some random height map
 		}
 		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) {
@@ -66,7 +68,8 @@ namespace gx {
 		std::queue<std::shared_ptr<GXModelObject>> modelObjectRequests;
 		std::shared_ptr<MainScene> mainSceneLayer;
 		std::shared_ptr<LogLayer> logLayer;
-		std::shared_ptr<NoiseGeneratorLayer> ngLayer;
+		std::shared_ptr<NoiseGeneratorLayer> noiseGenerationLayer;
+		std::shared_ptr<PlaneEditorLayer> planeEditorLayer;
 		LayerQueue layers;
 	};
 

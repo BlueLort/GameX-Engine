@@ -55,7 +55,7 @@ namespace gx {
 		for (int i = 0; i < sceneModelObjects.size();i++) {
 			sceneModelObjects[i]->update(deltaTime);
 		}
-		plane->update(deltaTime);
+		if(plane.get()!=nullptr)plane->update(deltaTime);
 		skydome->update(deltaTime);
 	}
 

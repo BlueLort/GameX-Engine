@@ -246,6 +246,9 @@ namespace gx {
 		{
 			destroyGLModels();
 			destroyTextures();
+			while (!asyncTasks.empty()) {
+				asyncTasks.pop_back();
+			}
 		}
 
 		inline void IOManager::destroyGLModels() {

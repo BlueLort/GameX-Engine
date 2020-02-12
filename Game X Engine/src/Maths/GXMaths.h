@@ -3,7 +3,9 @@
 #include <glm/glm/glm.hpp>
 #include <glm/glm/gtc/matrix_transform.hpp>
 #include <glm/glm/gtc/type_ptr.hpp>
+
 namespace gx {
+#define CLAMP(a,start,end) if (a < start)a = start;else if (a > end)a = end;
 #ifdef USING_GLM_MATHS
 	using GXMat4 = glm::mat4;
 	using GXMat3 = glm::mat3;
@@ -29,6 +31,7 @@ namespace gx {
 	public:
 		inline static double inverseLerp(double val,double a,double b){ return (val - a) / (b - a); }
 		inline static double lerp(double f, double a, double b) { return a + f * (b - a); }
+	
 		inline static GXMat4 prespective(const float& FOV,const float& AR,const float& zNear,const float& zFar ) {
 			return glm::perspective(FOV,AR,zNear,zFar);
 		}
