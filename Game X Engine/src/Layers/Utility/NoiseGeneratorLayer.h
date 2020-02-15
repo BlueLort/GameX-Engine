@@ -70,7 +70,6 @@ namespace gx {
 		}
 	
 		std::future<void> asyncTask;
-		std::thread generationThread;
 		inline void createPerlinTex() {
 			canUpdate = false;
 			asyncTask=std::async(std::launch::async, generateNoiseMap, texWidth, texHeight, scale, nOctaves, persistence, lacunarity, z);
@@ -81,7 +80,7 @@ namespace gx {
 		
 		}
 		
-
+		friend class PlaneEditorLayer;
 	};
 
 }

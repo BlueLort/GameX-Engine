@@ -25,7 +25,7 @@ namespace gx {
 #endif
 		for (auto component : components) {
 			component->update(deltaTime);
-			component->draw(glshader);
+			component->draw(glshader,isWireFrame);
 		}
 #ifdef USING_OPENGL
 		//reset values to default

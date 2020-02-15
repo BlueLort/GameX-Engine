@@ -17,6 +17,12 @@ namespace gx {
 		GX_RGB=GL_RGB,
 		GX_RED=GL_RED
 	};
+	enum GXTexture2DFilteringMethod {//TODO move this from here
+		GX_NEAREST = GL_NEAREST,
+		GX_LINEAR = GL_LINEAR
+
+	};
+
 	class GX_DLL GLTexture2D
 	{
 	public:
@@ -24,7 +30,7 @@ namespace gx {
 			ID = id;
 			type = Type;
 		}
-		void init(const uint8_t* data, int32_t width, int32_t height, GXTexture2DColorType colorType, GXTexture2DType Type);
+		void init(const uint8_t* data, int32_t width, int32_t height, GXTexture2DColorType colorType, GXTexture2DType Type, GXTexture2DFilteringMethod method);
 		inline static void setActiveTexture(uint32_t pos) { glActiveTexture(GL_TEXTURE0 + pos); }
 		inline void use() {
 			glBindTexture(GL_TEXTURE_2D,ID);

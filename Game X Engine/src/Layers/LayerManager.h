@@ -4,6 +4,7 @@
 #include "Layers/Utility/NoiseGeneratorLayer.h"
 #include "Layers/Plane/PlaneEditorLayer.h"
 namespace gx {
+	
 	constexpr int32_t SCENE_WIDTH = 1920;
 	constexpr int32_t SCENE_HEIGHT = 1080;
 	class GX_DLL LayerManager {
@@ -23,8 +24,6 @@ namespace gx {
 			layers.add(std::make_pair(1, logLayer));
 			layers.add(std::make_pair(1, noiseGenerationLayer));
 			layers.add(std::make_pair(1, planeEditorLayer));
-			noiseGenerationLayer->generateNoiseMap();//generate some noisemap initially.
-			//ngLayer->onUpdate(0.0f);//update the gui and create texture for some random height map
 		}
 		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) {
 			if (obj->isReady)
@@ -33,14 +32,6 @@ namespace gx {
 				modelObjectRequests.emplace(obj);
 			}
 				
-		}
-		inline void setPlane(std::shared_ptr<GXPlane>& plane) {
-			if (plane->isReady)
-				mainSceneLayer->setPlane(plane);
-			else {
-				//modelObjectRequests.emplace(obj);
-			}
-
 		}
 		inline void addLog(const char* txt) {
 			logLayer->addLog(txt);
@@ -56,11 +47,11 @@ namespace gx {
 				}
 			}
 			layers.renderUpdateLayers(deltaTime);
+
 		}
 		inline void onGUIRender() {
 			layers.onGUIRender();
 		}
-		inline const float* getHeightsNormalized()const { return NoiseGeneratorLayer::getHeightsNormalized(); }
 	private:
 		inline LayerManager() { 
 			

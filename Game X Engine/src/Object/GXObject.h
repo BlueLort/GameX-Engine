@@ -13,7 +13,7 @@ namespace gx {
 	enum GXObjectType { GX_MODEL, GX_SKYDOME,GX_PLANE };
 	class GX_DLL GXObject {
 	public:
-		inline GXObject(GXObjectType ObjectType) :objType(ObjectType), isReady(false){
+		inline GXObject(GXObjectType ObjectType) :objType(ObjectType), isReady(false),isWireFrame(false){
 
 		}
 		GXTransform transform;
@@ -28,6 +28,7 @@ namespace gx {
 		GLShader* getShader() const { return glshader; }
 
 		bool isReady;
+		bool isWireFrame;
 	protected:
 		std::vector<std::shared_ptr<GXComponent>> components;
 		GXObjectType objType;

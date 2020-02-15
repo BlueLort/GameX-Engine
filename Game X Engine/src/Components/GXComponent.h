@@ -29,7 +29,7 @@ namespace gx {
 		virtual inline uint32_t getEventType() const = 0;
 		virtual inline uint32_t getEventClass() const = 0;
 		virtual void update(float deltaTime) = 0;
-		virtual void draw(GLShader* glshader) {};
+		virtual void draw(GLShader* glshader,bool isWireFrame) {};
 		virtual void destroy() = 0;
 
 		inline bool isSameClassAs(GXComponentClass componentClass) const {

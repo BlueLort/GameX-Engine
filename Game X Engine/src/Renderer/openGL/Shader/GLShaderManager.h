@@ -9,12 +9,14 @@ namespace gx {
 	extern const char* GLDefaultModelShader[3];
 	extern const char* GLDefaultLightingShader[3];
 	extern const char* GLDefaultSkydomeShader[3];
+	extern const char* GLDefaultPlaneShader[3];
 	enum GLShaderType
 	{
 		DEFAULT_COLOR = 0,//ADD MORE TYPES THAT ARE PRECOMPILED FOR THE USER
 		DEFAULT_LIGHT,
 		DEFAULT_MODEL,
-		DEFAULT_SKYDOME
+		DEFAULT_SKYDOME,
+		DEFAULT_PLANE
 		
 	};
 	class GLShader;

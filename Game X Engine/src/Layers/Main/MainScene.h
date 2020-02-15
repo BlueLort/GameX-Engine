@@ -25,11 +25,13 @@ namespace gx {
 		std::vector<std::shared_ptr<GXModelObject>> sceneModelObjects;
 		std::shared_ptr<GXSkydomeObject> skydome;
 		std::shared_ptr<GXPlane> plane;
+		static std::shared_ptr<GXPlane> mainPlane;
 		ImGuiWindowFlags windowFlags;
 		int32_t width, height;
 		//just the openGL FBO for now
 		std::vector<GLenum> GLFlags;
 		std::unique_ptr<GLFrameBuffer> GLFBO;
+		friend class PlaneEditorLayer;
 	};
 
 }

@@ -5,43 +5,73 @@ namespace gx {
 	//heights must be bigger in width & height than plane
 	void GXPlane::init(const float* heights)
 	{
-	
-		std::vector<Vertex3D> verts;
-		verts.reserve(width * depth);
-		int widthMinusOne = width - 1;
-		int depthMinusOne = depth - 1;
+		verts.reserve(n * m);
+		int nMinusOne = n - 1;
+		int mMinusOne = m - 1;
+		float dx = static_cast<float>(width) / n;
+		float dz = static_cast<float>(depth) / m;
+
+		/* i*dv or j *du alternative to get u&v
+		float du = 1.0f / nMinusOne;
+		float dv = 1.0f / mMinusOne;
+		*/
 		//Using topLeft to center Plane aroung origin
-		int topLeftX = widthMinusOne / -2.0f;
-		int topLeftZ = depthMinusOne / -2.0f;
-		int totalIndicesSize = widthMinusOne * depthMinusOne * 6;
+		float topLeftX = width / -2.0f;
+		float topLeftZ = depth / -2.0f;
+		int totalIndicesSize = nMinusOne * mMinusOne * 6;
 		indices = new uint32_t[totalIndicesSize];
-		for (int z = 0; z < depth; z++) {
-			float v = static_cast<float>(z) / depth;
-			for (int x = 0; x < width; x++) {
-				float u = static_cast<float>(x) / width;			
+
+		for (uint32_t i = 0; i < m; i++)
+		{
+			int locZ = i * dz;
+			float z = topLeftZ + i * dz;
+			float v= static_cast<float>(i) / m;
+			for (uint32_t j = 0; j < n; j++)
+			{
+				int locX = j * dx;
+				float x = topLeftX + j*dx;
+				float u = static_cast<float>(j) / n;
 				verts.emplace_back(
-					GXVec3(topLeftX + x, heights[z*width+x], topLeftZ + z)// POS
-					, GXVec3(0.0f, 1.0f, 0.0f)//NORMAL
+					GXVec3(x, getHeightValue(x, z, locX, locZ, heights), z)// POS
 					, GXVec2(u, v));// TEXCOORDS
 			}
 		}
 		int k = 0;
-		for (int z = 0; z < depthMinusOne;z++)
+		for (int z = 0; z < mMinusOne; z++)
 		{
-			for (int x = 0; x < widthMinusOne;x++)
-			{
-				indices[k] = z * width + x;
-				indices[k + 1] = (z + 1) * width + x;
-				indices[k + 2] = z * width + x + 1;
-				indices[k + 3] = (z + 1) * width + x;
-				indices[k + 4] = (z + 1) * width + x + 1;
-				indices[k + 5] = z * width + x + 1;
+			for (int x = 0; x < nMinusOne; x++)
+			{//TODO have a little redundency assigning normals here that needs to be improved
+				GXVec3 normal;
+				indices[k] = z * n + x;
+				indices[k + 1] = (z + 1) * n + x;
+				indices[k + 2] = z * n + x + 1;
+
+				normal = getNormalVec(indices[k], indices[k + 1], indices[k + 2]);
+				verts[indices[k]].normal = normal;
+				verts[indices[k + 1]].normal = normal;
+				verts[indices[k + 2]].normal = normal;
+
+				indices[k + 3] = (z + 1) * n + x;
+				indices[k + 4] = (z + 1) * n + x + 1;
+				indices[k + 5] = z * n + x + 1;
+
+				normal = getNormalVec(indices[k + 3], indices[k + 4], indices[k + 5]);
+				verts[indices[k + 3]].normal = normal;
+				verts[indices[k + 4]].normal = normal;
+				verts[indices[k + 5]].normal = normal;
+
 				k += 6; // next quad
 			}
 		}
+
+	}
+
+	void GXPlane::uploadToBuffer(uint32_t textureID)
+	{
 		std::shared_ptr<GLBufferManager> Buffer;
 		Buffer.reset(new GLBufferManager());
 		Buffer->initFull(&verts[0], sizeof(Vertex3D) * verts.size(), sizeof(Vertex3D));
+		uint32_t totalIndicesSize = (n - 1) * (m - 1) * 6;
 		Buffer->uploadIndicesToBuffer(indices, totalIndicesSize * sizeof(uint32_t), totalIndicesSize);
 		Buffer->setAttribPointer(0, 3, GL_FLOAT, offsetof(Vertex3D, position));
 		Buffer->setAttribPointer(1, 3, GL_FLOAT, offsetof(Vertex3D, normal));
@@ -53,9 +83,14 @@ namespace gx {
 		/*for (int i = 0; i < textures.size(); i++) {
 			Buffer->addTexture(textures[i]);
 		}*/
+		std::shared_ptr<GLTexture2D> tex;
+		tex.reset(new GLTexture2D());
+		tex->init(textureID, GXTexture2DType::GX_DIFFUSE);
+		Buffer->addTexture(tex);
 		std::shared_ptr<GXMeshComponent> planeMeshComp;
 		planeMeshComp.reset(new GXMeshComponent(Buffer));
 		components.emplace_back(planeMeshComp);
+		verts.clear();//no need for the data anymore.
 	}
 
 	void GXPlane::update(float deltaTime)
@@ -70,7 +105,7 @@ namespace gx {
 #endif
 		for (auto& component : components) {
 			component->update(deltaTime);
-			component->draw(glshader);
+			component->draw(glshader, isWireFrame);
 		}
 	}
 
@@ -78,9 +113,9 @@ namespace gx {
 	{
 		for (int i = 0; i < components.size(); i++) {
 			components[i]->destroy();
-		}	
+		}
 	}
-		
-		
-		
+
+
+
 }

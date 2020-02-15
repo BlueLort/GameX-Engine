@@ -11,8 +11,16 @@ namespace gx {
 	}
 
 
-	void GLRenderer::draw(uint32_t nElements, RenderType type)
+	void GLRenderer::draw(uint32_t nElements, RenderType type,bool isWireFrame)
 	{
-		GL_CALL(glDrawElements(type, nElements, GL_UNSIGNED_INT, 0));
+		if (isWireFrame) {
+			GL_CALL(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
+			GL_CALL(glDrawElements(type, nElements, GL_UNSIGNED_INT, 0));
+			GL_CALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
+		}
+		else {
+			GL_CALL(glDrawElements(type, nElements, GL_UNSIGNED_INT, 0));
+		}
+	
 	}
 }

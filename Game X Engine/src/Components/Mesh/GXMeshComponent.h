@@ -34,7 +34,7 @@ namespace gx {
 		std::shared_ptr<GLBufferManager> GLBM;
 
 		// render the mesh
-		void draw(GLShader* glshader) {
+		void draw(GLShader* glshader,bool isWireFrame) {
 			uint32_t nDiffuse = 1;
 			uint32_t nSpecular = 1;
 			auto textures = GLBM->getTextures();
@@ -70,7 +70,7 @@ namespace gx {
 
 			// draw mesh
 			GLBM->use();
-			GLRenderer::getInstance().draw(GLBM->getNumberOfElements(), RenderType::GX_TRIANGLES);
+			GLRenderer::getInstance().draw(GLBM->getNumberOfElements(), RenderType::GX_TRIANGLES,isWireFrame);
 			GLBM->stop();
 			
 			

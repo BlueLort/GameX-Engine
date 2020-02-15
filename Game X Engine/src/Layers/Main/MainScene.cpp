@@ -2,6 +2,7 @@
 #include "MainScene.h"
 
 namespace gx {
+	std::shared_ptr<GXPlane> MainScene::mainPlane;
 	void MainScene::init()
 	{
 		GLFBO.reset(new GLFrameBuffer());
@@ -55,7 +56,7 @@ namespace gx {
 		for (int i = 0; i < sceneModelObjects.size();i++) {
 			sceneModelObjects[i]->update(deltaTime);
 		}
-		if(plane.get()!=nullptr)plane->update(deltaTime);
+		if(mainPlane.get()!=nullptr)mainPlane->update(deltaTime);
 		skydome->update(deltaTime);
 	}
 

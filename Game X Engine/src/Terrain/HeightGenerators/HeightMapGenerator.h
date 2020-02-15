@@ -7,7 +7,7 @@ namespace gx {
 		HeightMapGenerator(int Width, int Height, float Scale)
 			:width(Width), height(Height), scale(Scale)
 		{
-			heightsNormalized = new float[Width * Height*3];
+			heightsNormalized = new float[Width * Height];
 			heightsColor = new uint8_t[Width * Height*3];
 		}
 		HeightMapGenerator() {}

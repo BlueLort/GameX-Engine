@@ -39,7 +39,7 @@ namespace gx {
 			canUpdate = true;
 			if(this->texID!=0)GLTexture2D::destroy(this->texID);
 			GLTexture2D tex;
-			tex.init(heightValues, texWidth, texHeight,GX_RGB, GX_HEIGHT);
+			tex.init(heightValues, texWidth, texHeight,GX_RGB, GX_HEIGHT,GXTexture2DFilteringMethod::GX_LINEAR);
 			this->texID = tex.getID();
 		}
 	}
@@ -55,7 +55,7 @@ namespace gx {
 		ImGui::Text("Perlin Noise Generator Settings");
 		ImGui::Checkbox("Auto-Update", &autoUpdate);
 		if (autoUpdate&&canUpdate) {
-			if (ImGui::SliderFloat("Scale", &scale, 2.0f, 40.0f)) {createPerlinTex();}
+			if (ImGui::SliderFloat("Scale", &scale, 2.0f, 256.0f)) {createPerlinTex();}
 			if (ImGui::SliderInt("# Octaves", &nOctaves, 1, 9)) { createPerlinTex(); }
 			if (ImGui::SliderFloat("Persistence", &persistence, 0.01f, 1.0f)) { createPerlinTex(); }
 			if (ImGui::SliderFloat("Lacunarity", &lacunarity, 1.1f, 10.0f)) { createPerlinTex(); }
@@ -63,7 +63,7 @@ namespace gx {
 
 		}
 		else {
-			ImGui::SliderFloat("Scale", &scale, 2.0f, 40.0f);
+			ImGui::SliderFloat("Scale", &scale, 2.0f, 256.0f);
 			ImGui::SliderInt("# Octaves", &nOctaves, 1, 9);
 			ImGui::SliderFloat("Persistence", &persistence, 0.01f, 1.0f);
 			ImGui::SliderFloat("Lacunarity", &lacunarity, 1.1f, 10.0f);

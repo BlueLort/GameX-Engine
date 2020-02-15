@@ -34,7 +34,7 @@ namespace gx {
 	class GX_DLL Renderer {
 	public:
 		virtual void init()=0;
-		virtual void draw(uint32_t nElements,RenderType type) = 0;
+		virtual void draw(uint32_t nElements,RenderType type, bool isWireFrame) = 0;
 		virtual inline void setViewPort(uint32_t Width, uint32_t Height) = 0;
 		virtual inline void setDepthFunc(DepthFunc func) = 0;
 		virtual inline void setWindingOrder(WindingOrder type) = 0;

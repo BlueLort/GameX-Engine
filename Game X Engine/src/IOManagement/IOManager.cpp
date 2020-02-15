@@ -47,7 +47,7 @@ namespace gx {
 				return tex;
 			}
 			if (iData->data) {
-				tex->init(iData->data, iData->width,iData->height,iData->nChannels==4?GX_RGBA:GX_RGB,iData->type);
+				tex->init(iData->data, iData->width,iData->height,iData->nChannels==4?GX_RGBA:GX_RGB,iData->type,GXTexture2DFilteringMethod::GX_LINEAR);
 				GXE_DEBUG("GLTexture2D imported successfully\nPath: {0}", iData->filePath);
 				texIDs[fPath] = tex->getID();
 			}

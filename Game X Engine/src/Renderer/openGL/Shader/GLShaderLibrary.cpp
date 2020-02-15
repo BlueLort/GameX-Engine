@@ -30,6 +30,9 @@ void main()
 //Geometry Shader
 nullptr
 	};
+
+
+
 	//Default Object Lighting Shader
 	const char* GLDefaultLightingShader[] = {
 		//Shader Example Logic from learnopengl.com [with some modifications]
@@ -214,6 +217,11 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 //Geometry Shader
 nullptr
 	};
+
+
+
+
+
 	//Default Model Shader
 	const char* GLDefaultModelShader[] = {
 		//Vertex Shader
@@ -260,14 +268,13 @@ void main()
 //Geometry Shader
 nullptr
 	};
+
 	const char* GLDefaultSkydomeShader[] = {
 		//Vertex Shader
 		R"( 
 #version 430 core
 layout (location = 0) in vec3 aPos;
-
 out vec3 FragPos;
-
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
@@ -279,14 +286,12 @@ void main()
 	
 	 gl_Position = PVPos.xyww;
 }
-
 )"
 ,
 //Fragment Shader
 R"( 
 #version 430 core
 out vec4 FragColor;
-
 in vec3 FragPos;
 void main()
 {
@@ -302,4 +307,67 @@ void main()
 //Geometry Shader
 nullptr
 	};
+	const char* GLDefaultPlaneShader[] = {
+		R"( 
+#version 430 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aNormal;
+layout (location = 2) in vec2 aTexCoords;
+
+out vec3 FragPos;
+out vec3 Normal;
+out vec2 TexCoords;
+
+uniform mat4 model;
+uniform mat4 vp;
+
+void main()
+{
+    FragPos = vec3(model * vec4(aPos, 1.0));
+    Normal = mat3(transpose(inverse(model))) * aNormal;  
+    TexCoords = aTexCoords;
+    
+    gl_Position = vp * vec4(FragPos, 1.0);
+}
+)"
+,
+//Fragment Shader
+R"( 
+#version 430 core
+out vec4 FragColor;
+
+struct Material {
+    sampler2D diffuse1;
+    float shininess;
+}; 
+
+struct DirLight {
+    vec3 direction;
+	
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+in vec3 FragPos;
+in vec3 Normal;
+in vec2 TexCoords;
+
+uniform vec3 viewPos;
+uniform DirLight dirLight;
+uniform Material material;
+
+vec3 totalDiffuse;
+void main()
+{    
+
+	totalDiffuse=vec3(texture(material.diffuse1,TexCoords));
+    FragColor = vec4(totalDiffuse,1.0);
+}
+)"
+,
+//Geometry Shader
+nullptr
+	};
+
 }

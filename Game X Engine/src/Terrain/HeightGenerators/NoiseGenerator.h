@@ -11,14 +11,14 @@ namespace gx {
 			float maxH = FLT_MIN;
 			float minH = FLT_MAX;
 			int totalWidth = 3 * width;
-			int size = totalWidth * height;
-			for (int i = 0; i < size; i += 3) {
-				float quality = 1.0f;
-				float amp = 1.75;
+			int size = width * height;
+			for (int i = 0; i < size; i++) {
+				float quality = 3.5f;
+				float amp = 1.25f;
 				float curr = 0.0f;
 				for (int j = 0; j < nOctaves; j++) {
 
-					int X = i % totalWidth, Y = static_cast<int>(i / totalWidth);
+					int X = i % width, Y = static_cast<int>(i / width);
 					curr += abs(PerlinNoise::noise(X / quality, Y / quality, zPlane) * quality * amp);
 					quality *= scale/lacunarity;
 					amp *= persistence;
@@ -26,20 +26,19 @@ namespace gx {
 				if (curr > maxH)maxH = curr;
 				else if (curr < minH)minH = curr;
 				heightsNormalized[i] = curr;
-				quality = 1.0f;
+				quality = 3.5f;
 				amp = 1.25f;
 				curr = 0.0f;
 			}
-
+			int k = 0;
 			for (int y = 0; y < height; y++) {
 				for (int x = 0; x < totalWidth; x += 3) {
 					int loc = totalWidth * y + x;
-					heightsNormalized[loc] = GXMaths::inverseLerp(heightsNormalized[loc], minH, maxH);
-					heightsNormalized[loc + 1] = heightsNormalized[loc];
-					heightsNormalized[loc + 2] = heightsNormalized[loc];
-					heightsColor[loc] = heightsNormalized[loc] * 255;
+					heightsNormalized[k] = GXMaths::inverseLerp(heightsNormalized[k], minH, maxH);
+					heightsColor[loc] = heightsNormalized[k] * 255;
 					heightsColor[loc + 1] = heightsColor[loc];
 					heightsColor[loc + 2] = heightsColor[loc];
+					k++;
 				}
 			}
 			

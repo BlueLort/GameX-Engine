@@ -13,6 +13,7 @@ namespace gx {
 			heightsNormalized = new float[size];
 
 			int k = 0;
+			int l = 0;
 			for (int y = 0; y < HMapImg->height; y++) {
 				for (int x = 0; x < HMapImg->width; x++) {
 					uint16_t val = 0;
@@ -22,10 +23,9 @@ namespace gx {
 					heightsColor[k] = val / HMapImg->nChannels;
 					heightsColor[k + 1] = heightsColor[k];
 					heightsColor[k + 2] = heightsColor[k];
-					heightsNormalized[k] = heightsColor[k] / 255;
-					heightsNormalized[k + 1] = heightsNormalized[k];
-					heightsNormalized[k + 2] = heightsNormalized[k];
+					heightsNormalized[l] = heightsColor[k] / 255;
 					k+=3;
+					l++;
 				}
 			}
 		}
