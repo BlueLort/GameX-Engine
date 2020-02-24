@@ -4,10 +4,11 @@
 
 GameX Engine is a 3D Game Engine built on top of improved features of GameX Level Editor.
 
-After Finishing the 3D Side i will work on the 2D Side.
+After Finishing the 3D Side i might work on the 2D Side.
 
 ## Progress
-  
+
+### First Demo
 - [x] SDL2.0  
 - [x] imGUI v1.73WIP with docking.
 - [x] Logging using spdlog & imGUI Logging class implmenetation.
@@ -24,16 +25,32 @@ After Finishing the 3D Side i will work on the 2D Side.
 - [x] Camera
 - [x] Rendering to Texture to view it in imGUI Window.
 - [x] Skydome.
+- [x] Height Map Settings Editor (Supported:Perlin noise & Height map image)
+- [x] Terrain Rendering.
+- [x] I/O Requests,Plane Generation,Ray Picking handled on another thread.
+- [x] Bullet Physics Integration.
+- [x] Textures & Models could be pre-loaded to the system.
+- [ ] Terrain LOD.
+- [ ] Deffered Rendering.
+- [ ] Normal Mapping.
+- [ ] Shadow Mapping.
+- [ ] Ray Picking , Object Inspector and Object Tree.
+- [ ] Selected Object Outline.
+
+### Later
+
+- [ ] Parallax Mapping.
+- [ ] Model Importer UI.
+- [ ] Skybox/Skydome Manager UI.
+- [ ] Simple Shapes Generation.
+- [ ] Control over Physics Component.
+- [ ] SSAO (screen space ambient occlusion).
 - [ ] Skybox.
-- [x] Height Map Settings Editor (Supported:Perlin noise)
-- [ ] Terrain Rendering using LOD Techniques.
-- [ ] Planet Rendering using LOD Techniques.
+- [ ] Content Browser.
 - [ ] Frustum Culling.
-- [ ] Mouse picking
-- [ ] GUI Object Inspector.
+- [ ] Planet Rendering using LOD Techniques.
 - [ ] Memory Manager.
-- [ ] Physics System.
-- [ ] Particle System.
+- [ ] Particle System (& Instancing).
 - [ ] Animation System.
 - [ ] Scripting.
 - [ ] Material Editor.
