@@ -1,0 +1,10 @@
+^G:\SETUP\BULLET3-2.89\SRC\LINEARMATH\CMAKELISTS.TXT
+setlocal
+G:\Setup\cmake-3.16.0-win64-x64\bin\cmake.exe -SG:/Setup/bullet3-2.89 -BG:/Setup/bullet3-2.89 --check-stamp-file G:/Setup/bullet3-2.89/src/LinearMath/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

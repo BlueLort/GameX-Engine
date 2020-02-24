@@ -1,5 +1,7 @@
 #pragma once
 #include "Object/GXObject.h"
+#include "Physics/PhysicsManager.h"
+#include "Components/Physics/GXPhysicsComponent.h"
 namespace gx {
 	//Model Object is Object with RendererComponent and Assimp Loaded Object.
 	class GX_DLL GXModelObject : public GXObject {

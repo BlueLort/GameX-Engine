@@ -39,6 +39,9 @@ namespace gx {
 		inline bool isMainSceneSelected() {
 			return mainSceneLayer->isSelected();
 		}
+		inline std::pair<float, float> getSceneMouseLocNormalized() {
+			return mainSceneLayer->getMouseLocNormalized();
+		}
 		inline void renderUpdateLayers(float deltaTime) {
 			if (!modelObjectRequests.empty()) {
 				if (modelObjectRequests.front()->isReady) {

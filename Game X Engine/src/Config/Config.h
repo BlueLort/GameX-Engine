@@ -1,10 +1,23 @@
 #pragma once
-
-#ifdef GX_BUILD_DLL
+//ADD "_ENABLE_EXTENDED_ALIGNED_STORAGE" to preprocessor Bullet engine extended aligned storage
+#ifndef GX_BUILD_STATIC
+/* add those to preprocessor [TODO Static linking has some errors]
+GX_BUILD_DLL
+_WINDLL
+//runtime should be multithreaded debug -Mtd [for bullet to work]
+*//*else add
+GX_BUILD_STATIC
+*/
+#if defined(GX_BUILD_DLL)
 #define GX_DLL __declspec(dllexport)
-#else
+#elif defined(GX_GET_DLL)
 #define GX_DLL __declspec(dllimport)
 #endif
+#else
+#define GX_DLL 
+#endif // DEBUG
+
+
 
 
 //Config 

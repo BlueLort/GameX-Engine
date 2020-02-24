@@ -4,3 +4,12 @@
 [submodule "Game X Engine/3rdParty/glm"]
 	path = Game X Engine/3rdParty/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "Game X Engine/3rdParty/ImGuizmo"]
+	path = Game X Engine/3rdParty/ImGuizmo
+	url = https://github.com/CedricGuillemet/ImGuizmo.git
+[submodule "Game X Engine/3rdParty/par"]
+	path = Game X Engine/3rdParty/par
+	url = https://github.com/prideout/par.git
+[submodule "Game X Engine/3rdParty/debug-draw"]
+	path = Game X Engine/3rdParty/debug-draw
+	url = https://github.com/glampert/debug-draw/

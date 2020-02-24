@@ -23,16 +23,16 @@ namespace gx {
 
 		for (uint32_t i = 0; i < m; i++)
 		{
-			int locZ = i * dz;
-			float z = topLeftZ + i * dz;
-			float v= static_cast<float>(i) / m;
+			float z = i * dz;
+			float posZ = topLeftZ + z;
+			float v = static_cast<float>(i) / m;
 			for (uint32_t j = 0; j < n; j++)
 			{
-				int locX = j * dx;
-				float x = topLeftX + j*dx;
+				float x = j * dx;
+				float posX = topLeftX + x;
 				float u = static_cast<float>(j) / n;
 				verts.emplace_back(
-					GXVec3(x, getHeightValue(x, z, locX, locZ, heights), z)// POS
+					GXVec3(posX, getHeightValue(x, z, heights), posZ)// POS
 					, GXVec2(u, v));// TEXCOORDS
 			}
 		}
@@ -101,7 +101,6 @@ namespace gx {
 		SceneLightManager::getInstance().setLightValues(this->glshader);
 		this->glshader->setMat4("model", transform.getModel());
 		this->glshader->setMat4("vp", EditorCamera::getInstance().getPVMatrix());
-		this->glshader->setFloat("material.shininess", 32.0f);
 #endif
 		for (auto& component : components) {
 			component->update(deltaTime);

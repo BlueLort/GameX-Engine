@@ -47,14 +47,14 @@
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
     <IncludePath>
     </IncludePath>
-    <LibraryPath>$(SolutionDir)/Game X Engine/deps/lib/x64/SDL;$(SolutionDir)/Game X Engine/deps/lib/x64/Assimp;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)/Game X Engine/deps/lib/x64/$(Configuration)/SDL;$(SolutionDir)/Game X Engine/deps/lib/x64/$(Configuration)/Assimp;$(SolutionDir)/Game X Engine/deps/lib/x64/$(Configuration)/Bullet;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
     <IncludePath>
     </IncludePath>
-    <LibraryPath>$(SolutionDir)/Game X Engine/deps/lib/x64/SDL;$(SolutionDir)/Game X Engine/deps/lib/x64/Assimp;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)/Game X Engine/deps/lib/x64/$(Configuration)/SDL;$(SolutionDir)/Game X Engine/deps/lib/x64/$(Configuration)/Assimp;$(SolutionDir)/Game X Engine/deps/lib/x64/$(Configuration)/Bullet;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -62,17 +62,18 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>GX_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GX_BUILD_DLL;_WINDLL;_ENABLE_EXTENDED_ALIGNED_STORAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <PreprocessToFile>false</PreprocessToFile>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)/Game X Engine/src/Config;$(SolutionDir)/Game X Engine/3rdParty/;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)/Game X Engine/deps/include;$(SolutionDir)/Game X Engine/src/</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;assimp-vc140-mt.lib;BulletDynamics_Debug.lib;BulletCollision_Debug.lib;LinearMath_Debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -83,7 +84,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>GX_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GX_BUILD_DLL;_WINDLL;_ENABLE_EXTENDED_ALIGNED_STORAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
@@ -95,7 +96,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;assimp-vc140-mt.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -114,6 +115,7 @@
     <ClCompile Include="src\Layers\Utility\NoiseGeneratorLayer.cpp" />
     <ClCompile Include="src\Object\GXBackgroundObject\GXSkydomeObject.cpp" />
     <ClCompile Include="src\Object\GXMeshObject\GXModelObject.cpp" />
+    <ClCompile Include="src\Physics\PhysicsManager.cpp" />
     <ClCompile Include="src\Renderer\openGL\Buffers\GLBufferManager.cpp" />
     <ClCompile Include="src\Renderer\openGL\Buffers\GLElementBuffer.cpp" />
     <ClCompile Include="src\Renderer\openGL\Buffers\GLVertexArray.cpp" />
@@ -128,6 +130,7 @@
     <ClCompile Include="src\Renderer\openGL\Shader\GLShaderManager.cpp" />
     <ClCompile Include="src\Renderer\openGL\Texture\GLTexture2D.cpp" />
     <ClCompile Include="src\Terrain\Plane\Plane.cpp" />
+    <ClCompile Include="src\UI\ImGuizmo.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui_demo.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui_draw.cpp" />
@@ -146,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="3rdParty\stb_image\stb_image.h" />
     <ClInclude Include="3rdParty\stb_image\stb_image_write.h" />
+    <ClInclude Include="src\Components\Physics\GXPhysicsComponent.h" />
     <ClInclude Include="src\IOManagement\IORequestHandler.h" />
     <ClInclude Include="src\Layers\Debug\Logging\LogLayer.h" />
     <ClInclude Include="src\Layers\LayerManager.h" />
@@ -172,6 +176,7 @@
     <ClInclude Include="src\Object\GXBackgroundObject\GXSkydomeObject.h" />
     <ClInclude Include="src\Object\GXMeshObject\GXModelObject.h" />
     <ClInclude Include="src\Object\GXObject.h" />
+    <ClInclude Include="src\Physics\PhysicsManager.h" />
     <ClInclude Include="src\Renderer\openGL\Buffers\GLBufferManager.h" />
     <ClInclude Include="src\Renderer\openGL\Buffers\GLElementBuffer.h" />
     <ClInclude Include="src\Renderer\openGL\Buffers\GLFrameBufferObject.h" />
@@ -188,6 +193,7 @@
     <ClInclude Include="src\Terrain\HeightGenerators\NoiseGenerator.h" />
     <ClInclude Include="src\Terrain\HeightGenerators\TextureMapGenerator.h" />
     <ClInclude Include="src\Terrain\Plane\Plane.h" />
+    <ClInclude Include="src\UI\ImGuizmo.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imconfig.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imgui.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imgui_impl_opengl3.h" />

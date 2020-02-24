@@ -65,7 +65,12 @@ namespace gx {
 		
 		ImGui::Begin(name.c_str(), NULL, windowFlags);
 
+		//get mouse loc relative to main window
 		selected=ImGui::IsWindowFocused();
+		ImVec2 mops = ImGui::GetMousePos();
+		ImVec2 molc =ImGui::GetCursorScreenPos();
+		mouseLocNormalized.first = (mops.x-molc.x)/ImGui::GetWindowWidth();
+		mouseLocNormalized.second = (mops.y-molc.y)/ ImGui::GetWindowHeight();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);

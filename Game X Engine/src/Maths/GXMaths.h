@@ -5,6 +5,7 @@
 #include <glm/glm/gtc/type_ptr.hpp>
 
 namespace gx {
+
 #define CLAMP(a,start,end) if (a < start)a = start;else if (a > end)a = end;
 #ifdef USING_GLM_MATHS
 	using GXMat4 = glm::mat4;
@@ -16,7 +17,7 @@ namespace gx {
 #define GXRad glm::radians
 #define GXCos glm::cos
 #define GXSin glm::sin
-
+#define GXPI (3.14159265359)
 #else
 	/* IF USING OTHER MATHS LIBRARIES*/
 	//using GXMat4;
@@ -31,6 +32,10 @@ namespace gx {
 	public:
 		inline static double inverseLerp(double val,double a,double b){ return (val - a) / (b - a); }
 		inline static double lerp(double f, double a, double b) { return a + f * (b - a); }
+		inline static double cosinterp(double f,double a,double b){
+			double newFactor = (1 - cos(f *GXPI)) / 2;
+			return(a + newFactor * (b - a));
+		}
 	
 		inline static GXMat4 prespective(const float& FOV,const float& AR,const float& zNear,const float& zFar ) {
 			return glm::perspective(FOV,AR,zNear,zFar);

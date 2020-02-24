@@ -26,13 +26,16 @@ namespace gx {
 		std::shared_ptr<GXModelObject> object = std::make_shared<GXModelObject>();
 		object->GLinit("res/models/nanosuit/nanosuit.obj");
 		LayerManager::getInstance().addModelObject(object);
+		rayPickingTask = std::async(std::launch::async, rayPicking);
 		while (isRunning) {
+			float deltaTime = 1.0f / GXTimer::getAppTimer().getDeltaTicks();
 			GXTimer::getAppTimer().update();
 			InputManager::getInstance().update();
 			while (GXPollEvents(&GX_SDLEvent()) == 1);//Send events to callback
 			EditorCamera::getInstance().update();
 			mainSceneSelected= LayerManager::getInstance().isMainSceneSelected();
 			io::IORequestHandler::update();//check if something is imported and init it using openGL context
+			GXPhysicsManager::getInstance().stepSimulation(deltaTime);
 			//Render
 	#ifdef USING_OPENGL  
 			LayerManager::getInstance().renderUpdateLayers(1.0f/GXTimer::getAppTimer().getDeltaTicks());
@@ -101,6 +104,20 @@ namespace gx {
 
 		}
 		return dispatched;
+	}
+
+	void GameXApp::rayPicking()
+	{
+		while (isRunning) {
+			if (InputManager::getInstance().isPressed(event::key::GXK_MOUSE_LEFT)) {
+				std::pair<int32_t, int32_t> mouseLoc = InputManager::getInstance().getMouseLoc();
+				GXE_DEBUG("mouse loc x= {0} y= {1}", mouseLoc.first, mouseLoc.second);
+				std::pair<float, float> ml=LayerManager::getInstance().getSceneMouseLocNormalized();
+				
+				GXE_DEBUG("ImGui mouse loc x= {0} y= {1}", ml.first, ml.second);
+				while (InputManager::getInstance().isPressed(event::key::GXK_MOUSE_LEFT));
+			}
+		}
 	}
 
 

@@ -11,6 +11,7 @@
 #include "Terrain/HeightGenerators/NoiseGenerator.h"
 #include "GXTimer.h"
 #include "Terrain/Plane/Plane.h"
+#include "Physics/PhysicsManager.h"
 
 namespace gx {
 	//adapt it to whatever API im using.
@@ -31,7 +32,8 @@ namespace gx {
 		
 		//EVENT HANDLING
 		static int onEvent(void* userdata, GX_SDLEvent* Event);
-
+		std::future<void> rayPickingTask;
+		static void rayPicking();
 		static bool mainSceneSelected;
 		
 		template<class T>
@@ -52,7 +54,7 @@ namespace gx {
 		//TODO PROFILE THIS ,OVERHEAD -> Change it !
 		bool handled = false;
 		//input manager can only manage main window inputs
-		if (mainSceneSelected&&mainSceneSelected&&InputManager::getInstance().handleEvent(gxEvent)) {
+		if (mainSceneSelected&&InputManager::getInstance().handleEvent(gxEvent)) {
 			handled = true;
 		}
 		if (UI_GL->handleEvent(gxEvent)) {

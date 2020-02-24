@@ -78,6 +78,7 @@ namespace gx {
 						front.appendToThis->insert(front.appendToThis->end(), ite->second.begin(), ite->second.end());
 						*front.isReady = true;
 						requests.pop();
+
 					}
 				}
 			}

@@ -338,7 +338,6 @@ out vec4 FragColor;
 
 struct Material {
     sampler2D diffuse1;
-    float shininess;
 }; 
 
 struct DirLight {
@@ -358,11 +357,23 @@ uniform DirLight dirLight;
 uniform Material material;
 
 vec3 totalDiffuse;
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
 void main()
 {    
 
 	totalDiffuse=vec3(texture(material.diffuse1,TexCoords));
-    FragColor = vec4(totalDiffuse,1.0);
+	vec3 norm = normalize(Normal);
+    vec3 viewDir = normalize(viewPos - FragPos);
+	vec3 result = CalcDirLight(dirLight, norm, viewDir);
+    FragColor = vec4(result,1.0);
+}
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
+{
+    vec3 lightDir = normalize(-light.direction);
+    float diff = max(dot(normal, lightDir), 0.0);
+    vec3 ambient = light.ambient * totalDiffuse;
+    vec3 diffuse = light.diffuse * diff * totalDiffuse;
+    return (ambient + diffuse);
 }
 )"
 ,

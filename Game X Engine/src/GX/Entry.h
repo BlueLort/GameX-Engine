@@ -23,6 +23,7 @@ void initSystems(gx::GameXApp* gameInst) {
 #ifdef USING_GLM_MATHS
 	GXE_INFO("Using GLM for Maths library!");
 #endif
+	gx::GXPhysicsManager::getInstance().init(); GXE_INFO("Physics Engine Initialized [Bullet Physics] !");
 	gx::GXTimer::getAppTimer().init(); GXE_INFO("Application Timer Started using SDL_GetTicks !");
 	gx::EditorCamera::getInstance().init(); GXE_INFO("Editor Camera initialized !");
 	//init Graphics Context and appropriate Rendering System

@@ -33,7 +33,7 @@ namespace gx {
 			GXVec3 v2 = verts[idx1].position - verts[idx2].position;
 			return GXMaths::normalize(GXMaths::cross(v1, v2));
 		}
-		inline float getHeightValue(float x, float z, int locX, int locZ, const float* heights)
+		inline float getHeightValue(float x, float z, const float* heights)
 		{
 			///  ver1---->interpolation1<----- ver2
 			///          float place 
@@ -43,19 +43,19 @@ namespace gx {
 			int intZ = static_cast<int>(z);
 			float floatX = abs(x - intX);
 			float floatZ = abs(z - intZ);
-			int nextX = locX < (width - 1) ? locX + 1 : locX;
-			int nextZ = locZ < (depth - 1) ? locZ + 1 : locZ;
-			int loc1 = locZ * width + locX;
-			int loc2 = locZ * width + nextX;
-			int loc3 = nextZ * width + locX;
+			int nextX = intX < (width - 1) ? intX + 1 : intX;
+			int nextZ = intZ < (depth - 1) ? intZ + 1 : intZ;
+			int loc1 = intZ * width + intX;
+			int loc2 = intZ * width + nextX;
+			int loc3 = nextZ * width + intX;
 			int loc4 = nextZ * width + nextX;
 			float h1 = heights[loc1];
 			float h2 = heights[loc2];
 			float h3 = heights[loc3];
 			float h4 = heights[loc4];
-			float lerp1 = GXMaths::lerp(floatX, h1, h2);
-			float lerp2 = GXMaths::lerp(floatX, h3, h4);
-			return  GXMaths::lerp(floatZ, lerp1, lerp2);
+			float interpolant1 = GXMaths::cosinterp(floatX, h1, h2);
+			float interpolant2 = GXMaths::cosinterp(floatX, h3, h4);
+			return  GXMaths::cosinterp(floatZ, interpolant1, interpolant2);
 		}
 	};
 }

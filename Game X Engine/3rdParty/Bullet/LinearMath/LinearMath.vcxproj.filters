@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="G:\Setup\bullet3-2.89\src\LinearMath\btAlignedAllocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="G:\Setup\bullet3-2.89\src\LinearMath\btConvexHull.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="G:\Setup\bullet3-2.89\src\LinearMath\btConvexHullComputer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="G:\Setup\bullet3-2.89\src\LinearMath\btGeometryUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="G:\Setup\bullet3-2.89\src\LinearMath\btPolarDecomposition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="G:\Setup\bullet3-2.89\src\LinearMath\btQuickprof.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="G:\Setup\bullet3-2.89\src\LinearMath\btSerializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="G:\Setup\bullet3-2.89\src\LinearMath\btSerializer64.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="G:\Setup\bullet3-2.89\src\LinearMath\btThreads.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="G:\Setup\bullet3-2.89\src\LinearMath\btVector3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="G:\Setup\bullet3-2.89\src\LinearMath\TaskScheduler\btTaskScheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="G:\Setup\bullet3-2.89\src\LinearMath\TaskScheduler\btThreadSupportPosix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="G:\Setup\bullet3-2.89\src\LinearMath\TaskScheduler\btThreadSupportWin32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btAabbUtil2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btAlignedAllocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btAlignedObjectArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btConvexHull.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btConvexHullComputer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btDefaultMotionState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btGeometryUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btGrahamScan2dConvexHull.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btHashMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btIDebugDraw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btMatrix3x3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btImplicitQRSVD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btMinMax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btMotionState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btPolarDecomposition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btPoolAllocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btQuadWord.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btQuaternion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btQuickprof.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btRandom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btScalar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btSerializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btStackAlloc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btThreads.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btTransform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btTransformUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\btVector3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="G:\Setup\bullet3-2.89\src\LinearMath\TaskScheduler\btThreadSupportInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="G:\Setup\bullet3-2.89\src\LinearMath\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{D2D3A74D-71F8-3394-AE13-1E84D62EF7F1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{E83B5C77-3BDA-3CF3-95E5-B95D41B94D7B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

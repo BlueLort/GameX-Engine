@@ -2,7 +2,7 @@
 
 #include <glad/glad.h> // holds all OpenGL type declarations
 
-#include <Maths/GXMaths.h>
+#include "Maths/GXMaths.h"
 #include "Components/GXComponent.h"
 
 

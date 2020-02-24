@@ -14,16 +14,19 @@ namespace gx {
 		//IOManagers add the object after it has been instantiated
 		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) { sceneModelObjects.emplace_back(obj); };
 		inline void setPlane(std::shared_ptr<GXPlane>& p) { plane = p; }
+		inline std::pair<float, float> getMouseLocNormalized() {
+			return mouseLocNormalized;
+		}
 		virtual void start()override;
 		virtual void end()override;
 		virtual int onEvent(const gx::event::GXEventType& eventType)override;
 		virtual void onUpdate(float deltaTime)override;
 		virtual void onGUIRender()override;
-		
 
 	private:
 		std::vector<std::shared_ptr<GXModelObject>> sceneModelObjects;
 		std::shared_ptr<GXSkydomeObject> skydome;
+		std::pair<float, float> mouseLocNormalized;
 		std::shared_ptr<GXPlane> plane;
 		static std::shared_ptr<GXPlane> mainPlane;
 		ImGuiWindowFlags windowFlags;

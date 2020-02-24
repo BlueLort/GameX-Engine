@@ -231,8 +231,9 @@ namespace gx {
 				}
 
 				GXE_INFO("Model has been imported successfully ,File Path: {0} ", meshes.first);
-
 				modelsImported[meshes.first] = components;
+				
+
 			}
 
 			if (!texturesNeedToBeProcessed.empty()) {
