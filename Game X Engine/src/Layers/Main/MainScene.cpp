@@ -67,17 +67,18 @@ namespace gx {
 
 		//get mouse loc relative to main window
 		selected=ImGui::IsWindowFocused();
-		ImVec2 mops = ImGui::GetMousePos();
-		ImVec2 molc =ImGui::GetCursorScreenPos();
-		mouseLocNormalized.first = (mops.x-molc.x)/ImGui::GetWindowWidth();
-		mouseLocNormalized.second = (mops.y-molc.y)/ ImGui::GetWindowHeight();
-
+	
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-		ImGui::Image(reinterpret_cast<void*>(GLFBO->getTextureID()), ImGui::GetContentRegionAvail()
-		,ImVec2(1,1),ImVec2(0,0));
+		ImVec2 windowSize = ImGui::GetContentRegionAvail();
+		ImGui::Image(reinterpret_cast<void*>(GLFBO->getTextureID()),windowSize,ImVec2(1,1),ImVec2(0,0));
 		ImGui::PopStyleVar(3);
+		ImVec2 mops = ImGui::GetMousePos();
+		ImVec2 molc = ImGui::GetCursorScreenPos();
+		mouseLocNormalized.first = static_cast<float>(mops.x - molc.x) / windowSize.x;
+		mouseLocNormalized.second = static_cast<float>(molc.y- mops.y) / windowSize.y;
+		
 		ImGui::End();
 		GLTexture2D::stop();
 		

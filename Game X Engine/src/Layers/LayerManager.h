@@ -16,7 +16,7 @@ namespace gx {
 		inline void init() {
 			mainSceneLayer = std::make_shared<MainScene>("Scene", SCENE_WIDTH, SCENE_HEIGHT);
 			mainSceneLayer->init();
-			logLayer = std::make_shared<LogLayer>("Log");
+			logLayer = std::make_shared<LogLayer>("GX Console");
 			logLayer->init();
 			noiseGenerationLayer = std::make_shared<NoiseGeneratorLayer>("Height Map Settings");
 			planeEditorLayer= std::make_shared<PlaneEditorLayer>("Terrain Settings");
@@ -33,8 +33,11 @@ namespace gx {
 			}
 				
 		}
-		inline void addLog(const char* txt) {
-			logLayer->addLog(txt);
+		inline void GXPrintf(const char* fmt,...) {
+			va_list args;
+			va_start(args, fmt);
+			logLayer->addLog(fmt, args);
+			va_end(args);
 		}
 		inline bool isMainSceneSelected() {
 			return mainSceneLayer->isSelected();

@@ -12,7 +12,7 @@
 #include "GXTimer.h"
 #include "Terrain/Plane/Plane.h"
 #include "Physics/PhysicsManager.h"
-
+#define GXPRINTF(...) (gx::LayerManager::getInstance().GXPrintf(__VA_ARGS__));
 namespace gx {
 	//adapt it to whatever API im using.
 	using GX_SDLEvent = SDL_Event;

@@ -15,7 +15,7 @@ namespace gx {
 			collisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
 			transform.setIdentity();//initially objects imported to 0,0,0
 			
-			mass = btScalar(1.0);//let mass be 1 for now
+			mass = btScalar(0.0);//let mass be 1 for now
 
 			bool isDynamic = false;//static for now
 
@@ -27,6 +27,13 @@ namespace gx {
 			myMotionState = new btDefaultMotionState(transform);
 			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collisionShape, localInertia);
 			rb = new btRigidBody(rbInfo);
+
+			GXPhysicsManager::getInstance().addRigidBody(rb);
+
+
+			rb->setUserPointer((void*)1);
+			
+
 		}
 		virtual inline const char* getName() const override {
 			return "GXPhysicsComponent";

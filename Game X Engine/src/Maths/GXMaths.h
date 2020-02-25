@@ -36,7 +36,7 @@ namespace gx {
 			double newFactor = (1 - cos(f *GXPI)) / 2;
 			return(a + newFactor * (b - a));
 		}
-	
+		
 		inline static GXMat4 prespective(const float& FOV,const float& AR,const float& zNear,const float& zFar ) {
 			return glm::perspective(FOV,AR,zNear,zFar);
 		}
@@ -51,6 +51,12 @@ namespace gx {
 		}
 		inline static GXMat4 scale(const GXMat4& Model,const GXVec3& Amount) {
 			return glm::scale(Model,Amount);
+		}
+		inline static GXMat4 inverse(const GXMat4& mat) {
+			return glm::inverse(mat);
+		}
+		inline static GXMat3 inverse(const GXMat3& mat) {
+			return glm::inverse(mat);
 		}
 		inline static GXVec3 normalize(const GXVec3& vec) {
 			return glm::normalize(vec);

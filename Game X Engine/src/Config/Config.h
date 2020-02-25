@@ -17,9 +17,6 @@ GX_BUILD_STATIC
 #define GX_DLL 
 #endif // DEBUG
 
-
-
-
 //Config 
 #define USING_GLM_MATHS
 #define USING_OPENGL
