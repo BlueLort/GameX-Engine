@@ -31,10 +31,11 @@ After Finishing the 3D Side i might work on the 2D Side.
 - [x] Bullet Physics Integration.
 - [x] Textures & Models could be pre-loaded to the system.
 - [ ] Terrain LOD.
-- [ ] Deffered Rendering.
+- [x] Deffered Rendering.
 - [ ] Normal Mapping.
 - [ ] Shadow Mapping.
-- [ ] Ray Picking , Object Inspector and Object Tree.
+- [x] Ray Picking.
+- [ ] Object Inspector and Object Tree.
 - [ ] Selected Object Outline.
 
 ### Later
