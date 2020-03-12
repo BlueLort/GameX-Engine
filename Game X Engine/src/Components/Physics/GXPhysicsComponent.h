@@ -9,7 +9,7 @@ namespace gx {
 	class GX_DLL GXPhysicsComponent : public GXComponent {
 	public:
 
-		inline GXPhysicsComponent() : GXComponent()
+		inline GXPhysicsComponent(uint32_t GXID) : GXComponent(GXID)
 		{
 			//TODO Make all of this options controllable
 			collisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
@@ -31,7 +31,7 @@ namespace gx {
 			GXPhysicsManager::getInstance().addRigidBody(rb);
 
 
-			rb->setUserPointer((void*)1);
+			rb->setUserPointer(reinterpret_cast<void*>(GXID));
 			
 
 		}

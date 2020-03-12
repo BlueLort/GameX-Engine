@@ -227,7 +227,8 @@ namespace gx {
 					for (auto& tex : mesh->texturesData) {
 						textures.emplace_back(GLReadTexture(tex));
 					}
-					components.emplace_back(new GXMeshComponent(GLCreateBufferLayout(mesh->verts, mesh->indices, textures)));
+					//TODO HANDLE GXID initializing to this component
+					components.emplace_back(new GXMeshComponent(mesh->ownerID,GLCreateBufferLayout(mesh->verts, mesh->indices, textures)));
 				}
 
 				GXE_INFO("Model has been imported successfully ,File Path: {0} ", meshes.first);

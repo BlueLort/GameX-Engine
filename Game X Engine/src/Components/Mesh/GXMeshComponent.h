@@ -10,7 +10,9 @@ namespace gx {
 	class GX_DLL GXMeshComponent : public GXComponent {
 	public:
 
-		GXMeshComponent(const std::shared_ptr<gx::GLBufferManager>& GLBM) : GXComponent()
+
+		//TODO HANDLE GXID PASSING to this component
+		GXMeshComponent(uint32_t GXID,const std::shared_ptr<gx::GLBufferManager>& GLBM) : GXComponent(GXID)
 		{
 			//TODO make input base shader and use macros to define which shader to use
 			this->GLBM = GLBM;

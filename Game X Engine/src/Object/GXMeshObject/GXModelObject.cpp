@@ -6,14 +6,14 @@ namespace gx {
 	void GXModelObject::GLinit(const char* fileName, const char* shaderPath) {
 	
 		if (shaderPath == nullptr) {
-			glshader = GLShaderManager::getShader(GLShaderType::DEFAULT_LIGHT);
+			glshader = GLShaderManager::getShader(GLShaderType::DEFAULT_GBUFFER);
 		}
 		else {
 			glshader = GLShaderManager::getShader(shaderPath);
 		}
 
 		io::IORequestHandler::getModel(fileName, &components, &isReady);
-		std::shared_ptr<GXPhysicsComponent> gxp = std::make_shared<GXPhysicsComponent>();
+		std::shared_ptr<GXPhysicsComponent> gxp = std::make_shared<GXPhysicsComponent>(GXID);
 		gxp->setOwnerTransform(&transform);
 		components.push_back(gxp);
 

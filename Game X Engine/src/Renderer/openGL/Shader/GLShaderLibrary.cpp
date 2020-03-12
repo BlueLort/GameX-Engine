@@ -380,5 +380,163 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 //Geometry Shader
 nullptr
 	};
+	const char* GLDefaultGBufferShader[] = {
+	R"( 
+#version 430 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aNormal;
+layout (location = 2) in vec2 aTexCoords;
 
+out vec3 FragPos;
+out vec3 Normal;
+out vec2 TexCoords;
+
+
+uniform mat4 model;
+uniform mat4 vp;
+
+void main()
+{
+    vec4 worldPos = model * vec4(aPos, 1.0);
+    FragPos = worldPos.xyz; 
+    TexCoords = aTexCoords;
+    
+    mat3 normalMatrix = transpose(inverse(mat3(model)));
+    Normal = normalMatrix * aNormal;
+
+    gl_Position = vp * worldPos;
+}
+)"
+,
+//Fragment Shader
+R"( 
+#version 430 core
+layout (location = 0) out vec3 gPosition;
+layout (location = 1) out vec3 gNormal;
+layout (location = 2) out vec4 gAlbedoSpec;
+
+in vec2 TexCoords;
+in vec3 FragPos;
+in vec3 Normal;
+struct Material {
+    sampler2D diffuse1;
+	sampler2D diffuse2;
+	sampler2D diffuse3;
+    sampler2D specular1;
+	sampler2D specular2;
+    float shininess;
+};  
+
+vec3 totalDiffuse;
+vec3 totalSpecular;
+
+uniform Material material;
+
+void main()
+{    
+	totalDiffuse=vec3(texture(material.diffuse1,TexCoords)+texture(material.diffuse2,TexCoords)+texture(material.diffuse3,TexCoords));
+	totalSpecular=vec3(texture(material.specular1,TexCoords)+texture(material.specular2,TexCoords));
+    gPosition = FragPos;
+    gNormal = normalize(Normal);
+    gAlbedoSpec.rgb = totalDiffuse.rgb;
+    gAlbedoSpec.a = totalSpecular.r;
+}
+)"
+,
+//Geometry Shader
+nullptr
+	};
+
+	const char* GLDefaultDeferredShader[] = {
+		R"( 
+#version 430 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec2 aTexCoords;
+
+out vec2 TexCoords;
+
+void main()
+{
+    TexCoords = aTexCoords;
+    gl_Position = vec4(aPos, 1.0);
+}
+)"
+,
+//Fragment Shader
+R"( 
+#version 430 core
+out vec4 FragColor;
+in vec2 TexCoords;
+
+uniform sampler2D gPosition;
+uniform sampler2D gNormal;
+uniform sampler2D gAlbedoSpec;
+
+struct DirLight {
+    vec3 direction;
+	
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+struct PointLight {
+    vec3 position;
+    
+    float constant;
+    float linear;
+    float quadratic;
+	
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+const int NR_LIGHTS = 1;
+uniform DirLight dirLight;
+uniform PointLight lights[NR_LIGHTS];
+uniform vec3 viewPos;
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir,vec3 color);
+void main()
+{             
+    vec3 FragPos = texture(gPosition, TexCoords).rgb;
+    vec3 Normal = texture(gNormal, TexCoords).rgb;
+    vec3 Diffuse = texture(gAlbedoSpec, TexCoords).rgb;
+    float Specular = texture(gAlbedoSpec, TexCoords).a;
+
+	
+    vec3 lighting  = Diffuse * 0.1; // hard-coded ambient component
+
+    vec3 viewDir  = normalize(viewPos - FragPos);
+	vec3 result = CalcDirLight(dirLight, Normal, viewDir , Diffuse);
+    for(int i = 0; i < NR_LIGHTS; ++i)
+    {
+        vec3 lightDir = normalize(lights[i].position - FragPos);
+        vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * lights[i].diffuse;
+
+        vec3 halfwayDir = normalize(lightDir + viewDir);  
+        float spec = pow(max(dot(Normal, halfwayDir), 0.0), 16.0);
+        vec3 specular = lights[i].specular * spec * Specular;
+
+        float distance = length(lights[i].position - FragPos);
+        float attenuation = 1.0 / (1.0 + lights[i].linear * distance + lights[i].quadratic * distance * distance);
+        diffuse *= attenuation;
+        specular *= attenuation;
+        lighting += diffuse + specular;        
+    }
+	result += lighting;
+    FragColor = vec4(result, 1.0);
+}
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir ,vec3 color)
+{
+    vec3 lightDir = normalize(-light.direction);
+    float diff = max(dot(normal, lightDir), 0.0);
+    vec3 ambient = light.ambient * color;
+    vec3 diffuse = light.diffuse * diff * color;
+    return (ambient + diffuse);
+}
+)"
+,
+//Geometry Shader
+nullptr
+	};
 }

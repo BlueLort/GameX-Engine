@@ -28,6 +28,7 @@ namespace gx {
 			std::vector<Vertex3D> verts;
 			std::vector<uint32_t> indices;
 			std::vector<std::shared_ptr<ImageData>> texturesData;
+			uint32_t ownerID;
 		};
 		
 		class GX_DLL IOManager {

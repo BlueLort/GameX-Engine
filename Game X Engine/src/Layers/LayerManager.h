@@ -33,6 +33,9 @@ namespace gx {
 			}
 				
 		}
+		inline std::shared_ptr<GXModelObject> getModelObject(uint32_t GXID) {
+			return mainSceneLayer->getModelObject(GXID);
+		}
 		inline void GXPrintf(const char* fmt,...) {
 			va_list args;
 			va_start(args, fmt);
@@ -58,6 +61,7 @@ namespace gx {
 		inline void onGUIRender() {
 			layers.onGUIRender();
 		}
+		
 	private:
 		inline LayerManager() { 
 			

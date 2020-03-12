@@ -88,7 +88,7 @@ namespace gx {
 		tex->init(textureID, GXTexture2DType::GX_DIFFUSE);
 		Buffer->addTexture(tex);
 		std::shared_ptr<GXMeshComponent> planeMeshComp;
-		planeMeshComp.reset(new GXMeshComponent(Buffer));
+		planeMeshComp.reset(new GXMeshComponent(GXID,Buffer));
 		components.emplace_back(planeMeshComp);
 		verts.clear();//no need for the data anymore.
 	}

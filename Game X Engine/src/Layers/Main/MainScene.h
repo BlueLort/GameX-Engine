@@ -12,7 +12,11 @@ namespace gx {
 		virtual void init()override;
 		virtual void destroy()override;
 		//IOManagers add the object after it has been instantiated
-		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) { sceneModelObjects.emplace_back(obj); };
+		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) { sceneModelObjects[obj->getID()]=obj; };
+		//does not handle wrong ids.
+		inline std::shared_ptr<GXModelObject> getModelObject(uint32_t GXID){
+			return sceneModelObjects[GXID];
+		}
 		inline void setPlane(std::shared_ptr<GXPlane>& p) { plane = p; }
 		inline std::pair<float, float> getMouseLocNormalized() {
 			return mouseLocNormalized;
@@ -24,7 +28,7 @@ namespace gx {
 		virtual void onGUIRender()override;
 
 	private:
-		std::vector<std::shared_ptr<GXModelObject>> sceneModelObjects;
+		std::unordered_map<uint32_t,std::shared_ptr<GXModelObject>> sceneModelObjects;
 		std::shared_ptr<GXSkydomeObject> skydome;
 		std::pair<float, float> mouseLocNormalized;
 		std::shared_ptr<GXPlane> plane;
@@ -33,7 +37,9 @@ namespace gx {
 		int32_t width, height;
 		//just the openGL FBO for now
 		std::vector<GLenum> GLFlags;
-		std::unique_ptr<GLFrameBuffer> GLFBO;
+		std::unique_ptr<GLFrameBuffer> GBuffer;
+		GLShader* lightingPassShader;
+		std::unique_ptr<GLFrameBuffer> mainSceneBuffer;
 		friend class PlaneEditorLayer;
 	};
 

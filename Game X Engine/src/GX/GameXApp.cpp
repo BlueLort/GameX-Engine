@@ -135,16 +135,15 @@ namespace gx {
 					GXPhysicsManager::getInstance().rayTest(btRayStart, btRayEnd,rayCallback);
 					if (rayCallback.hasHit()) {
 						std::ostringstream oss;
-						oss << "mesh " << (int)rayCallback.m_collisionObject->getUserPointer();
+						oss << "mesh " << reinterpret_cast<uint32_t>(rayCallback.m_collisionObject->getUserPointer());
 						message = oss.str();
-
 					}
 					else {
 						message = "background";
 					}
 
 					GXPRINTF("Ray Dir World x= %.3f y= %.3f z=%.3f , message=%s", rayDirWorld.x, rayDirWorld.y, rayDirWorld.z, message.c_str());
-
+					
 				}
 				while (InputManager::getInstance().isPressed(event::key::GXK_MOUSE_LEFT));
 			}

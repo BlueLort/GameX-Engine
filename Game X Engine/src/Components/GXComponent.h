@@ -37,10 +37,10 @@ namespace gx {
 		}
 
 		virtual inline const char* toString() const { return this->getName(); }
-
 	protected:
 		static uint64_t counter;
-		GXComponent() :componentID(counter++) {
+		uint32_t objectID;
+		GXComponent(uint32_t GXID) :componentID(counter++),objectID(GXID) {
 
 		}
 	};

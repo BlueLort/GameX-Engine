@@ -14,7 +14,8 @@ namespace gx {
 	class GX_DLL GXObject {
 	public:
 		inline GXObject(GXObjectType ObjectType) :objType(ObjectType), isReady(false),isWireFrame(false){
-
+			GXID = currentID;
+			currentID++;
 		}
 		GXTransform transform;
 		virtual void update(float deltaTime) = 0;
@@ -24,17 +25,21 @@ namespace gx {
 			components.emplace_back(component);
 		}
 		inline GXObjectType getType()const { return objType; }
+		inline uint32_t getID()const { return GXID; }
 		void setShader(GLShader* sh) { this->glshader = sh; }
 		GLShader* getShader() const { return glshader; }
-
+		
 		bool isReady;
 		bool isWireFrame;
 	protected:
 		std::vector<std::shared_ptr<GXComponent>> components;
 		GXObjectType objType;
 		GLShader* glshader;
+		uint32_t GXID;
+	private:
+		static uint32_t currentID;
 	};
 	
-	
+
 
 }

@@ -115,6 +115,7 @@
     <ClCompile Include="src\Layers\Utility\NoiseGeneratorLayer.cpp" />
     <ClCompile Include="src\Object\GXBackgroundObject\GXSkydomeObject.cpp" />
     <ClCompile Include="src\Object\GXMeshObject\GXModelObject.cpp" />
+    <ClCompile Include="src\Object\GXObject.cpp" />
     <ClCompile Include="src\Physics\PhysicsManager.cpp" />
     <ClCompile Include="src\Renderer\openGL\Buffers\GLBufferManager.cpp" />
     <ClCompile Include="src\Renderer\openGL\Buffers\GLElementBuffer.cpp" />
