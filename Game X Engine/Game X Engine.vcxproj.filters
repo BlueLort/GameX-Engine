@@ -225,6 +225,9 @@
     <ClInclude Include="src\Components\Physics\GXPhysicsComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Shapes\2D\GXQuad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window\GXWindow.cpp">
@@ -336,6 +339,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Object\GXObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shapes\2D\GXQuad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

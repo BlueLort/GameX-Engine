@@ -5,6 +5,7 @@
 #include "Object/GXBackgroundObject/GXSkydomeObject.h"
 #include "Terrain/Plane/Plane.h"
 #include "IOManagement/IOManager.h"
+#include "Shapes/2D/GXQuad.h"
 namespace gx {
 	class GX_DLL MainScene :public Layer {
 	public:
@@ -39,6 +40,7 @@ namespace gx {
 		std::vector<GLenum> GLFlags;
 		std::unique_ptr<GLFrameBuffer> GBuffer;
 		GLShader* lightingPassShader;
+		GXQuad* quadRenderer;
 		std::unique_ptr<GLFrameBuffer> mainSceneBuffer;
 		friend class PlaneEditorLayer;
 	};

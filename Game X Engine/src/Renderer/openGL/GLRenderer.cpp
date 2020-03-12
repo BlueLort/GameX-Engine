@@ -13,6 +13,7 @@ namespace gx {
 
 	void GLRenderer::draw(uint32_t nElements, RenderType type,bool isWireFrame)
 	{
+		//TODO OPTIMIZE THIS
 		if (isWireFrame) {
 			GL_CALL(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
 			GL_CALL(glDrawElements(type, nElements, GL_UNSIGNED_INT, 0));

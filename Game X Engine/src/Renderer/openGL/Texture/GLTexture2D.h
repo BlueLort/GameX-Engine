@@ -35,6 +35,9 @@ namespace gx {
 		inline void use() {
 			glBindTexture(GL_TEXTURE_2D,ID);
 		}
+		inline static void use(uint32_t id) {
+			glBindTexture(GL_TEXTURE_2D, id);
+		}
 		inline static void stop() {
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}

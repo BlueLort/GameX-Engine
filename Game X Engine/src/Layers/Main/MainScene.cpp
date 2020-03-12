@@ -21,6 +21,10 @@ namespace gx {
 		mainSceneBuffer->init(width, height);
 		mainSceneBuffer->addTextureAttachment(GX_COLOR_ATTACHMENT);
 		lightingPassShader = GLShaderManager::getShader(GLShaderType::DEFAULT_DEFERRED);
+		lightingPassShader->use();
+		lightingPassShader->setInt("gPosition", 0);
+		lightingPassShader->setInt("gNormal", 1);
+		lightingPassShader->setInt("gAlbedoSpec", 2);
 
 		skydome.reset(new GXSkydomeObject());
 		skydome->GLinit("res/models/sphere/spheres.obj");//will wait until it has been imported
@@ -31,6 +35,7 @@ namespace gx {
 		GLFlags.push_back(GL_CULL_FACE);
 		GLFlags.push_back(GL_DEPTH_TEST);
 		windowFlags = 0;
+		quadRenderer = new GXQuad();
 
 	}
 
@@ -38,6 +43,7 @@ namespace gx {
 	{
 		GBuffer->destroy();
 		mainSceneBuffer->destroy();
+		delete quadRenderer;
 	}
 
 	void MainScene::start()
@@ -77,42 +83,14 @@ namespace gx {
 		GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		lightingPassShader->use();
 		SceneLightManager::getInstance().setLightValues(lightingPassShader);
-		lightingPassShader->setInt("gPosition", 0);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, GBuffer->getTextureID(GX_POSITION_ATTACHMENT));
-		lightingPassShader->setInt("gNormal",1);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, GBuffer->getTextureID(GX_NORMAL_ATTACHMENT));
-		lightingPassShader->setInt("gAlbedoSpec", 2);
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, GBuffer->getTextureID(GX_COLOR_ATTACHMENT));
+		GLTexture2D::setActiveTexture(0);
+		GLTexture2D::use(GBuffer->getTextureID(GX_POSITION_ATTACHMENT));
+		GLTexture2D::setActiveTexture(1);
+		GLTexture2D::use(GBuffer->getTextureID(GX_NORMAL_ATTACHMENT));
+		GLTexture2D::setActiveTexture(2);
+		GLTexture2D::use(GBuffer->getTextureID(GX_COLOR_ATTACHMENT));
 		lightingPassShader->setVec3("viewPos", EditorCamera::getInstance().transform.position);
-		static uint32_t quadVAO = 0;
-		if (quadVAO == 0)
-		{
-			float quadVertices[] = {
-				// positions        // texture Coords
-				-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-				-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-				 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-				 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-			};
-			unsigned int quadVBO;
-			// setup plane VAO
-			glGenVertexArrays(1, &quadVAO);
-			glGenBuffers(1, &quadVBO);
-			glBindVertexArray(quadVAO);
-			glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-		}
-		glBindVertexArray(quadVAO);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		glBindVertexArray(0);
-
+		quadRenderer->update(deltaTime, lightingPassShader);
 
 	}
 
