@@ -13,9 +13,6 @@ namespace gx {
 		}
 
 		io::IORequestHandler::getModel(fileName, &components, &isReady);
-		std::shared_ptr<GXPhysicsComponent> gxp = std::make_shared<GXPhysicsComponent>(GXID);
-		gxp->setOwnerTransform(&transform);
-		components.push_back(gxp);
 
 	}
 

@@ -13,6 +13,7 @@ namespace gx {
 		{
 			//TODO Make all of this options controllable
 			collisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
+
 			transform.setIdentity();//initially objects imported to 0,0,0
 			
 			mass = btScalar(0.0);//let mass be 1 for now

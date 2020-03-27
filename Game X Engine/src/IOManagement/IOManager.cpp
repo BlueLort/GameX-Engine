@@ -213,8 +213,8 @@ namespace gx {
 			for(int i=0;i<textures.size();i++){
 				Buffer->addTexture(textures[i]);
 			}
-			verts.clear();
 			return Buffer;
+
 		}
 		void IOManager::update()
 		{
@@ -228,7 +228,7 @@ namespace gx {
 						textures.emplace_back(GLReadTexture(tex));
 					}
 					//TODO HANDLE GXID initializing to this component
-					components.emplace_back(new GXMeshComponent(mesh->ownerID,GLCreateBufferLayout(mesh->verts, mesh->indices, textures)));
+					components.emplace_back(new GXMeshComponent(mesh->ownerID,GLCreateBufferLayout(mesh->verts, mesh->indices, textures),std::make_shared<GXPickingCollider>(mesh->verts)));
 				}
 
 				GXE_INFO("Model has been imported successfully ,File Path: {0} ", meshes.first);

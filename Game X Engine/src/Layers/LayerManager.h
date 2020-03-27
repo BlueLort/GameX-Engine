@@ -51,6 +51,7 @@ namespace gx {
 		inline void renderUpdateLayers(float deltaTime) {
 			if (!modelObjectRequests.empty()) {
 				if (modelObjectRequests.front()->isReady) {
+					modelObjectRequests.front()->fixComponentsID();
 					mainSceneLayer->addModelObject(modelObjectRequests.front());
 					modelObjectRequests.pop();
 				}

@@ -5,7 +5,7 @@
 namespace gx {
 	class GX_DLL GXPlane : public GXObject {
 	public:
-		GXPlane(int Width, int Depth, int ClusteringX = 2, int ClusteringZ = 2, const char* shaderPath = nullptr) : GXObject(GX_PLANE), width(Width), depth(Depth), n(ClusteringX* Width), m(ClusteringZ* Depth), indices(nullptr) {
+		GXPlane(int Width, int Depth, int ClusteringX = 2, int ClusteringZ = 2, const char* shaderPath = nullptr) : GXObject(GX_PLANE,"Plane"), width(Width), depth(Depth), n(ClusteringX* Width), m(ClusteringZ* Depth), indices(nullptr) {
 			if (shaderPath == nullptr) {
 				glshader = GLShaderManager::getShader(GLShaderType::DEFAULT_GBUFFER);
 			}

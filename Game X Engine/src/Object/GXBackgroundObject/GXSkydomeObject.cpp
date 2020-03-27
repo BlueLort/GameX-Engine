@@ -10,6 +10,7 @@ namespace gx {
 		staticModelMat4 = transform.getModel();
 		//GET THE MODEL DATA
 		io::IORequestHandler::getModel(fileName, &components, &isReady);
+		objName = "Skydome";
 	}
 
 	void GXSkydomeObject::update(float deltaTime) {

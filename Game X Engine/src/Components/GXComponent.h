@@ -37,6 +37,9 @@ namespace gx {
 		}
 
 		virtual inline const char* toString() const { return this->getName(); }
+		virtual void setOwnerID(uint32_t GXID) {
+			objectID = GXID;
+		}
 	protected:
 		static uint64_t counter;
 		uint32_t objectID;

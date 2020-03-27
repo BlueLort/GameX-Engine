@@ -23,7 +23,7 @@ namespace gx {
 
 	void GameXApp::Start() {
 		//OBJECT FOR DEBUGGING
-		std::shared_ptr<GXModelObject> object = std::make_shared<GXModelObject>();
+		std::shared_ptr<GXModelObject> object = std::make_shared<GXModelObject>("my nanosuit object");
 		object->GLinit("res/models/nanosuit/nanosuit.obj");
 		LayerManager::getInstance().addModelObject(object);
 		rayPickingTask = std::async(std::launch::async, rayPicking);
@@ -135,7 +135,7 @@ namespace gx {
 					GXPhysicsManager::getInstance().rayTest(btRayStart, btRayEnd,rayCallback);
 					if (rayCallback.hasHit()) {
 						std::ostringstream oss;
-						oss << "mesh " << reinterpret_cast<uint32_t>(rayCallback.m_collisionObject->getUserPointer());
+						oss << LayerManager::getInstance().getModelObject(reinterpret_cast<uint32_t>(rayCallback.m_collisionObject->getUserPointer()))->getName();
 						message = oss.str();
 					}
 					else {

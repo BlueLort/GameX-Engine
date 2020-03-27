@@ -7,7 +7,7 @@ namespace gx {
 	{
 		GBuffer.reset(new GLFrameBuffer());
 		GBuffer->init(width,height);
-		//Setting up the G-Buffer
+		// Setting up the G-Buffer
 		GBuffer->addTextureAttachment(GX_COLOR_ATTACHMENT);
 		GBuffer->addTextureAttachment(GX_POSITION_ATTACHMENT);
 		GBuffer->addTextureAttachment(GX_NORMAL_ATTACHMENT);
@@ -48,8 +48,8 @@ namespace gx {
 
 	void MainScene::start()
 	{
-		GBuffer->use(GX_FBO_RW); //upload data to the GBUFFER
-		GL_CALL(glViewport(0, 0, width, height));//let layers make glviewport according to their resolution
+		GBuffer->use(GX_FBO_RW); // upload data to the GBUFFER
+		GL_CALL(glViewport(0, 0, width, height));// let layers make glviewport according to their resolution
 		for (auto& ite : GLFlags) {
 			glEnable(ite);
 		}
@@ -79,7 +79,7 @@ namespace gx {
 		}
 		if(mainPlane.get()!=nullptr)mainPlane->update(deltaTime);
 		skydome->update(deltaTime);
-		mainSceneBuffer->use(GX_FBO_RW); //now its time for lightpass
+		mainSceneBuffer->use(GX_FBO_RW); // now its time for lightpass
 		GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		lightingPassShader->use();
 		SceneLightManager::getInstance().setLightValues(lightingPassShader);
@@ -99,7 +99,7 @@ namespace gx {
 		
 		ImGui::Begin(name.c_str(), NULL, windowFlags);
 
-		//get mouse loc relative to main window
+		// get mouse loc relative to main window
 		selected=ImGui::IsWindowFocused();
 	
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));

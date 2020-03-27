@@ -10,6 +10,7 @@
 #include "Renderer/openGL/Texture/GLTexture2D.h"
 #include "Maths/Data/Vertex3D.h"
 #include "Components/Mesh/GXMeshComponent.h"
+#include "Physics/GXPickingCollider.h"
 
 namespace gx {
 	namespace io {

@@ -178,6 +178,7 @@
     <ClInclude Include="src\Object\GXBackgroundObject\GXSkydomeObject.h" />
     <ClInclude Include="src\Object\GXMeshObject\GXModelObject.h" />
     <ClInclude Include="src\Object\GXObject.h" />
+    <ClInclude Include="src\Physics\GXPickingCollider.h" />
     <ClInclude Include="src\Physics\PhysicsManager.h" />
     <ClInclude Include="src\Renderer\openGL\Buffers\GLBufferManager.h" />
     <ClInclude Include="src\Renderer\openGL\Buffers\GLElementBuffer.h" />

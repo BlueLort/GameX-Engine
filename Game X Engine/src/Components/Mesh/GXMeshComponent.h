@@ -4,7 +4,7 @@
 
 #include "Maths/GXMaths.h"
 #include "Components/GXComponent.h"
-
+#include "Physics/GXPickingCollider.h"
 
 namespace gx {
 	class GX_DLL GXMeshComponent : public GXComponent {
@@ -12,15 +12,23 @@ namespace gx {
 
 
 		//TODO HANDLE GXID PASSING to this component
-		GXMeshComponent(uint32_t GXID,const std::shared_ptr<gx::GLBufferManager>& GLBM) : GXComponent(GXID)
+		GXMeshComponent(uint32_t GXID,const std::shared_ptr<gx::GLBufferManager>& GLBM, const std::shared_ptr<gx::GXPickingCollider>& pickingCollider) : GXComponent(GXID)
 		{
 			//TODO make input base shader and use macros to define which shader to use
 			this->GLBM = GLBM;
+			this->gxPickingCollider = pickingCollider;
 		}
+		GXMeshComponent(uint32_t GXID, const std::shared_ptr<gx::GLBufferManager>& GLBM) : GXComponent(GXID)
+		{
+			//TODO make input base shader and use macros to define which shader to use
+			this->GLBM = GLBM;
+
+		}
+
 		virtual inline const char* getName() const override {
 			return "GXMeshComponent";
 		}
-		virtual inline uint32_t getEventType()const override {
+		virtual inline uint32_t getEventType() const override {
 			return GXComponentType::GX_MESH;
 		}
 		virtual inline uint32_t getEventClass() const override {
@@ -29,12 +37,15 @@ namespace gx {
 		virtual void destroy()override {
 			GLBM->destroy();
 		}
+		void setOwnerID(uint32_t GXID) override{
+			objectID = GXID;
+			this->gxPickingCollider->setOwnerID(GXID);
+		}
 		virtual void update(float deltaTime)override {
 		}
-
 	private:
 		std::shared_ptr<GLBufferManager> GLBM;
-
+		std::shared_ptr<GXPickingCollider> gxPickingCollider;
 		// render the mesh
 		void draw(GLShader* glshader,bool isWireFrame) {
 			uint32_t nDiffuse = 1;

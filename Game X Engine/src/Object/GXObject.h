@@ -13,9 +13,9 @@ namespace gx {
 	enum GXObjectType { GX_MODEL, GX_SKYDOME,GX_PLANE };
 	class GX_DLL GXObject {
 	public:
-		inline GXObject(GXObjectType ObjectType) :objType(ObjectType), isReady(false),isWireFrame(false){
-			GXID = currentID;
-			currentID++;
+		inline GXObject(GXObjectType ObjectType,const char* objName) :objType(ObjectType), isReady(false),isWireFrame(false){
+			GXID = currentID++;
+			this->objName = std::string(objName);
 		}
 		GXTransform transform;
 		virtual void update(float deltaTime) = 0;
@@ -26,8 +26,9 @@ namespace gx {
 		}
 		inline GXObjectType getType()const { return objType; }
 		inline uint32_t getID()const { return GXID; }
-		void setShader(GLShader* sh) { this->glshader = sh; }
-		GLShader* getShader() const { return glshader; }
+		inline void setShader(GLShader* sh) { this->glshader = sh; }
+		inline GLShader* getShader() const { return glshader; }
+		inline const char* getName() const { return objName.c_str(); }
 		
 		bool isReady;
 		bool isWireFrame;
@@ -36,6 +37,7 @@ namespace gx {
 		GXObjectType objType;
 		GLShader* glshader;
 		uint32_t GXID;
+		std::string objName;
 	private:
 		static uint32_t currentID;
 	};

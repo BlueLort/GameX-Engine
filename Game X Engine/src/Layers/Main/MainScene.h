@@ -16,6 +16,8 @@ namespace gx {
 		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) { sceneModelObjects[obj->getID()]=obj; };
 		//does not handle wrong ids.
 		inline std::shared_ptr<GXModelObject> getModelObject(uint32_t GXID){
+			auto ite = sceneModelObjects.find(GXID);
+			if (ite == sceneModelObjects.end())return nullptr;
 			return sceneModelObjects[GXID];
 		}
 		inline void setPlane(std::shared_ptr<GXPlane>& p) { plane = p; }
