@@ -48,6 +48,12 @@ namespace gx {
 		inline std::pair<float, float> getSceneMouseLocNormalized() {
 			return mainSceneLayer->getMouseLocNormalized();
 		}
+		inline std::pair<int32_t,int32_t> getSceneMouseLoc() {
+			return mainSceneLayer->getMouseLoc();
+		}
+		inline void mousePressRequest() {
+			mainSceneLayer->mousePressRequest();
+		}
 		inline void renderUpdateLayers(float deltaTime) {
 			if (!modelObjectRequests.empty()) {
 				if (modelObjectRequests.front()->isReady) {

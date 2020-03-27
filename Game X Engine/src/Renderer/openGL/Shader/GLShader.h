@@ -41,7 +41,12 @@ namespace gx {
 			GLuint loc = glGetUniformLocation(ID, name);
 			glUniform1i(loc, value);
 		}
+		// ------------------------------------------------------------------------
 
+		inline void setUInt(const char* name, unsigned int value) const {
+			GLuint loc = glGetUniformLocation(ID, name);
+			glUniform1ui(loc, value);
+		}
 		// ------------------------------------------------------------------------
 		inline void setFloat(const  char* name, float value) const {
 			GLuint loc = glGetUniformLocation(ID, name);

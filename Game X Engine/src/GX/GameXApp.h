@@ -60,7 +60,6 @@ namespace gx {
 		if (UI_GL->handleEvent(gxEvent)) {
 			handled = true;
 		}
-
 		if (handleEvent(gxEvent)) {
 			handled = true;
 		}
@@ -100,6 +99,11 @@ namespace gx {
 		Event->handled = true;
 		return 1;
 	}
-
+	template<>
+	inline int GameXApp::handleEvent<gx::event::MousePressEvent>(std::shared_ptr<gx::event::MousePressEvent>& Event) {
+		LayerManager::getInstance().mousePressRequest();
+		Event->handled = true;
+		return 1;
+	}
 }
 

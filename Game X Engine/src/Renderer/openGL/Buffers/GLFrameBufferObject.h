@@ -9,7 +9,9 @@ namespace gx {
 		GX_DEPTH_ATTACHMENT,
 		GX_POSITION_ATTACHMENT,
 		GX_NORMAL_ATTACHMENT,
-		GX_STENCIL, ATTACHMENT
+		GX_ID_ATTACHMENT,
+		GX_STENCIL_ATTACHMENT
+
 	};
 	enum GXFBOBindMethod {
 		GX_FBO_READ = GL_READ_FRAMEBUFFER,
@@ -78,7 +80,10 @@ namespace gx {
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + type, GL_TEXTURE_2D, textureAttachments[type], 0);
 				break;
 			case gx::GX_DEPTH_ATTACHMENT:
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, textureAttachments[type], 0);
 				break;
 			case gx::GX_POSITION_ATTACHMENT:case gx::GX_NORMAL_ATTACHMENT:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
@@ -86,15 +91,25 @@ namespace gx {
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + type, GL_TEXTURE_2D, textureAttachments[type], 0);
 				break;
-			case gx::GX_STENCIL:
+			case gx::GX_ID_ATTACHMENT:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_R32UI, width, height, 0, GL_RED_INTEGER, GL_UNSIGNED_INT, NULL);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + type, GL_TEXTURE_2D, textureAttachments[type], 0);
 				break;
-			case gx::ATTACHMENT:
+			case gx::GX_STENCIL_ATTACHMENT:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D, textureAttachments[type], 0);
 				break;
+
 
 			default:
 				break;
 			}
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		
 
 		}
 	private:

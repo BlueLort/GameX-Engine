@@ -9,7 +9,7 @@
 namespace gx {
 	class GX_DLL MainScene :public Layer {
 	public:
-		inline MainScene(const std::string& layerName, int Width, int Height) : Layer(layerName),width(Width),height(Height) {}
+		inline MainScene(const std::string& layerName, int Width, int Height) : Layer(layerName),width(Width),height(Height), mouseWasPressed(false){}
 		virtual void init()override;
 		virtual void destroy()override;
 		//IOManagers add the object after it has been instantiated
@@ -24,16 +24,22 @@ namespace gx {
 		inline std::pair<float, float> getMouseLocNormalized() {
 			return mouseLocNormalized;
 		}
+		inline std::pair<int32_t, int32_t> getMouseLoc() {
+			return mouseLoc;
+		}
 		virtual void start()override;
 		virtual void end()override;
 		virtual int onEvent(const gx::event::GXEventType& eventType)override;
 		virtual void onUpdate(float deltaTime)override;
 		virtual void onGUIRender()override;
+		virtual void mousePressRequest() { mouseWasPressed = true; }
+		virtual uint32_t getObjectID();
 
 	private:
 		std::unordered_map<uint32_t,std::shared_ptr<GXModelObject>> sceneModelObjects;
 		std::shared_ptr<GXSkydomeObject> skydome;
 		std::pair<float, float> mouseLocNormalized;
+		std::pair<int32_t, int32_t> mouseLoc;
 		std::shared_ptr<GXPlane> plane;
 		static std::shared_ptr<GXPlane> mainPlane;
 		ImGuiWindowFlags windowFlags;
@@ -45,6 +51,7 @@ namespace gx {
 		GXQuad* quadRenderer;
 		std::unique_ptr<GLFrameBuffer> mainSceneBuffer;
 		friend class PlaneEditorLayer;
+		bool mouseWasPressed;
 	};
 
 }

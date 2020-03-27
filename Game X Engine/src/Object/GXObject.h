@@ -14,7 +14,7 @@ namespace gx {
 	class GX_DLL GXObject {
 	public:
 		inline GXObject(GXObjectType ObjectType,const char* objName) :objType(ObjectType), isReady(false),isWireFrame(false){
-			GXID = currentID++;
+			this->GXID = currentID++;
 			this->objName = std::string(objName);
 		}
 		GXTransform transform;

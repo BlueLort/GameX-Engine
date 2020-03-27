@@ -11,11 +11,13 @@ namespace gx {
 		GBuffer->addTextureAttachment(GX_COLOR_ATTACHMENT);
 		GBuffer->addTextureAttachment(GX_POSITION_ATTACHMENT);
 		GBuffer->addTextureAttachment(GX_NORMAL_ATTACHMENT);
-		uint32_t attachments[3] = { 
+		GBuffer->addTextureAttachment(GX_ID_ATTACHMENT);
+		uint32_t attachments[4] = {
 									GBuffer->getAttachmentIndex(GX_POSITION_ATTACHMENT),
 									GBuffer->getAttachmentIndex(GX_NORMAL_ATTACHMENT),
-									GBuffer->getAttachmentIndex(GX_COLOR_ATTACHMENT) };
-		GBuffer->setDrawBuffeers(3,attachments);
+									GBuffer->getAttachmentIndex(GX_COLOR_ATTACHMENT) ,
+									GBuffer->getAttachmentIndex(GX_ID_ATTACHMENT) };
+		GBuffer->setDrawBuffeers(4,attachments);
 
 		mainSceneBuffer.reset(new GLFrameBuffer());
 		mainSceneBuffer->init(width, height);
@@ -79,6 +81,7 @@ namespace gx {
 		}
 		if(mainPlane.get()!=nullptr)mainPlane->update(deltaTime);
 		skydome->update(deltaTime);
+		getObjectID();
 		mainSceneBuffer->use(GX_FBO_RW); // now its time for lightpass
 		GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		lightingPassShader->use();
@@ -110,12 +113,30 @@ namespace gx {
 		ImGui::PopStyleVar(3);
 		ImVec2 mops = ImGui::GetMousePos();
 		ImVec2 molc = ImGui::GetCursorScreenPos();
-		mouseLocNormalized.first = static_cast<float>(mops.x - molc.x) / windowSize.x;
-		mouseLocNormalized.second = static_cast<float>(molc.y- mops.y) / windowSize.y;
-		
+		mouseLoc.first = mops.x - molc.x;
+		mouseLoc.second = molc.y - mops.y;
+		mouseLocNormalized.first = static_cast<float>(mouseLoc.first) / windowSize.x;
+		mouseLocNormalized.second = static_cast<float>(mouseLoc.second) / windowSize.y;
+	
 		ImGui::End();
 		GLTexture2D::stop();
 		
+	}
+
+	uint32_t MainScene::getObjectID()
+	{
+		if (!selected || !mouseWasPressed) return 0;
+		if (!(mouseLocNormalized.first <= 1.0f && mouseLocNormalized.first >= 0.0f 
+			&& mouseLocNormalized.second <= 1.0f && mouseLocNormalized.second >= 0)) return 0;
+		int32_t x = mouseLocNormalized.first * width;
+		int32_t y = mouseLocNormalized.second * height;
+		mouseWasPressed = false;
+		uint32_t val;
+		glReadBuffer(GL_COLOR_ATTACHMENT0 + GX_ID_ATTACHMENT);
+		GL_CALL(glReadPixels(x,y, 1, 1, GL_RED_INTEGER, GL_UNSIGNED_INT, &val));
+		glReadBuffer(GL_NONE);
+		if (sceneModelObjects.find(val) == sceneModelObjects.end())return 0;
+		return val;
 	}
 
 }

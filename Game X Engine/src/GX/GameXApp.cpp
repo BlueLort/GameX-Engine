@@ -26,7 +26,8 @@ namespace gx {
 		std::shared_ptr<GXModelObject> object = std::make_shared<GXModelObject>("my nanosuit object");
 		object->GLinit("res/models/nanosuit/nanosuit.obj");
 		LayerManager::getInstance().addModelObject(object);
-		rayPickingTask = std::async(std::launch::async, rayPicking);
+		//TODO do RAY PICKING WITH PHYSICS ENGINE ?
+		//rayPickingTask = std::async(std::launch::async, rayPicking);
 		while (isRunning) {
 			float deltaTime = 1.0f / GXTimer::getAppTimer().getDeltaTicks();
 			GXTimer::getAppTimer().update();
