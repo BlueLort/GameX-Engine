@@ -13,6 +13,13 @@ namespace gx {
 		}
 
 		io::IORequestHandler::getModel(fileName, &components, &isReady);
+#ifdef USING_OPENGL
+		//set constant data
+		this->glshader->use();
+		this->glshader->setFloat("material.shininess", 32.0f);
+		this->glshader->setUInt("objID", this->GXID);
+		GLShader::stop();
+#endif		
 
 	}
 
@@ -23,8 +30,6 @@ namespace gx {
 		SceneLightManager::getInstance().setLightValues(this->glshader);
 		this->glshader->setMat4("model", transform.getModel());
 		this->glshader->setMat4("vp", EditorCamera::getInstance().getPVMatrix());
-		this->glshader->setFloat("material.shininess", 32.0f);
-		this->glshader->setUInt("objID", this->GXID);
 #endif
 		for (auto& component : components) {
 			component->update(deltaTime);
