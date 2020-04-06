@@ -80,8 +80,8 @@ namespace gx {
 			ite++;
 		}
 		if(mainPlane.get()!=nullptr)mainPlane->update(deltaTime);
-		skydome->update(deltaTime);
 		getObjectID();
+		skydome->update(deltaTime);
 		mainSceneBuffer->use(GX_FBO_RW); // now its time for lightpass
 		GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		lightingPassShader->use();
@@ -94,6 +94,7 @@ namespace gx {
 		GLTexture2D::use(GBuffer->getTextureID(GX_COLOR_ATTACHMENT));
 		lightingPassShader->setVec3("viewPos", EditorCamera::getInstance().transform.position);
 		quadRenderer->update(deltaTime, lightingPassShader);
+
 
 	}
 
@@ -109,7 +110,7 @@ namespace gx {
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 		ImVec2 windowSize = ImGui::GetContentRegionAvail();
-		ImGui::Image(reinterpret_cast<void*>(mainSceneBuffer->getTextureID(GX_COLOR_ATTACHMENT)),windowSize,ImVec2(1,1),ImVec2(0,0));
+		ImGui::Image(reinterpret_cast<void*>(mainSceneBuffer->getTextureID(GX_COLOR_ATTACHMENT)),windowSize,ImVec2(0,1),ImVec2(1,0));
 		ImGui::PopStyleVar(3);
 		ImVec2 mops = ImGui::GetMousePos();
 		ImVec2 molc = ImGui::GetCursorScreenPos();

@@ -871,8 +871,7 @@ static void ShowDemoWindowWidgets()
             ImGui::PopID();
             ImGui::SameLine();
         }
-        ImGui::NewLine();
-        ImGui::Text("Pressed %d times.", pressed_count);
+        ImGui::NewLine();        
         ImGui::TreePop();
     }
 

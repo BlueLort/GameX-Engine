@@ -59,9 +59,9 @@ namespace gx {
 		else if (direction == BACKWARD)
 			transform.position -= transform.forward * velocity;
 		else if (direction == LEFT)
-			transform.position += transform.right * velocity;
-		else if (direction == RIGHT)
 			transform.position -= transform.right * velocity;
+		else if (direction == RIGHT)
+			transform.position += transform.right * velocity;
 
 		updateCameraVectors();
 	}
@@ -69,7 +69,7 @@ namespace gx {
 	{
 		xoffset *= mouseSensitivity;
 		yoffset *= mouseSensitivity;
-		yaw -= xoffset;
+		yaw += xoffset;
 		pitch += yoffset;
 		if (constrainPitch)
 		{
