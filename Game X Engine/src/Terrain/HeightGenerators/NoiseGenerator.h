@@ -10,15 +10,15 @@ namespace gx {
 		virtual inline  void init() override {
 			float maxH = FLT_MIN;
 			float minH = FLT_MAX;
-			int totalWidth = 3 * width;
-			int size = width * height;
-			for (int i = 0; i < size; i++) {
+			GXint32 totalWidth = 3 * width;
+			GXint32 size = width * height;
+			for (GXint32 i = 0; i < size; i++) {
 				float quality = 3.5f;
 				float amp = 1.25f;
 				float curr = 0.0f;
-				for (int j = 0; j < nOctaves; j++) {
+				for (GXint32 j = 0; j < nOctaves; j++) {
 
-					int X = i % width, Y = static_cast<int>(i / width);
+					GXint32 X = i % width, Y = static_cast<GXint32>(i / width);
 					curr += abs(PerlinNoise::noise(X / quality, Y / quality, zPlane) * quality * amp);
 					quality *= scale/lacunarity;
 					amp *= persistence;
@@ -30,10 +30,10 @@ namespace gx {
 				amp = 1.25f;
 				curr = 0.0f;
 			}
-			int k = 0;
-			for (int y = 0; y < height; y++) {
-				for (int x = 0; x < totalWidth; x += 3) {
-					int loc = totalWidth * y + x;
+			GXint32 k = 0;
+			for (GXint32 y = 0; y < height; y++) {
+				for (GXint32 x = 0; x < totalWidth; x += 3) {
+					GXint32 loc = totalWidth * y + x;
 					heightsNormalized[k] = GXMaths::inverseLerp(heightsNormalized[k], minH, maxH);
 					heightsColor[loc] = heightsNormalized[k] * 255;
 					heightsColor[loc + 1] = heightsColor[loc];
@@ -46,8 +46,8 @@ namespace gx {
 
 
 		}
-		NoiseGenerator(int Width, int Height, float Scale,
-			int NOctaves, float Persistence, float Lacunarity, float z)
+		NoiseGenerator(GXint32 Width, GXint32 Height, float Scale,
+			GXint32 NOctaves, float Persistence, float Lacunarity, float z)
 			: HeightMapGenerator(Width, Height, Scale),
 			nOctaves(NOctaves), persistence(Persistence), lacunarity(Lacunarity), zPlane(z) {
 
@@ -55,24 +55,24 @@ namespace gx {
 
 	private:
 
-		int nOctaves;
+		GXint32 nOctaves;
 		float persistence;
 		float lacunarity;
-		int zPlane;
-		inline bool isValid(int x, int y, int totalWidth)
+		GXint32 zPlane;
+		inline bool isValid(GXint32 x, GXint32 y, GXint32 totalWidth)
 		{
 			// True if ij are valid indices; false otherwise.
 			return
 				y >= 0 && y < height &&
 				x >= 0 && x < totalWidth;
 		}
-		inline float average(int x, int y, int totalWidth)
+		inline float average(GXint32 x, GXint32 y, GXint32 totalWidth)
 		{
 			float avg = 0.0f;
-			int counter = 0;
-			for (int i = y - 1; i <= y + 1; i++)
+			GXint32 counter = 0;
+			for (GXint32 i = y - 1; i <= y + 1; i++)
 			{
-				for (int j = x - 3; j <= x + 3; j += 3)
+				for (GXint32 j = x - 3; j <= x + 3; j += 3)
 				{
 					if (isValid(j, i, totalWidth))
 					{

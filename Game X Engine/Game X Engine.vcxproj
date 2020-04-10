@@ -100,16 +100,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\IOManagement\image\stb_image.cpp" />
     <ClCompile Include="src\IOManagement\IORequestHandler.cpp" />
     <ClCompile Include="src\Layers\Debug\Logging\LogLayer.cpp" />
     <ClCompile Include="src\Layers\Main\MainScene.cpp" />
     <ClCompile Include="src\Camera\EditorCamera\EditorCamera.cpp" />
     <ClCompile Include="src\Components\GXComponentcpp.cpp" />
     <ClCompile Include="src\GX\GameXApp.cpp" />
-    <ClCompile Include="src\IOManagement\image\stb_image.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="src\IOManagement\IOManager.cpp" />
     <ClCompile Include="src\Layers\Plane\PlaneEditorLayer.cpp" />
     <ClCompile Include="src\Layers\Utility\NoiseGeneratorLayer.cpp" />
@@ -152,6 +149,7 @@
     <ClInclude Include="3rdParty\stb_image\stb_image.h" />
     <ClInclude Include="3rdParty\stb_image\stb_image_write.h" />
     <ClInclude Include="src\Components\Physics\GXPhysicsComponent.h" />
+    <ClInclude Include="src\GX\GXTypes.h" />
     <ClInclude Include="src\IOManagement\IORequestHandler.h" />
     <ClInclude Include="src\Layers\Debug\Logging\LogLayer.h" />
     <ClInclude Include="src\Layers\LayerManager.h" />

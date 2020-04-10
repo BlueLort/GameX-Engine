@@ -4,8 +4,8 @@
 #include "Terrain/HeightGenerators/NoiseGenerator.h"
 #include "Terrain/HeightGenerators/TextureMapGenerator.h"
 
-constexpr int PERLIN_WIDTH = 256;
-constexpr int PERLIN_HEIGHT = 256;
+constexpr GXint32 PERLIN_WIDTH = 256;
+constexpr GXint32 PERLIN_HEIGHT = 256;
 namespace gx {
 	class GX_DLL NoiseGeneratorLayer :public Layer {
 	public:
@@ -17,11 +17,11 @@ namespace gx {
 		virtual void destroy()override;
 		virtual void start()override;
 		virtual void end()override;
-		virtual int onEvent(const gx::event::GXEventType& eventType)override;
+		virtual GXint32 onEvent(const gx::event::GXEventType& eventType)override;
 		virtual void onUpdate(float deltaTime)override;
 		virtual void onGUIRender()override;
 		static const float* getHeightsNormalized(){ return heightsNormalized; }
-		static inline void generateNoiseMap(int width=PERLIN_WIDTH, int height = PERLIN_HEIGHT, float scale=27.0f, int nOctaves=4, float persistence=0.33f, float lacunarity=2.9f, float z=0.0f) {
+		static inline void generateNoiseMap(GXint32 width=PERLIN_WIDTH, GXint32 height = PERLIN_HEIGHT, float scale=27.0f, GXint32 nOctaves=4, float persistence=0.33f, float lacunarity=2.9f, float z=0.0f) {
 			NoiseGenerator ng(width, height, scale, nOctaves, persistence, lacunarity, z);
 			ng.init();
 			heightValues = ng.getHeightsColor();
@@ -47,15 +47,15 @@ namespace gx {
 		}
 	private:
 		ImGuiWindowFlags windowFlags;
-		uint32_t texID;
+		GXuint32 texID;
 		static uint8_t* heightValues;
 		static float* heightsNormalized;
 		static bool isUpdated;
 		static bool canUpdate;
 		static bool errorLoading;
-		static int texWidth;
-		static int texHeight;
-		int nOctaves;
+		static GXint32 texWidth;
+		static GXint32 texHeight;
+		GXint32 nOctaves;
 		float scale, persistence,lacunarity,z;
 		char filePathBuffer[1024];
 		inline void resetHeightValues() {

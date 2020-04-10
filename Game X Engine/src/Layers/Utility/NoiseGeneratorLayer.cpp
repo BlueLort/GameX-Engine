@@ -7,8 +7,8 @@ namespace gx {
 	bool NoiseGeneratorLayer::errorLoading = false;
 	uint8_t* NoiseGeneratorLayer::heightValues = nullptr;
 	float* NoiseGeneratorLayer::heightsNormalized = nullptr;
-	int NoiseGeneratorLayer::texWidth;
-	int NoiseGeneratorLayer::texHeight;
+	GXint32 NoiseGeneratorLayer::texWidth;
+	GXint32 NoiseGeneratorLayer::texHeight;
 	
 	void NoiseGeneratorLayer::init()
 	{
@@ -27,7 +27,7 @@ namespace gx {
 	{
 	}
 
-	int NoiseGeneratorLayer::onEvent(const gx::event::GXEventType& eventType)
+	GXint32 NoiseGeneratorLayer::onEvent(const gx::event::GXEventType& eventType)
 	{
 		return 0;
 	}

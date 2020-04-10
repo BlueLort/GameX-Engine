@@ -30,7 +30,7 @@ namespace gx {
 				IOManager::finishAllTasks();
 				update();
 			}
-			inline static GLuint getTexID(const char* filePath) {
+			inline static GXuint32 getTexID(const char* filePath) {
 				auto ite = IOManager::texIDs.find(std::string(filePath));
 				if (ite == IOManager::texIDs.end())return 0;
 				return ite->second;
@@ -59,7 +59,7 @@ namespace gx {
 				}
 				auto it = requestedFiles.find(sFileName);
 				if (it == requestedFiles.end()) {
-					int lastSlash = sFileName.find_last_of('/')+1;
+					GXint32 lastSlash = sFileName.find_last_of('/')+1;
 					importModel(
 						sFileName.substr(0, lastSlash).c_str()
 						, sFileName.substr(lastSlash, sFileName.length()).c_str()

@@ -6,11 +6,11 @@ namespace gx {
 	bool PlaneEditorLayer::canUpdate = true;
 	uint8_t* PlaneEditorLayer::texColors = nullptr;
 	std::shared_ptr<GXPlane> PlaneEditorLayer::plane;
-	constexpr int MAX_WIDTH = 8192;
-	constexpr int MAX_DEPTH = 8192;
-	constexpr int MAX_HEIGHT = 128;
-	constexpr int MAX_N = 8;
-	constexpr int MAX_M = 8;
+	constexpr GXint32 MAX_WIDTH = 8192;
+	constexpr GXint32 MAX_DEPTH = 8192;
+	constexpr GXint32 MAX_HEIGHT = 128;
+	constexpr GXint32 MAX_N = 8;
+	constexpr GXint32 MAX_M = 8;
 	void  PlaneEditorLayer::init()
 	{
 	}
@@ -28,7 +28,7 @@ namespace gx {
 	{
 	}
 
-	int  PlaneEditorLayer::onEvent(const gx::event::GXEventType& eventType)
+	GXint32  PlaneEditorLayer::onEvent(const gx::event::GXEventType& eventType)
 	{
 		return 0;
 	}
@@ -76,7 +76,7 @@ namespace gx {
 
 		}
 		ImGui::Separator();
-		for (int i = 1; i < levels.size(); i++) {
+		for (GXint32 i = 1; i < levels.size(); i++) {
 			//TODO improve this IDing of ui elements as string operations are costly.
 			ImGui::DragFloat(std::string("Min. Height##" + std::to_string(i)).c_str(), &levels[i].heightVal, 0.001f, 0.001f, 1.0f, "%.3f%");
 			CLAMP(levels[i].heightVal, 0.001f, 1.0f);

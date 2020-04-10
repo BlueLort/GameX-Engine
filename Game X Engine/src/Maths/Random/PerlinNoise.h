@@ -3,7 +3,7 @@
 
 namespace gx {
 	//Implementation copied from https://mrl.nyu.edu/~perlin/noise/ with slight modifications
-	static const int p[] = { 151,160,137,91,90,15,
+	static const GXint32 p[] = { 151,160,137,91,90,15,
 		131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
 		190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,
 		88,237,149,56,87,174,20,125,136,171,168, 68,175,74,165,71,134,139,48,27,166,
@@ -34,16 +34,16 @@ namespace gx {
 	public:
 
 		static double noise(double x, double y, double z) {
-			int X = static_cast<int>(x) & 255,                  // FIND UNIT CUBE THAT
-				Y = static_cast<int>(y) & 255,                  // CONTAINS POINT.
-				Z = static_cast<int>(z) & 255;
-			x -= static_cast<int>(x);                                // FIND RELATIVE X,Y,Z
-			y -= static_cast<int>(y);                                // OF POINT IN CUBE.
-			z -= static_cast<int>(z);
+			GXint32 X = static_cast<GXint32>(x) & 255,                  // FIND UNIT CUBE THAT
+				Y = static_cast<GXint32>(y) & 255,                  // CONTAINS POINT.
+				Z = static_cast<GXint32>(z) & 255;
+			x -= static_cast<GXint32>(x);                                // FIND RELATIVE X,Y,Z
+			y -= static_cast<GXint32>(y);                                // OF POINT IN CUBE.
+			z -= static_cast<GXint32>(z);
 			double u = fade(x),                                // COMPUTE FADE CURVES
 				v = fade(y),                                // FOR EACH OF X,Y,Z.
 				w = fade(z);
-			int A = p[X] + Y, AA = p[A] + Z, AB = p[A + 1] + Z,      // HASH COORDINATES OF
+			GXint32 A = p[X] + Y, AA = p[A] + Z, AB = p[A + 1] + Z,      // HASH COORDINATES OF
 				B = p[X + 1] + Y, BA = p[B] + Z, BB = p[B + 1] + Z;      // THE 8 CUBE CORNERS,
 
 			return GXMaths::lerp(w, GXMaths::lerp(v, GXMaths::lerp(u, grad(p[AA], x, y, z),  // AND ADD
@@ -56,8 +56,8 @@ namespace gx {
 						grad(p[BB + 1], x - 1, y - 1, z - 1))));
 		}
 		static double fade(double t) { return t * t * t * (t * (t * 6 - 15) + 10); }
-		static double grad(int hash, double x, double y, double z) {
-			int h = hash & 15;                      // CONVERT LO 4 BITS OF HASH CODE
+		static double grad(GXint32 hash, double x, double y, double z) {
+			GXint32 h = hash & 15;                      // CONVERT LO 4 BITS OF HASH CODE
 			double u = h < 8 ? x : y,                 // INTO 12 GRADIENT DIRECTIONS.
 				v = h < 4 ? y : h == 12 || h == 14 ? x : z;
 			return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);

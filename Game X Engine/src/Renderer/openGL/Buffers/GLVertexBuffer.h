@@ -8,11 +8,11 @@ namespace gx {
 	class GX_DLL GLVertexBuffer {
 
 	private:
-		GLuint ID;
-		uint32_t currentSize;
-		uint32_t maxSize;
-		void init(uint32_t requiredSize);
-		void initFull(void* data,uint32_t requiredSize);
+		GXuint32 ID;
+		GXuint32 currentSize;
+		GXuint32 maxSize;
+		void init(GXuint32 requiredSize);
+		void initFull(void* data,GXuint32 requiredSize);
 		inline void use() {
 			glBindBuffer(GL_ARRAY_BUFFER, this->ID);
 		}
@@ -22,8 +22,8 @@ namespace gx {
 		}
 
 		//Buffer Must be Bound before uploading data !
-		void uploadData(void* data,uint32_t size);
-		inline static void destroy(GLuint id) {
+		void uploadData(void* data,GXuint32 size);
+		inline static void destroy(GXuint32 id) {
 			GL_CALL(glDeleteBuffers(1, &id));
 		}
 		friend class GLBufferManager;

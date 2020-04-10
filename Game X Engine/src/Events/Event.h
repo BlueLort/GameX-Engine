@@ -35,12 +35,12 @@ namespace gx {
 		class GX_DLL GXEvent
 		{
 		public:
-			GXEvent(uint32_t WindowID) : windowID(WindowID) {}
+			GXEvent(GXuint32 WindowID) : windowID(WindowID) {}
 			bool handled = false;
-			uint32_t windowID;
+			GXuint32 windowID;
 			virtual inline const char* getName() const = 0;
-			virtual inline uint32_t getEventType() const = 0;
-			virtual inline uint32_t getEventClass() const = 0;
+			virtual inline GXuint32 getEventType() const = 0;
+			virtual inline GXuint32 getEventClass() const = 0;
 			
 			inline bool isSameClassAs(const GXEvent& e) {
 				return this->getEventClass() & e.getEventClass();
@@ -51,7 +51,7 @@ namespace gx {
 
 		/* EVENT QUEUE IMPLEMENTATION HOWEVER CURRENTLY I'M USING SDL QUEUE TO POLL EVENTS AND HANDLE THEM*/
 		/*
-		constexpr uint32_t EVENTS_LIMIT = 64;
+		constexpr GXuint32 EVENTS_LIMIT = 64;
 		class GX_DLL EventQueue {
 		public:
 			static bool enqueue(const Event& e) {
@@ -70,19 +70,19 @@ namespace gx {
 				return true;
 
 			}
-			inline static uint32_t getSize(){ return size; }
+			inline static GXuint32 getSize(){ return size; }
 
 		private:
 			static std::vector<std::unique_ptr<Event>> EventBuffer;
-			static uint32_t frontIte;
-			static uint32_t backIte;
-			static uint32_t size;
+			static GXuint32 frontIte;
+			static GXuint32 backIte;
+			static GXuint32 size;
 
 		};
 		std::vector<std::unique_ptr<Event> > EventQueue::EventBuffer(EVENTS_LIMIT);
-		uint32_t EventQueue::frontIte = 0;
-		uint32_t EventQueue::backIte = 0;
-		uint32_t EventQueue::size = 0;
+		GXuint32 EventQueue::frontIte = 0;
+		GXuint32 EventQueue::backIte = 0;
+		GXuint32 EventQueue::size = 0;
 	}
 	*/
 	}

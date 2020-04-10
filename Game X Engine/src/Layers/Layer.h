@@ -15,7 +15,7 @@ namespace gx {
 
 		virtual void start() = 0;
 		virtual void end() = 0;
-		virtual int onEvent(const gx::event::GXEventType& eventType) = 0;
+		virtual GXint32 onEvent(const gx::event::GXEventType& eventType) = 0;
 		virtual void onUpdate(float deltaTime) {}
 		virtual void onGUIRender() {}
 		inline std::string getName() const { return this->name; }
@@ -28,8 +28,8 @@ namespace gx {
 	//Priority Queue for Layers to store them by priority highest processed first
 	class GX_DLL LayerQueue {
 	public:
-		std::vector<std::pair<uint32_t, std::shared_ptr<Layer>>> layers;
-		inline void add(const std::pair<uint32_t, std::shared_ptr<Layer>>& layer) {
+		std::vector<std::pair<GXuint32, std::shared_ptr<Layer>>> layers;
+		inline void add(const std::pair<GXuint32, std::shared_ptr<Layer>>& layer) {
 			layers.emplace_back(layer);
 			std::sort(layers.begin(), layers.end(), comparator);
 		}
@@ -46,14 +46,14 @@ namespace gx {
 			}
 		}
 		inline void remove(const std::string& name) {
-			for (int i = 0; i < layers.size(); i++) {
+			for (GXint32 i = 0; i < layers.size(); i++) {
 				if (layers[i].second->getName() == name) {
 					layers.erase(layers.begin() + i);
 				}
 			}
 		}
 	private:
-		static bool comparator(std::pair<uint32_t, std::shared_ptr<Layer>>& layer1, std::pair<uint32_t, std::shared_ptr<Layer>>& layer2) {
+		static bool comparator(std::pair<GXuint32, std::shared_ptr<Layer>>& layer1, std::pair<GXuint32, std::shared_ptr<Layer>>& layer2) {
 			return layer1.first > layer2.first;//high priority first.
 		}
 	};

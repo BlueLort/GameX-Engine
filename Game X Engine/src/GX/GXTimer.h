@@ -12,15 +12,15 @@ namespace gx {
 			return gxt;
 		}
 		void update() {
-			uint32_t currentTicks = SDL_GetTicks();
+			GXuint32 currentTicks = SDL_GetTicks();
 			deltaTicks = currentTicks - lastTicks;
 			lastTicks = currentTicks;
 		}
-		inline uint32_t getDeltaTicks()const { return deltaTicks; }
+		inline GXuint32 getDeltaTicks()const { return deltaTicks; }
 
 	private:
-		uint32_t deltaTicks;
-		uint32_t lastTicks;
+		GXuint32 deltaTicks;
+		GXuint32 lastTicks;
 
 	};
 }

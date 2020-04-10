@@ -6,8 +6,8 @@ namespace gx {
 	void GXPlane::init(const float* heights)
 	{
 		verts.reserve(n * m);
-		int nMinusOne = n - 1;
-		int mMinusOne = m - 1;
+		GXint32 nMinusOne = n - 1;
+		GXint32 mMinusOne = m - 1;
 		float dx = static_cast<float>(width) / n;
 		float dz = static_cast<float>(depth) / m;
 
@@ -18,15 +18,15 @@ namespace gx {
 		//Using topLeft to center Plane aroung origin
 		float topLeftX = width / -2.0f;
 		float topLeftZ = depth / -2.0f;
-		int totalIndicesSize = nMinusOne * mMinusOne * 6;
-		indices = new uint32_t[totalIndicesSize];
+		GXint32 totalIndicesSize = nMinusOne * mMinusOne * 6;
+		indices = new GXuint32[totalIndicesSize];
 
-		for (uint32_t i = 0; i < m; i++)
+		for (GXuint32 i = 0; i < m; i++)
 		{
 			float z = i * dz;
 			float posZ = topLeftZ + z;
 			float v = static_cast<float>(i) / m;
-			for (uint32_t j = 0; j < n; j++)
+			for (GXuint32 j = 0; j < n; j++)
 			{
 				float x = j * dx;
 				float posX = topLeftX + x;
@@ -36,10 +36,10 @@ namespace gx {
 					, GXVec2(u, v));// TEXCOORDS
 			}
 		}
-		int k = 0;
-		for (int z = 0; z < mMinusOne; z++)
+		GXint32 k = 0;
+		for (GXint32 z = 0; z < mMinusOne; z++)
 		{
-			for (int x = 0; x < nMinusOne; x++)
+			for (GXint32 x = 0; x < nMinusOne; x++)
 			{//TODO have a little redundency assigning normals here that needs to be improved
 				GXVec3 normal;
 				indices[k] = z * n + x;
@@ -66,13 +66,13 @@ namespace gx {
 
 	}
 
-	void GXPlane::uploadToBuffer(uint32_t textureID)
+	void GXPlane::uploadToBuffer(GXuint32 textureID)
 	{
 		std::shared_ptr<GLBufferManager> Buffer;
 		Buffer.reset(new GLBufferManager());
 		Buffer->initFull(&verts[0], sizeof(Vertex3D) * verts.size(), sizeof(Vertex3D));
-		uint32_t totalIndicesSize = (n - 1) * (m - 1) * 6;
-		Buffer->uploadIndicesToBuffer(indices, totalIndicesSize * sizeof(uint32_t), totalIndicesSize);
+		GXuint32 totalIndicesSize = (n - 1) * (m - 1) * 6;
+		Buffer->uploadIndicesToBuffer(indices, totalIndicesSize * sizeof(GXuint32), totalIndicesSize);
 		Buffer->setAttribPointer(0, 3, GL_FLOAT, offsetof(Vertex3D, position));
 		Buffer->setAttribPointer(1, 3, GL_FLOAT, offsetof(Vertex3D, normal));
 		Buffer->setAttribPointer(2, 2, GL_FLOAT, offsetof(Vertex3D, texCoords));
@@ -80,7 +80,7 @@ namespace gx {
 		Buffer->setAttribPointer(4, 3, GL_FLOAT, offsetof(Vertex3D, bitangent));
 		//TODO Add Tangents bitangents later
 		Buffer->endStream();
-		/*for (int i = 0; i < textures.size(); i++) {
+		/*for (GXint32 i = 0; i < textures.size(); i++) {
 			Buffer->addTexture(textures[i]);
 		}*/
 		std::shared_ptr<GLTexture2D> tex;
@@ -110,7 +110,7 @@ namespace gx {
 
 	void GXPlane::destroy()
 	{
-		for (int i = 0; i < components.size(); i++) {
+		for (GXint32 i = 0; i < components.size(); i++) {
 			components[i]->destroy();
 		}
 	}

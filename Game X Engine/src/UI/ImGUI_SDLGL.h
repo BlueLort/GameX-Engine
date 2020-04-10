@@ -6,7 +6,7 @@
 #include "IMGUI_FILES/imgui_impl_opengl3.h"
 
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
-extern inline void setMouseButton(uint32_t button, bool val);
+extern inline void setMouseButton(GXuint32 button, bool val);
 namespace gx {
 	class GX_DLL ImGUI_SDLGL
 	{
@@ -22,7 +22,7 @@ namespace gx {
 
 		//EVENTS
 		template<class T>
-		inline static int handleEvent(std::shared_ptr<T>& Event){ return 0; }
+		inline static GXint32 handleEvent(std::shared_ptr<T>& Event){ return 0; }
 	private:
 		void showDockspace();
 
@@ -58,7 +58,7 @@ namespace gx {
 
 	//EVENTS 
 	template<>
-	inline int ImGUI_SDLGL::handleEvent<gx::event::WindowCloseEvent>(std::shared_ptr<gx::event::WindowCloseEvent> & Event) {
+	inline GXint32 ImGUI_SDLGL::handleEvent<gx::event::WindowCloseEvent>(std::shared_ptr<gx::event::WindowCloseEvent> & Event) {
 		if (ImGuiViewport * viewport = ImGui::FindViewportByPlatformHandle((void*)SDL_GetWindowFromID(Event->windowID))) {
 			viewport->PlatformRequestClose = true;
 			return 1;	
@@ -66,7 +66,7 @@ namespace gx {
 			return 0;
 		}
 	template<>
-	inline int ImGUI_SDLGL::handleEvent<gx::event::WindowResizeEvent>(std::shared_ptr<gx::event::WindowResizeEvent>& Event){
+	inline GXint32 ImGUI_SDLGL::handleEvent<gx::event::WindowResizeEvent>(std::shared_ptr<gx::event::WindowResizeEvent>& Event){
 		if (ImGuiViewport * viewport = ImGui::FindViewportByPlatformHandle((void*)SDL_GetWindowFromID(Event->windowID))) {
 			viewport->PlatformRequestResize = true;
 			return 1;
@@ -74,7 +74,7 @@ namespace gx {
 		return 0;
 	}
 	template<>
-	inline int ImGUI_SDLGL::handleEvent<gx::event::WindowMoveEvent>(std::shared_ptr<gx::event::WindowMoveEvent>& Event){
+	inline GXint32 ImGUI_SDLGL::handleEvent<gx::event::WindowMoveEvent>(std::shared_ptr<gx::event::WindowMoveEvent>& Event){
 		if (ImGuiViewport * viewport = ImGui::FindViewportByPlatformHandle((void*)SDL_GetWindowFromID(Event->windowID))) {
 			viewport->PlatformRequestMove= true;
 			return 1;
@@ -82,7 +82,7 @@ namespace gx {
 		return 1;
 	}
 	template<>
-	inline int ImGUI_SDLGL::handleEvent<gx::event::KeyPressEvent>(std::shared_ptr<gx::event::KeyPressEvent>& Event) {
+	inline GXint32 ImGUI_SDLGL::handleEvent<gx::event::KeyPressEvent>(std::shared_ptr<gx::event::KeyPressEvent>& Event) {
 		ImGuiIO& io = ImGui::GetIO();
 		io.KeysDown[Event->getKeyVal()] = true;
 		io.KeyShift = ((SDL_GetModState() & KMOD_SHIFT) != 0);
@@ -92,7 +92,7 @@ namespace gx {
 		return 1;
 	}
 	template<>
-	inline int ImGUI_SDLGL::handleEvent<gx::event::KeyReleaseEvent>(std::shared_ptr<gx::event::KeyReleaseEvent>& Event) {
+	inline GXint32 ImGUI_SDLGL::handleEvent<gx::event::KeyReleaseEvent>(std::shared_ptr<gx::event::KeyReleaseEvent>& Event) {
 		ImGuiIO& io = ImGui::GetIO();
 		io.KeysDown[Event->getKeyVal()] = false;
 		io.KeyShift = ((SDL_GetModState() & KMOD_SHIFT) != 0);
@@ -102,20 +102,20 @@ namespace gx {
 		return 1;
 	}
 	template<>
-	inline int ImGUI_SDLGL::handleEvent<gx::event::KeyTypedEvent>(std::shared_ptr<gx::event::KeyTypedEvent>& Event) {
+	inline GXint32 ImGUI_SDLGL::handleEvent<gx::event::KeyTypedEvent>(std::shared_ptr<gx::event::KeyTypedEvent>& Event) {
 		ImGuiIO& io = ImGui::GetIO();
 		io.AddInputCharactersUTF8(Event->getTextVal());
 		return 1;
 	}
 	template<>
-	inline int ImGUI_SDLGL::handleEvent<gx::event::MouseScrollEvent>(std::shared_ptr<gx::event::MouseScrollEvent>& Event){
+	inline GXint32 ImGUI_SDLGL::handleEvent<gx::event::MouseScrollEvent>(std::shared_ptr<gx::event::MouseScrollEvent>& Event){
 		ImGuiIO& io = ImGui::GetIO();
 		io.MouseWheelH += Event->getXOffset() > 0 ? 1 : -1;
 		io.MouseWheel += Event->getYOffset() > 0 ? 1 : -1;
 		return 1;
 	}
 	template<>
-	inline int ImGUI_SDLGL::handleEvent<gx::event::MousePressEvent>(std::shared_ptr<gx::event::MousePressEvent>& Event) {
+	inline GXint32 ImGUI_SDLGL::handleEvent<gx::event::MousePressEvent>(std::shared_ptr<gx::event::MousePressEvent>& Event) {
 		setMouseButton(Event->getKeyVal() - 1, true);
 		return 1;
 	}

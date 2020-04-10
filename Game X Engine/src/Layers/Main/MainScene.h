@@ -9,13 +9,13 @@
 namespace gx {
 	class GX_DLL MainScene :public Layer {
 	public:
-		inline MainScene(const std::string& layerName, int Width, int Height) : Layer(layerName),width(Width),height(Height), mouseWasPressed(false){}
+		inline MainScene(const std::string& layerName, GXint32 Width, GXint32 Height) : Layer(layerName),width(Width),height(Height), mouseWasPressed(false){}
 		virtual void init()override;
 		virtual void destroy()override;
 		//IOManagers add the object after it has been instantiated
 		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) { sceneModelObjects[obj->getID()]=obj; };
 		//does not handle wrong ids.
-		inline std::shared_ptr<GXModelObject> getModelObject(uint32_t GXID){
+		inline std::shared_ptr<GXModelObject> getModelObject(GXuint32 GXID){
 			auto ite = sceneModelObjects.find(GXID);
 			if (ite == sceneModelObjects.end())return nullptr;
 			return sceneModelObjects[GXID];
@@ -24,26 +24,26 @@ namespace gx {
 		inline std::pair<float, float> getMouseLocNormalized() {
 			return mouseLocNormalized;
 		}
-		inline std::pair<int32_t, int32_t> getMouseLoc() {
+		inline std::pair<GXint32, GXint32> getMouseLoc() {
 			return mouseLoc;
 		}
 		virtual void start()override;
 		virtual void end()override;
-		virtual int onEvent(const gx::event::GXEventType& eventType)override;
+		virtual GXint32 onEvent(const gx::event::GXEventType& eventType)override;
 		virtual void onUpdate(float deltaTime)override;
 		virtual void onGUIRender()override;
 		virtual void mousePressRequest() { mouseWasPressed = true; }
-		virtual uint32_t getObjectID();
+		virtual GXuint32 getObjectID();
 
 	private:
-		std::unordered_map<uint32_t,std::shared_ptr<GXModelObject>> sceneModelObjects;
+		std::unordered_map<GXuint32,std::shared_ptr<GXModelObject>> sceneModelObjects;
 		std::shared_ptr<GXSkydomeObject> skydome;
 		std::pair<float, float> mouseLocNormalized;
-		std::pair<int32_t, int32_t> mouseLoc;
+		std::pair<GXint32, GXint32> mouseLoc;
 		std::shared_ptr<GXPlane> plane;
 		static std::shared_ptr<GXPlane> mainPlane;
 		ImGuiWindowFlags windowFlags;
-		int32_t width, height;
+		GXint32 width, height;
 		//just the openGL FBO for now
 		std::vector<GLenum> GLFlags;
 		std::unique_ptr<GLFrameBuffer> GBuffer;

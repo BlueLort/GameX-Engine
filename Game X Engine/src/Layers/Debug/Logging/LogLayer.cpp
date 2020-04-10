@@ -24,7 +24,7 @@ namespace gx {
 	
 	}
 
-	int LogLayer::onEvent(const gx::event::GXEventType& eventType)
+	GXint32 LogLayer::onEvent(const gx::event::GXEventType& eventType)
 	{
 		return 0;
 	}
@@ -56,7 +56,7 @@ namespace gx {
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
 		const char* buf = imguibuf.begin();
 		const char* buf_end = imguibuf.end();
-		for (int i = 0; i < items.Size; i++)
+		for (GXint32 i = 0; i < items.Size; i++)
 		{
 			const char* item = items[i];
 			ImGui::TextUnformatted(item);

@@ -3,7 +3,7 @@
 #include "../Texture/GLTexture2D.h"
 #include "../Window/GXWindow.h"
 namespace gx {
-	constexpr uint32_t GX_ATTACHMENTS = 5;
+	constexpr GXuint32 GX_ATTACHMENTS = 5;
 	enum GXAttachmentType {
 		GX_COLOR_ATTACHMENT = 0, // Albedo/Color Attachment
 		GX_DEPTH_ATTACHMENT,
@@ -23,7 +23,7 @@ namespace gx {
 	public:
 
 		//init frame buffer with defaul RBO
-		inline void init(int32_t width, int32_t height) {
+		inline void init(GXint32 width, GXint32 height) {
 			this->width = width;
 			this->height = height;
 			glGenFramebuffers(1, &ID);
@@ -55,11 +55,11 @@ namespace gx {
 			GL_CALL(glDeleteFramebuffers(1, &ID));
 		}
 
-		inline GLuint getTextureID(GXAttachmentType type)const { return textureAttachments[type]; }
-		inline int32_t getWidth() const { return width; }
-		inline int32_t getHeight() const { return height; }
-		inline uint32_t getAttachmentIndex(GXAttachmentType type) const { return GL_COLOR_ATTACHMENT0 + type; }
-		inline void setDrawBuffeers(uint32_t total,uint32_t* types) {
+		inline GXuint32 getTextureID(GXAttachmentType type)const { return textureAttachments[type]; }
+		inline GXint32 getWidth() const { return width; }
+		inline GXint32 getHeight() const { return height; }
+		inline GXuint32 getAttachmentIndex(GXAttachmentType type) const { return GL_COLOR_ATTACHMENT0 + type; }
+		inline void setDrawBuffeers(GXuint32 total,GXuint32* types) {
 			glBindFramebuffer(GL_FRAMEBUFFER, ID);
 			GL_CALL(glDrawBuffers(total , types));
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -113,9 +113,9 @@ namespace gx {
 
 		}
 	private:
-		GLuint ID;
-		GLuint textureAttachments[GX_ATTACHMENTS];
-		GLuint RBO;
-		int32_t width, height;
+		GXuint32 ID;
+		GXuint32 textureAttachments[GX_ATTACHMENTS];
+		GXuint32 RBO;
+		GXint32 width, height;
 	};
 }

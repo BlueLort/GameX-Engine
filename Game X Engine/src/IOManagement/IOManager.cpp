@@ -4,7 +4,7 @@ static std::mutex IMAGE_READ_GAURD;
 namespace gx {
 	namespace io {
 	
-		std::unordered_map<std::string, GLuint> IOManager::texIDs;
+		std::unordered_map<std::string, GXuint32> IOManager::texIDs;
 		std::unordered_map<std::string, std::vector<std::shared_ptr<GXMeshComponent>>> IOManager::modelsImported;
 		std::unordered_map<std::string, std::string> IOManager::textImported;
 		std::vector <std::future<void>> IOManager::asyncTasks;
@@ -103,16 +103,16 @@ namespace gx {
 		{
 			std::vector<std::shared_ptr<MeshData>> currentNodeMeshes;
 			std::vector< std::future< std::pair<std::string, std::vector< std::shared_ptr<MeshData>> > > > loadedMeshes;
-			for (uint32_t i = 0; i < node->mNumChildren; i++)
+			for (GXuint32 i = 0; i < node->mNumChildren; i++)
 			{
 				loadedMeshes.emplace_back(std::async(std::launch::async,assimpProcessNode,filePath,fileName,node->mChildren[i], scene));
 			}
-			for (uint32_t i = 0; i < node->mNumMeshes; i++)
+			for (GXuint32 i = 0; i < node->mNumMeshes; i++)
 			{
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 				currentNodeMeshes.emplace_back(assimpProcessMesh(filePath,fileName, mesh, scene));
 			}
-			for (int32_t i = 0; i < loadedMeshes.size(); i++) {
+			for (GXint32 i = 0; i < loadedMeshes.size(); i++) {
 				std::vector<std::shared_ptr<MeshData>> childNodeMeshes = loadedMeshes[i].get().second;
 				currentNodeMeshes.insert(currentNodeMeshes.end(),childNodeMeshes.begin(), childNodeMeshes.end());
 			}
@@ -128,7 +128,7 @@ namespace gx {
 			mData.reset(new MeshData());
 			
 			//Vertices
-			for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+			for ( GXuint32 i = 0; i < mesh->mNumVertices; i++)
 			{
 				Vertex3D vert;
 				vert.position.x = mesh->mVertices[i].x;
@@ -155,10 +155,10 @@ namespace gx {
 				mData->verts.emplace_back(vert);
 			}
 			//indices
-			for (uint32_t i = 0; i < mesh->mNumFaces; i++)
+			for (GXuint32 i = 0; i < mesh->mNumFaces; i++)
 			{
 				aiFace face = mesh->mFaces[i];
-				for (uint32_t j = 0; j < face.mNumIndices; j++)
+				for (GXuint32 j = 0; j < face.mNumIndices; j++)
 					mData->indices.emplace_back(face.mIndices[j]);
 			}
 
@@ -184,7 +184,7 @@ namespace gx {
 		std::vector<std::shared_ptr<ImageData>> IOManager::assimpImportTextures2D(const char* filePath, aiMaterial* mat, aiTextureType type, GXTexture2DType gxTexType)
 		{
 			std::vector<std::shared_ptr<ImageData>> textures;
-			for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+			for (GXint32 i = 0; i < mat->GetTextureCount(type); i++)
 			{
 				aiString fileName;
 				mat->GetTexture(type, i, &fileName);
@@ -197,12 +197,12 @@ namespace gx {
 
 	
 		
-		std::shared_ptr<GLBufferManager> IOManager::GLCreateBufferLayout(std::vector<Vertex3D>& verts, std::vector<uint32_t>& indices, std::vector<std::shared_ptr<GLTexture2D>>& textures)
+		std::shared_ptr<GLBufferManager> IOManager::GLCreateBufferLayout(std::vector<Vertex3D>& verts, std::vector<GXuint32>& indices, std::vector<std::shared_ptr<GLTexture2D>>& textures)
 		{
 			std::shared_ptr<GLBufferManager> Buffer;
 			Buffer.reset(new GLBufferManager());
 			Buffer->initFull(&verts[0], sizeof(Vertex3D) * verts.size(), sizeof(Vertex3D));
-			Buffer->uploadIndicesToBuffer(&indices[0], indices.size() * sizeof(uint32_t),indices.size());
+			Buffer->uploadIndicesToBuffer(&indices[0], indices.size() * sizeof(GXuint32),indices.size());
 			Buffer->setAttribPointer(0, 3, GL_FLOAT, offsetof(Vertex3D, position));
 			Buffer->setAttribPointer(1, 3, GL_FLOAT, offsetof(Vertex3D, normal));
 			Buffer->setAttribPointer(2, 2, GL_FLOAT, offsetof(Vertex3D, texCoords));
@@ -210,7 +210,7 @@ namespace gx {
 			Buffer->setAttribPointer(4, 3, GL_FLOAT, offsetof(Vertex3D, bitangent));
 			//TODO Add Tangents bitangents later
 			Buffer->endStream();
-			for(int i=0;i<textures.size();i++){
+			for(GXint32 i=0;i<textures.size();i++){
 				Buffer->addTexture(textures[i]);
 			}
 			return Buffer;

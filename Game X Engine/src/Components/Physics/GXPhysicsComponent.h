@@ -9,7 +9,7 @@ namespace gx {
 	class GX_DLL GXPhysicsComponent : public GXComponent {
 	public:
 
-		inline GXPhysicsComponent(uint32_t GXID) : GXComponent(GXID)
+		inline GXPhysicsComponent(GXuint32 GXID) : GXComponent(GXID)
 		{
 			//TODO Make all of this options controllable
 			collisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
@@ -39,10 +39,10 @@ namespace gx {
 		virtual inline const char* getName() const override {
 			return "GXPhysicsComponent";
 		}
-		virtual inline uint32_t getEventClass() const override {
+		virtual inline GXuint32 getEventClass() const override {
 			return GXComponentClass::GX_PHYSICS;
 		}
-		virtual inline uint32_t getEventType()const override {
+		virtual inline GXuint32 getEventType()const override {
 			return GXComponentType::GX_COLLIDER | GXComponentType::GX_RIGIDBODY;
 		}
 		virtual void destroy()override {

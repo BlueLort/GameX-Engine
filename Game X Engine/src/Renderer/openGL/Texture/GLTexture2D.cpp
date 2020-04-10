@@ -6,7 +6,7 @@ namespace gx {
 
 
 
-	void GLTexture2D::init(const uint8_t* data, int32_t width, int32_t height, GXTexture2DColorType colorType, GXTexture2DType Type, GXTexture2DFilteringMethod method) {
+	void GLTexture2D::init(const uint8_t* data, GXint32 width, GXint32 height, GXTexture2DColorType colorType, GXTexture2DType Type, GXTexture2DFilteringMethod method) {
 
 		this->type = Type;
 		glGenTextures(1, &ID);

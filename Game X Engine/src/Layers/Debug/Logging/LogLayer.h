@@ -17,7 +17,7 @@ namespace gx {
 	
 		virtual void start()override;
 		virtual void end()override;
-		virtual int onEvent(const gx::event::GXEventType& eventType)override;
+		virtual GXint32 onEvent(const gx::event::GXEventType& eventType)override;
 		virtual void onUpdate(float deltaTime)override;
 		virtual void onGUIRender()override;
 		inline void addLog(const char* fmt, va_list& args) IM_FMTARGS(2)
@@ -31,14 +31,14 @@ namespace gx {
 	private:
 		inline void clear()
 		{
-			for (int i = 0; i < items.Size; i++)
+			for (GXint32 i = 0; i < items.Size; i++)
 				free(items[i]);
 			items.clear();
 		}
 		ImGuiWindowFlags windowFlags;
-		int32_t width, height;
+		GXint32 width, height;
 		ImGuiTextBuffer     imguibuf;
-		ImVector<int>       lineOffsets;        // Index to lines offset. We maintain this with AddLog() calls, allowing us to have a random access on lines
+		ImVector<GXint32>       lineOffsets;        // Index to lines offset. We maintain this with AddLog() calls, allowing us to have a random access on lines
 		ImVector<char*>       items;			//items in the buffer
 		bool                autoScroll;     // Keep scrolling if already at the bottom
 	};

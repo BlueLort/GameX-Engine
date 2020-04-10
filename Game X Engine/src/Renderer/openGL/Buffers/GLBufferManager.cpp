@@ -3,7 +3,7 @@
 namespace gx {
 
 
-	void GLBufferManager::init(uint32_t requiredSize, uint32_t strideLength)
+	void GLBufferManager::init(GXuint32 requiredSize, GXuint32 strideLength)
 	{//NO ID SAVING
 		VAO.reset(new GLVertexArray());
 		VBO.reset(new GLVertexBuffer());
@@ -19,7 +19,7 @@ namespace gx {
 		EBO->init();
 	}
 
-	void GLBufferManager::initFull(void* data, uint32_t requiredSize, uint32_t strideLength)
+	void GLBufferManager::initFull(void* data, GXuint32 requiredSize, GXuint32 strideLength)
 	{
 		//NO ID SAVING
 		VAO.reset(new GLVertexArray());
@@ -35,18 +35,18 @@ namespace gx {
 		EBOID = EBO->ID;
 	}
 
-	void GLBufferManager::uploadDataToBuffer(void* data, uint32_t size)
+	void GLBufferManager::uploadDataToBuffer(void* data, GXuint32 size)
 	{
 		VBO->uploadData(data, size);
 	}
 
 
-	void GLBufferManager::setAttribPointer(uint32_t loc, uint32_t count,GLenum type, uint32_t offset)
+	void GLBufferManager::setAttribPointer(GXuint32 loc, GXuint32 count,GLenum type, GXuint32 offset)
 	{
 		VAO->setAttribPointers(loc, count, type, offset);
 	}
 
-	void GLBufferManager::uploadIndicesToBuffer(uint32_t* indices, uint32_t size,uint32_t length)
+	void GLBufferManager::uploadIndicesToBuffer(GXuint32* indices, GXuint32 size,GXuint32 length)
 	{
 		nElements = length;
 		EBO->use();

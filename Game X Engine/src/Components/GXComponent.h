@@ -26,8 +26,8 @@ namespace gx {
 	public:
 		uint64_t componentID;
 		virtual inline const char* getName() const = 0;
-		virtual inline uint32_t getEventType() const = 0;
-		virtual inline uint32_t getEventClass() const = 0;
+		virtual inline GXuint32 getEventType() const = 0;
+		virtual inline GXuint32 getEventClass() const = 0;
 		virtual void update(float deltaTime) = 0;
 		virtual void draw(GLShader* glshader,bool isWireFrame) {};
 		virtual void destroy() = 0;
@@ -37,13 +37,13 @@ namespace gx {
 		}
 
 		virtual inline const char* toString() const { return this->getName(); }
-		virtual void setOwnerID(uint32_t GXID) {
+		virtual void setOwnerID(GXuint32 GXID) {
 			objectID = GXID;
 		}
 	protected:
 		static uint64_t counter;
-		uint32_t objectID;
-		GXComponent(uint32_t GXID) :componentID(counter++),objectID(GXID) {
+		GXuint32 objectID;
+		GXComponent(GXuint32 GXID) :componentID(counter++),objectID(GXID) {
 
 		}
 	};

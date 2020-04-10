@@ -2,5 +2,5 @@
 #include "GXObject.h"
 
 namespace gx {
-	uint32_t GXObject::currentID = 0;
+	GXuint32 GXObject::currentID = 0;
 }

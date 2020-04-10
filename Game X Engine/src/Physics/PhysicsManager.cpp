@@ -15,7 +15,7 @@ namespace gx {
 		
 	}
 	GXPhysicsManager::~GXPhysicsManager() {
-		for (int i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
+		for (GXint32 i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
 		{
 			btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[i];
 			btRigidBody* body = btRigidBody::upcast(obj);
@@ -28,7 +28,7 @@ namespace gx {
 		}
 
 		//delete collision shapes
-		for (int j = 0; j < collisionShapes.size(); j++)
+		for (GXint32 j = 0; j < collisionShapes.size(); j++)
 		{
 			btCollisionShape* shape = collisionShapes[j];
 			collisionShapes[j] = 0;

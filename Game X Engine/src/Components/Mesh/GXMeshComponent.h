@@ -12,13 +12,13 @@ namespace gx {
 
 
 		//TODO HANDLE GXID PASSING to this component
-		GXMeshComponent(uint32_t GXID,const std::shared_ptr<gx::GLBufferManager>& GLBM, const std::shared_ptr<gx::GXPickingCollider>& pickingCollider) : GXComponent(GXID)
+		GXMeshComponent(GXuint32 GXID,const std::shared_ptr<gx::GLBufferManager>& GLBM, const std::shared_ptr<gx::GXPickingCollider>& pickingCollider) : GXComponent(GXID)
 		{
 			//TODO make input base shader and use macros to define which shader to use
 			this->GLBM = GLBM;
 			this->gxPickingCollider = pickingCollider;
 		}
-		GXMeshComponent(uint32_t GXID, const std::shared_ptr<gx::GLBufferManager>& GLBM) : GXComponent(GXID)
+		GXMeshComponent(GXuint32 GXID, const std::shared_ptr<gx::GLBufferManager>& GLBM) : GXComponent(GXID)
 		{
 			//TODO make input base shader and use macros to define which shader to use
 			this->GLBM = GLBM;
@@ -28,16 +28,16 @@ namespace gx {
 		virtual inline const char* getName() const override {
 			return "GXMeshComponent";
 		}
-		virtual inline uint32_t getEventType() const override {
+		virtual inline GXuint32 getEventType() const override {
 			return GXComponentType::GX_MESH;
 		}
-		virtual inline uint32_t getEventClass() const override {
+		virtual inline GXuint32 getEventClass() const override {
 			return GXComponentClass::GX_GRAPHICS;
 		}
 		virtual void destroy()override {
 			GLBM->destroy();
 		}
-		void setOwnerID(uint32_t GXID) override{
+		void setOwnerID(GXuint32 GXID) override{
 			objectID = GXID;
 			this->gxPickingCollider->setOwnerID(GXID);
 		}
@@ -48,10 +48,10 @@ namespace gx {
 		std::shared_ptr<GXPickingCollider> gxPickingCollider;
 		// render the mesh
 		void draw(GLShader* glshader,bool isWireFrame) {
-			uint32_t nDiffuse = 1;
-			uint32_t nSpecular = 1;
+			GXuint32 nDiffuse = 1;
+			GXuint32 nSpecular = 1;
 			auto textures = GLBM->getTextures();
-			for (uint32_t i = 0; i < textures.size(); i++)
+			for (GXuint32 i = 0; i < textures.size(); i++)
 			{
 				GLTexture2D::setActiveTexture(i);
 				GXTexture2DType type = textures[i]->getType();

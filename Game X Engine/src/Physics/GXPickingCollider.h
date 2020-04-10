@@ -11,8 +11,8 @@ namespace gx {
 		inline GXPickingCollider(std::vector<Vertex3D>& verts) {
 			//collisionShape = new btConvexHullShape();
 			collisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
-			int32_t size = verts.size();
-			//for (int32_t i = 0; i < size; i++) {
+			GXint32 size = verts.size();
+			//for (GXint32 i = 0; i < size; i++) {
 			//	static_cast<btConvexHullShape*>(collisionShape)->addPoint(btVector3(verts[i].position.x, verts[i].position.y, verts[i].position.z));
 			//}
 
@@ -36,7 +36,7 @@ namespace gx {
 		}
 		btCollisionShape* getShape()const { return collisionShape; }
 		void setOwnerTransform(GXTransform* ot) { ownerTransform = ot; }
-		void setOwnerID(uint32_t GXID) {rb->setUserPointer(reinterpret_cast<void*>(GXID));}
+		void setOwnerID(GXuint32 GXID) {rb->setUserPointer(reinterpret_cast<void*>(GXID));}
 	private:
 		btCollisionShape* collisionShape;
 		btDefaultMotionState* myMotionState;

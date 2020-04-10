@@ -12,7 +12,7 @@ namespace gx {
 		GBuffer->addTextureAttachment(GX_POSITION_ATTACHMENT);
 		GBuffer->addTextureAttachment(GX_NORMAL_ATTACHMENT);
 		GBuffer->addTextureAttachment(GX_ID_ATTACHMENT);
-		uint32_t attachments[4] = {
+		GXuint32 attachments[4] = {
 									GBuffer->getAttachmentIndex(GX_POSITION_ATTACHMENT),
 									GBuffer->getAttachmentIndex(GX_NORMAL_ATTACHMENT),
 									GBuffer->getAttachmentIndex(GX_COLOR_ATTACHMENT) ,
@@ -124,15 +124,15 @@ namespace gx {
 		
 	}
 
-	uint32_t MainScene::getObjectID()
+	GXuint32 MainScene::getObjectID()
 	{
 		if (!selected || !mouseWasPressed) return 0;
 		if (!(mouseLocNormalized.first <= 1.0f && mouseLocNormalized.first >= 0.0f 
 			&& mouseLocNormalized.second <= 1.0f && mouseLocNormalized.second >= 0)) return 0;
-		int32_t x = mouseLocNormalized.first * width;
-		int32_t y = mouseLocNormalized.second * height;
+		GXint32 x = mouseLocNormalized.first * width;
+		GXint32 y = mouseLocNormalized.second * height;
 		mouseWasPressed = false;
-		uint32_t val;
+		GXuint32 val;
 		glReadBuffer(GL_COLOR_ATTACHMENT0 + GX_ID_ATTACHMENT);
 		GL_CALL(glReadPixels(x,y, 1, 1, GL_RED_INTEGER, GL_UNSIGNED_INT, &val));
 		glReadBuffer(GL_NONE);

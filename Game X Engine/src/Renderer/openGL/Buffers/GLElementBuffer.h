@@ -4,7 +4,7 @@
 namespace gx {
 	class GX_DLL GLElementBuffer {
 	private:
-		GLuint ID;
+		GXuint32 ID;
 		void init();
 		inline void use() {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID);
@@ -17,8 +17,8 @@ namespace gx {
 
 
 		//Assumeing Element Buffer is bound
-		void uploadData(uint32_t* data, uint32_t size);
-		inline static void destroy(GLuint id) {
+		void uploadData(GXuint32* data, GXuint32 size);
+		inline static void destroy(GXuint32 id) {
 			GL_CALL(glDeleteBuffers(1, &id));
 		}
 		friend class GLBufferManager;

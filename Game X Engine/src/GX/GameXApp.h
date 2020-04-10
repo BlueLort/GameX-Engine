@@ -31,16 +31,16 @@ namespace gx {
 	private:
 		
 		//EVENT HANDLING
-		static int onEvent(void* userdata, GX_SDLEvent* Event);
+		static GXint32 onEvent(void* userdata, GX_SDLEvent* Event);
 		std::future<void> rayPickingTask;
 		static void rayPicking();
 		static bool mainSceneSelected;
 		
 		template<class T>
-		static int dispatchSystemEvent(std::shared_ptr<T>& gxEvent,uint32_t windowID);
+		static GXint32 dispatchSystemEvent(std::shared_ptr<T>& gxEvent,GXuint32 windowID);
 
 		template<class T>
-		inline static int handleEvent(std::shared_ptr<T>& Event) { return 0; }
+		inline static GXint32 handleEvent(std::shared_ptr<T>& Event) { return 0; }
 		static bool isRunning;
 		
 		
@@ -49,7 +49,7 @@ namespace gx {
 	extern GameXApp* CreateApp();
 
 	template<class T>
-	inline int GameXApp::dispatchSystemEvent(std::shared_ptr<T>& gxEvent,uint32_t windowID)
+	inline GXint32 GameXApp::dispatchSystemEvent(std::shared_ptr<T>& gxEvent,GXuint32 windowID)
 	{
 		//TODO PROFILE THIS ,OVERHEAD -> Change it !
 		bool handled = false;
@@ -70,13 +70,13 @@ namespace gx {
 
 
 	template<>
-	inline int GameXApp::handleEvent<gx::event::WindowCloseEvent>(std::shared_ptr<gx::event::WindowCloseEvent>& Event) {
+	inline GXint32 GameXApp::handleEvent<gx::event::WindowCloseEvent>(std::shared_ptr<gx::event::WindowCloseEvent>& Event) {
 		isRunning = false;
 		Event->handled = true;
 		return 1;
 	}
 	template<>
-	inline int GameXApp::handleEvent<gx::event::WindowResizeEvent>(std::shared_ptr<gx::event::WindowResizeEvent>& Event) {
+	inline GXint32 GameXApp::handleEvent<gx::event::WindowResizeEvent>(std::shared_ptr<gx::event::WindowResizeEvent>& Event) {
 		GXWindow::windowData->width = Event->getWidth();
 		GXWindow::windowData->height = Event->getHeight();
 #ifdef USING_EDITOR_CAMERA
@@ -90,17 +90,17 @@ namespace gx {
 		return 1;
 	}
 	template<>
-	inline int GameXApp::handleEvent<gx::event::WindowMinimizeEvent>(std::shared_ptr<gx::event::WindowMinimizeEvent>& Event) {
+	inline GXint32 GameXApp::handleEvent<gx::event::WindowMinimizeEvent>(std::shared_ptr<gx::event::WindowMinimizeEvent>& Event) {
 		Event->handled = true;
 		return 1;
 	}
 	template<>
-	inline int GameXApp::handleEvent<gx::event::WindowMaximizeEvent>(std::shared_ptr<gx::event::WindowMaximizeEvent>& Event) {
+	inline GXint32 GameXApp::handleEvent<gx::event::WindowMaximizeEvent>(std::shared_ptr<gx::event::WindowMaximizeEvent>& Event) {
 		Event->handled = true;
 		return 1;
 	}
 	template<>
-	inline int GameXApp::handleEvent<gx::event::MousePressEvent>(std::shared_ptr<gx::event::MousePressEvent>& Event) {
+	inline GXint32 GameXApp::handleEvent<gx::event::MousePressEvent>(std::shared_ptr<gx::event::MousePressEvent>& Event) {
 		LayerManager::getInstance().mousePressRequest();
 		Event->handled = true;
 		return 1;

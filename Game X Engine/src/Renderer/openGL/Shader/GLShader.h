@@ -33,65 +33,65 @@ namespace gx {
 		// utility uniform functions
 		// ------------------------------------------------------------------------
 		inline void setBool(const char* name, bool value) const {
-			GLuint loc = glGetUniformLocation(ID, name);
-			glUniform1i(loc, static_cast<int>(value));
+			GXuint32 loc = glGetUniformLocation(ID, name);
+			glUniform1i(loc, static_cast<GXint32>(value));
 		}
 		// ------------------------------------------------------------------------
-		inline void setInt(const char* name, int value) const{
-			GLuint loc = glGetUniformLocation(ID, name);
+		inline void setInt(const char* name, GXint32 value) const{
+			GXuint32 loc = glGetUniformLocation(ID, name);
 			glUniform1i(loc, value);
 		}
 		// ------------------------------------------------------------------------
 
-		inline void setUInt(const char* name, unsigned int value) const {
-			GLuint loc = glGetUniformLocation(ID, name);
+		inline void setUInt(const char* name, GXuint32 value) const {
+			GXuint32 loc = glGetUniformLocation(ID, name);
 			glUniform1ui(loc, value);
 		}
 		// ------------------------------------------------------------------------
 		inline void setFloat(const  char* name, float value) const {
-			GLuint loc = glGetUniformLocation(ID, name);
+			GXuint32 loc = glGetUniformLocation(ID, name);
 			glUniform1f(loc, value);
 		}
 		// ------------------------------------------------------------------------
 		inline void setVec2(const  char* name, const GXVec2& value) const {
-			GLuint loc = glGetUniformLocation(ID, name);
+			GXuint32 loc = glGetUniformLocation(ID, name);
 			glUniform2fv(loc, 1, &value[0]);
 		}
 		inline void setVec2(const char* name, float x, float y) const {
-			GLuint loc = glGetUniformLocation(ID, name);
+			GXuint32 loc = glGetUniformLocation(ID, name);
 			glUniform2f(loc, x, y);
 		}
 		// ------------------------------------------------------------------------
 		inline void setVec3(const  char* name, const GXVec3& value) const {
-			GLuint loc = glGetUniformLocation(ID, name); 
+			GXuint32 loc = glGetUniformLocation(ID, name); 
 			glUniform3fv(loc, 1, &value[0]);
 		}
 		inline void setVec3(const char* name, float x, float y, float z) const {
-			GLuint loc = glGetUniformLocation(ID, name); 
+			GXuint32 loc = glGetUniformLocation(ID, name); 
 			glUniform3f(loc, x, y, z);
 		}
 		// ------------------------------------------------------------------------
 		inline void setVec4(const  char* name, const GXVec4& value) const { 
-			GLuint loc = glGetUniformLocation(ID, name); 
+			GXuint32 loc = glGetUniformLocation(ID, name); 
 			glUniform4fv(loc, 1, &value[0]);
 		}
 		inline void setVec4(const  char* name, float x, float y, float z, float w) const {
-			GLuint loc = glGetUniformLocation(ID, name);
+			GXuint32 loc = glGetUniformLocation(ID, name);
 			glUniform4f(loc, x, y, z, w);
 		}
 		// ------------------------------------------------------------------------
 		inline void setMat2(const char* name, const GXMat2& mat) const {
-			GLuint loc = glGetUniformLocation(ID, name); 
+			GXuint32 loc = glGetUniformLocation(ID, name); 
 			glUniformMatrix2fv(loc, 1, GL_FALSE, &mat[0][0]);
 		}
 		// ------------------------------------------------------------------------
 		inline void setMat3(const char* name, const GXMat3& mat) const { 
-			GLuint loc = glGetUniformLocation(ID, name); 
+			GXuint32 loc = glGetUniformLocation(ID, name); 
 			glUniformMatrix3fv(loc, 1, GL_FALSE, &mat[0][0]);
 		}
 		// ------------------------------------------------------------------------
 		inline void setMat4(const char* name, const GXMat4& mat) const {
-			GLuint loc = glGetUniformLocation(ID, name);
+			GXuint32 loc = glGetUniformLocation(ID, name);
 			glUniformMatrix4fv(loc, 1, GL_FALSE, &mat[0][0]);
 		}
 		//---------------------------------------------------------------------
@@ -107,8 +107,8 @@ namespace gx {
 	private:
 		GLShader();
 		void addShader(GXShaderType shaderType,const char* shaderCode);
-		GLuint ID;
-		GLuint compileShader(GXShaderType type, const char* code, char* log);
+		GXuint32 ID;
+		GXuint32 compileShader(GXShaderType type, const char* code, char* log);
 		void linkProgram(char* log);
 		friend class GLShaderManager;
 	};

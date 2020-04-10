@@ -5,8 +5,8 @@
 #include "Layers/Plane/PlaneEditorLayer.h"
 namespace gx {
 	
-	constexpr int32_t SCENE_WIDTH = 1920;
-	constexpr int32_t SCENE_HEIGHT = 1080;
+	constexpr GXint32 SCENE_WIDTH = 1920;
+	constexpr GXint32 SCENE_HEIGHT = 1080;
 	class GX_DLL LayerManager {
 	public:
 		inline static LayerManager& getInstance(){
@@ -33,7 +33,7 @@ namespace gx {
 			}
 				
 		}
-		inline std::shared_ptr<GXModelObject> getModelObject(uint32_t GXID) {
+		inline std::shared_ptr<GXModelObject> getModelObject(GXuint32 GXID) {
 			return mainSceneLayer->getModelObject(GXID);
 		}
 		inline void GXPrintf(const char* fmt,...) {
@@ -48,7 +48,7 @@ namespace gx {
 		inline std::pair<float, float> getSceneMouseLocNormalized() {
 			return mainSceneLayer->getMouseLocNormalized();
 		}
-		inline std::pair<int32_t,int32_t> getSceneMouseLoc() {
+		inline std::pair<GXint32,GXint32> getSceneMouseLoc() {
 			return mainSceneLayer->getMouseLoc();
 		}
 		inline void mousePressRequest() {

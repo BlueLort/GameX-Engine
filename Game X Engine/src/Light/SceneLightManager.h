@@ -28,7 +28,7 @@ namespace gx {
 			glshader->setVec3("dirLight.ambient", dirLight->ambientColor);
 			glshader->setVec3("dirLight.diffuse", dirLight->diffuseColor);
 			glshader->setVec3("dirLight.specular", dirLight->specularColor);
-			for (int i = 0; i < pLights.size();i++) {
+			for (GXint32 i = 0; i < pLights.size();i++) {
 				//TODO IMPROVE THIS
 				std::string loc = "pointLights[" + std::to_string(i)+"]";
 				glshader->setVec3(std::string(loc+".position").c_str(), pLights[i]->position);

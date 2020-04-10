@@ -16,7 +16,7 @@ namespace gx {
 		 1.0f,  1.0f, 0.0f,		 1.0f, 1.0f,
 		 1.0f, -1.0f, 0.0f,		 1.0f, 0.0f,
 	};
-	static uint32_t indices[] = {
+	static GXuint32 indices[] = {
 		0,1,2,
 		1,3,2
 	};
@@ -37,16 +37,16 @@ namespace gx {
 		virtual void update(float deltaTime,const GLShader* glshader);
 		virtual void destroy();
 
-		inline uint32_t getID()const { return TEXID; }
+		inline GXuint32 getID()const { return TEXID; }
 
 	protected:
-		uint32_t quadVAO;
-		uint32_t quadVBO;
-		uint32_t quadEBO;
-		uint32_t TEXID;
+		GXuint32 quadVAO;
+		GXuint32 quadVBO;
+		GXuint32 quadEBO;
+		GXuint32 TEXID;
 
 	private:
-		static uint32_t currentID;
+		static GXuint32 currentID;
 		std::shared_ptr<gx::GLBufferManager> GLBM;
 	};
 

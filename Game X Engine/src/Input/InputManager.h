@@ -28,66 +28,66 @@ namespace gx {
 		}
 		//EVENTS
 		template<class T>
-		inline int handleEvent(std::shared_ptr<T>& Event) { return 0; }
+		inline GXint32 handleEvent(std::shared_ptr<T>& Event) { return 0; }
 
 		//INPUT POLLING 
-		inline bool isPressed(uint32_t keyVal) const { return keyState[keyVal]; }
+		inline bool isPressed(GXuint32 keyVal) const { return keyState[keyVal]; }
 		inline std::string getTextTyped() const { return text; }
 		//x,y
-		inline std::pair<int32_t, int32_t> getMouseLoc() const { return mouseLoc; }
+		inline std::pair<GXint32, GXint32> getMouseLoc() const { return mouseLoc; }
 		//xRel,yRel
-		inline std::pair<int32_t, int32_t> getMouseLocRel() const { return mouseLocRel; }
+		inline std::pair<GXint32, GXint32> getMouseLocRel() const { return mouseLocRel; }
 		//horizontal,vertical
-		inline std::pair<int32_t, int32_t> getMouseWheel() const { return mouseWheel; }
+		inline std::pair<GXint32, GXint32> getMouseWheel() const { return mouseWheel; }
 	private:
 		InputManager() {}
 		std::vector<bool> keyState;
 		std::string text;
-		std::pair<int32_t, int32_t> mouseLoc;//x,y
-		std::pair<int32_t, int32_t> mouseLocRel;//xRel,yRel
-		std::pair<int32_t, int32_t> mouseWheel;//horizontal,vertical
+		std::pair<GXint32, GXint32> mouseLoc;//x,y
+		std::pair<GXint32, GXint32> mouseLocRel;//xRel,yRel
+		std::pair<GXint32, GXint32> mouseWheel;//horizontal,vertical
 	};
 
 	//EVENTS 
 	template<>
-	inline int InputManager::handleEvent<gx::event::KeyPressEvent>(std::shared_ptr<gx::event::KeyPressEvent>& Event) {
+	inline GXint32 InputManager::handleEvent<gx::event::KeyPressEvent>(std::shared_ptr<gx::event::KeyPressEvent>& Event) {
 		keyState[Event->getKeyVal()] = true;
 		return 1;
 	}
 	template<>
-	inline int InputManager::handleEvent<gx::event::KeyReleaseEvent>(std::shared_ptr<gx::event::KeyReleaseEvent>& Event) {
+	inline GXint32 InputManager::handleEvent<gx::event::KeyReleaseEvent>(std::shared_ptr<gx::event::KeyReleaseEvent>& Event) {
 		keyState[Event->getKeyVal()] = false;
 		return 1;
 	}
 	template<>
-	inline int InputManager::handleEvent<gx::event::KeyTypedEvent>(std::shared_ptr<gx::event::KeyTypedEvent>& Event) {
+	inline GXint32 InputManager::handleEvent<gx::event::KeyTypedEvent>(std::shared_ptr<gx::event::KeyTypedEvent>& Event) {
 		text = Event->getTextVal();
 		return 1;
 	}
 	template<>
-	inline int InputManager::handleEvent<gx::event::MouseScrollEvent>(std::shared_ptr<gx::event::MouseScrollEvent>& Event) {
+	inline GXint32 InputManager::handleEvent<gx::event::MouseScrollEvent>(std::shared_ptr<gx::event::MouseScrollEvent>& Event) {
 		mouseWheel.first += Event->getXOffset() > 0 ? 1 : -1;
 		mouseWheel.second += Event->getYOffset() > 0 ? 1 : -1;
 		return 1;
 	}
 	template<>
-	inline int InputManager::handleEvent<gx::event::MousePressEvent>(std::shared_ptr<gx::event::MousePressEvent>& Event) {
+	inline GXint32 InputManager::handleEvent<gx::event::MousePressEvent>(std::shared_ptr<gx::event::MousePressEvent>& Event) {
 		keyState[Event->getKeyVal()] = true;
 		return 1;
 	}
 	template<>
-	inline int InputManager::handleEvent<gx::event::MouseReleaseEvent>(std::shared_ptr<gx::event::MouseReleaseEvent>& Event) {
+	inline GXint32 InputManager::handleEvent<gx::event::MouseReleaseEvent>(std::shared_ptr<gx::event::MouseReleaseEvent>& Event) {
 		keyState[Event->getKeyVal()] = false;
 		return 1;
 	}
 	template<>
-	inline int InputManager::handleEvent<gx::event::MouseMoveEvent>(std::shared_ptr<gx::event::MouseMoveEvent>& Event) {
+	inline GXint32 InputManager::handleEvent<gx::event::MouseMoveEvent>(std::shared_ptr<gx::event::MouseMoveEvent>& Event) {
 		mouseLoc.first = Event->getXVal();
 		mouseLoc.second = Event->getYVal();
 		return 1;
 	}
 	template<>
-	inline int InputManager::handleEvent<gx::event::MouseMoveRelEvent>(std::shared_ptr<gx::event::MouseMoveRelEvent>& Event) {
+	inline GXint32 InputManager::handleEvent<gx::event::MouseMoveRelEvent>(std::shared_ptr<gx::event::MouseMoveRelEvent>& Event) {
 		mouseLocRel.first = Event->getXVal();
 		mouseLocRel.second = Event->getYVal();
 		return 1;

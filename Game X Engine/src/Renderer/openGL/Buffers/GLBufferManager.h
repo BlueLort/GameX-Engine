@@ -14,11 +14,11 @@ namespace gx {
 		GLBufferManager() {
 
 		}
-		void init(uint32_t requiredSize, uint32_t strideSize);
-		void initFull(void* data,uint32_t requiredSize, uint32_t strideSize);
-		void uploadDataToBuffer(void* data, uint32_t size);
-		void setAttribPointer(uint32_t loc,uint32_t count, GLenum type, uint32_t offset);
-		void uploadIndicesToBuffer(uint32_t* indices, uint32_t size,uint32_t length);
+		void init(GXuint32 requiredSize, GXuint32 strideSize);
+		void initFull(void* data,GXuint32 requiredSize, GXuint32 strideSize);
+		void uploadDataToBuffer(void* data, GXuint32 size);
+		void setAttribPointer(GXuint32 loc,GXuint32 count, GLenum type, GXuint32 offset);
+		void uploadIndicesToBuffer(GXuint32* indices, GXuint32 size,GXuint32 length);
 		inline void addTexture(const std::shared_ptr<GLTexture2D>& tex) {
 			textures.emplace_back(tex);
 		}
@@ -31,15 +31,15 @@ namespace gx {
 			GLVertexArray::stop();
 		}
 		inline std::vector<std::shared_ptr<GLTexture2D>> getTextures()const { return textures; }
-		inline uint32_t getNumberOfElements()const { return nElements; }
+		inline GXuint32 getNumberOfElements()const { return nElements; }
 		inline void destroy() {
 			GLVertexArray::destroy(VAOID);
 			//GLVertexBuffer::destroy(VBOID);//deleted on endstream.
 			GLElementBuffer::destroy(EBOID);
 		}
 	private:
-		GLuint VAOID,VBOID,EBOID;//the only thing needed to render
-		uint32_t nElements;
+		GXuint32 VAOID,VBOID,EBOID;//the only thing needed to render
+		GXuint32 nElements;
 		std::unique_ptr<GLVertexArray> VAO;
 		std::unique_ptr <GLVertexBuffer> VBO;
 		std::unique_ptr <GLElementBuffer> EBO;

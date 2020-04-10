@@ -55,7 +55,7 @@ namespace gx {
 		io::IORequestHandler::destroy();//destroy models and wait all tasks to finish.
 	}
 
-	int GameXApp::onEvent(void* userdata, GX_SDLEvent* Event)
+	GXint32 GameXApp::onEvent(void* userdata, GX_SDLEvent* Event)
 	{
 		//SDL Event Mapping 
 		bool dispatched = false;
@@ -136,7 +136,7 @@ namespace gx {
 					GXPhysicsManager::getInstance().rayTest(btRayStart, btRayEnd,rayCallback);
 					if (rayCallback.hasHit()) {
 						std::ostringstream oss;
-						oss << LayerManager::getInstance().getModelObject(reinterpret_cast<uint32_t>(rayCallback.m_collisionObject->getUserPointer()))->getName();
+						oss << LayerManager::getInstance().getModelObject(reinterpret_cast<GXuint32>(rayCallback.m_collisionObject->getUserPointer()))->getName();
 						message = oss.str();
 					}
 					else {

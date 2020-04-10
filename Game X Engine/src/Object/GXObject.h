@@ -25,7 +25,7 @@ namespace gx {
 			components.emplace_back(component);
 		}
 		inline GXObjectType getType()const { return objType; }
-		inline uint32_t getID()const { return GXID; }
+		inline GXuint32 getID()const { return GXID; }
 		inline void setShader(GLShader* sh) { this->glshader = sh; }
 		inline GLShader* getShader() const { return glshader; }
 		inline const char* getName() const { return objName.c_str(); }
@@ -36,10 +36,10 @@ namespace gx {
 		std::vector<std::shared_ptr<GXComponent>> components;
 		GXObjectType objType;
 		GLShader* glshader;
-		uint32_t GXID;
+		GXuint32 GXID;
 		std::string objName;
 	private:
-		static uint32_t currentID;
+		static GXuint32 currentID;
 	};
 	
 

@@ -2,7 +2,7 @@
 #include "GXQuad.h"
 
 namespace gx {
-	uint32_t GXQuad::currentID = 0;
+	GXuint32 GXQuad::currentID = 0;
 	void GXQuad::update(float deltaTime,const GLShader* glshader)
 	{
 		GLBM->use();

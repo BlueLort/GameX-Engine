@@ -3,7 +3,7 @@
 
 
 namespace gx {
-	void GLVertexBuffer::init(uint32_t requiredSize)
+	void GLVertexBuffer::init(GXuint32 requiredSize)
 	{
 		currentSize = 0;
 		maxSize = requiredSize;
@@ -14,7 +14,7 @@ namespace gx {
 		//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-	void GLVertexBuffer::initFull(void* data, uint32_t requiredSize)
+	void GLVertexBuffer::initFull(void* data, GXuint32 requiredSize)
 	{
 		currentSize = requiredSize;
 		maxSize = requiredSize;
@@ -25,7 +25,7 @@ namespace gx {
 		//GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	}
 
-	void GLVertexBuffer::uploadData(void* data, uint32_t size)
+	void GLVertexBuffer::uploadData(void* data, GXuint32 size)
 	{
 		GL_CALL(glBufferSubData(GL_ARRAY_BUFFER,currentSize,size,data));
 		currentSize += size;

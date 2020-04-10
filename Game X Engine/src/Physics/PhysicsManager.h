@@ -14,7 +14,7 @@ namespace gx {
 		}
 		inline void addCollisionShape(btCollisionShape* shape) { collisionShapes.push_back(shape); }
 		inline void addRigidBody(btRigidBody* rb) { dynamicsWorld->addRigidBody(rb); }
-		inline void stepSimulation(float timeStep, int maxSubSteps=1, float fixedTimeStep = 0.01666666f) { dynamicsWorld->stepSimulation(timeStep, maxSubSteps, fixedTimeStep); }
+		inline void stepSimulation(float timeStep, GXint32 maxSubSteps=1, float fixedTimeStep = 0.01666666f) { dynamicsWorld->stepSimulation(timeStep, maxSubSteps, fixedTimeStep); }
 		inline void rayTest(btVector3& origin,btVector3& end,btCollisionWorld::ClosestRayResultCallback& crc) {
 			dynamicsWorld->rayTest(origin,end,crc);
 		}

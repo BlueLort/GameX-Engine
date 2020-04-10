@@ -14,8 +14,8 @@ namespace gx {
 			return g;
 		}
 		virtual void init() override;
-		virtual void draw(uint32_t nElements, RenderType type, bool isWireFrame) override;
-		virtual inline void setViewPort(uint32_t Width, uint32_t Height) override {
+		virtual void draw(GXuint32 nElements, RenderType type, bool isWireFrame) override;
+		virtual inline void setViewPort(GXuint32 Width, GXuint32 Height) override {
 			gx::OpenGLContext::setViewPort(Width, Height);
 		}
 		virtual inline void setDepthFunc(DepthFunc func) override {

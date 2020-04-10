@@ -11,7 +11,7 @@ namespace gx {
 	}
 
 
-	void GLRenderer::draw(uint32_t nElements, RenderType type,bool isWireFrame)
+	void GLRenderer::draw(GXuint32 nElements, RenderType type,bool isWireFrame)
 	{
 		//TODO OPTIMIZE THIS
 		if (isWireFrame) {

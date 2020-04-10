@@ -5,9 +5,9 @@ namespace gx {
 	SDL_Window* GXWindow::window = nullptr;
 	std::shared_ptr<GXWindowData> GXWindow::windowData = nullptr;
 
-	void GXWindow::init(const std::string& Title, uint32_t Width, uint32_t Height, uint32_t Flags)
+	void GXWindow::init(const std::string& Title, GXuint32 Width, GXuint32 Height, GXuint32 Flags)
 	{
-		int32_t SDLStatus = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);//inits video and events
+		GXint32 SDLStatus = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);//inits video and events
 		GXE_ASSERT(SDLStatus == 0, "Failed to initialize SDL2.0 Video,Timer or Events ...\n", SDL_GetError());
 		
 		GXWindow::window = SDL_CreateWindow(Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Width, Height, Flags);

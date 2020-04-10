@@ -21,7 +21,7 @@ namespace gx {
 		SDL_GL_MakeCurrent(GXWindow::getSDLWindow(), glContext);
 		GXWindow::setSwapInterval_GL(1);
 
-		int gladLoad = gladLoadGLLoader(SDL_GL_GetProcAddress);
+		GXint32 gladLoad = gladLoadGLLoader(SDL_GL_GetProcAddress);
 		GXE_ASSERT(gladLoad, "Failed to init GLAD ... ");
 	}
 
