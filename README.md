@@ -6,6 +6,8 @@ GameX Engine is a 3D Game Engine built on top of improved features of GameX Leve
 
 After Finishing the 3D Side i might work on the 2D Side.
 
+**This project is for learning purposes So ,Design mistakes are possible and i really appreciate feedback.**
+
 ## Progress
 
 ### First Demo
