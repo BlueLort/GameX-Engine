@@ -7,12 +7,13 @@ namespace gx {
 	public:
 		GXPlane(GXint32 Width, GXint32 Depth, GXint32 ClusteringX = 2, GXint32 ClusteringZ = 2, const char* shaderPath = nullptr) : GXObject(GX_PLANE,"Plane"), width(Width), depth(Depth), n(ClusteringX* Width), m(ClusteringZ* Depth), indices(nullptr) {
 			if (shaderPath == nullptr) {
-				glshader = GLShaderManager::getShader(GLShaderType::DEFAULT_GBUFFER);
+				shader = GXShaderManager::getShader(GXCompiledShader::DEFAULT_GBUFFER);
 			}
 			else {
-				glshader = GLShaderManager::getShader(shaderPath);
+				shader = GXShaderManager::getShader(shaderPath);
 			}
 		}
+		void init(const char* fileName, const char* shaderPath = nullptr){}
 		void init(const float* heights);
 		void uploadToBuffer(GXuint32 textureID);
 		virtual void update(float deltaTime) override;

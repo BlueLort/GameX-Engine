@@ -3,8 +3,8 @@
 #include "Config.h"
 #include "Maths/GXTransform.h"
 #include "Components/GXComponent.h"
-#include "Renderer/openGL/Buffers/GLBufferManager.h"
-#include "Renderer/openGL/GLRenderer.h"
+#include "Renderer/Buffers/GXGraphicsBufferManager.h"
+#include "Renderer/GXRenderer.h"
 #include "Camera/EditorCamera/EditorCamera.h"
 #include "Light/SceneLightManager.h"
 namespace gx {
@@ -26,15 +26,15 @@ namespace gx {
 		inline GXQuad() {
 			TEXID = currentID;
 			currentID++;
-			GLBM.reset(new GLBufferManager());
-			GLBM->initFull(quadVertices, sizeof(quadVertices), 5 * sizeof(float));
-			GLBM->uploadIndicesToBuffer(indices,sizeof(indices), 6);
-			GLBM->setAttribPointer(0, 3, GL_FLOAT, 0);
-			GLBM->setAttribPointer(1, 2, GL_FLOAT, 3*sizeof(float));
-			GLBM->endStream();
+			graphicsBufferManager.reset(new GXGraphicsBufferManager());
+			graphicsBufferManager->initFull(quadVertices, sizeof(quadVertices), 5 * sizeof(float));
+			graphicsBufferManager->uploadIndicesToBuffer(indices,sizeof(indices), 6);
+			graphicsBufferManager->setAttribPointer(0, 3, GX_FLOAT, 0);
+			graphicsBufferManager->setAttribPointer(1, 2, GX_FLOAT, 3*sizeof(float));
+			graphicsBufferManager->endStream();
 		}
 		//GXTransform transform;
-		virtual void update(float deltaTime,const GLShader* glshader);
+		virtual void update(float deltaTime,const GXShader* shader);
 		virtual void destroy();
 
 		inline GXuint32 getID()const { return TEXID; }
@@ -47,7 +47,7 @@ namespace gx {
 
 	private:
 		static GXuint32 currentID;
-		std::shared_ptr<gx::GLBufferManager> GLBM;
+		std::shared_ptr<gx::GXGraphicsBufferManager> graphicsBufferManager;
 	};
 
 

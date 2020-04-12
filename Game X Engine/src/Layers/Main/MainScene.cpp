@@ -5,37 +5,36 @@ namespace gx {
 	std::shared_ptr<GXPlane> MainScene::mainPlane;
 	void MainScene::init()
 	{
-		GBuffer.reset(new GLFrameBuffer());
+		GBuffer.reset(new GXFrameBuffer());
 		GBuffer->init(width,height);
 		// Setting up the G-Buffer
-		GBuffer->addTextureAttachment(GX_COLOR_ATTACHMENT);
-		GBuffer->addTextureAttachment(GX_POSITION_ATTACHMENT);
-		GBuffer->addTextureAttachment(GX_NORMAL_ATTACHMENT);
-		GBuffer->addTextureAttachment(GX_ID_ATTACHMENT);
+		GBuffer->addTextureAttachment(GX_COLOR_TEXTURE);
+		GBuffer->addTextureAttachment(GX_POSITION_TEXTURE);
+		GBuffer->addTextureAttachment(GX_NORMAL_TEXTURE);
+		GBuffer->addTextureAttachment(GX_ID_TEXTURE);
 		GXuint32 attachments[4] = {
-									GBuffer->getAttachmentIndex(GX_POSITION_ATTACHMENT),
-									GBuffer->getAttachmentIndex(GX_NORMAL_ATTACHMENT),
-									GBuffer->getAttachmentIndex(GX_COLOR_ATTACHMENT) ,
-									GBuffer->getAttachmentIndex(GX_ID_ATTACHMENT) };
+									GBuffer->getAttachmentIndex(GX_POSITION_TEXTURE),
+									GBuffer->getAttachmentIndex(GX_NORMAL_TEXTURE),
+									GBuffer->getAttachmentIndex(GX_COLOR_TEXTURE) ,
+									GBuffer->getAttachmentIndex(GX_ID_TEXTURE) };
 		GBuffer->setDrawBuffeers(4,attachments);
 
-		mainSceneBuffer.reset(new GLFrameBuffer());
+		mainSceneBuffer.reset(new GXFrameBuffer());
 		mainSceneBuffer->init(width, height);
-		mainSceneBuffer->addTextureAttachment(GX_COLOR_ATTACHMENT);
-		lightingPassShader = GLShaderManager::getShader(GLShaderType::DEFAULT_DEFERRED);
+		mainSceneBuffer->addTextureAttachment(GX_COLOR_TEXTURE);
+		lightingPassShader = GXShaderManager::getShader(GXCompiledShader::DEFAULT_DEFERRED);
 		lightingPassShader->use();
 		lightingPassShader->setInt("gPosition", 0);
 		lightingPassShader->setInt("gNormal", 1);
 		lightingPassShader->setInt("gAlbedoSpec", 2);
 
 		skydome.reset(new GXSkydomeObject());
-		skydome->GLinit("res/models/sphere/spheres.obj");//will wait until it has been imported
+		skydome->init("res/models/sphere/spheres.obj");//will wait until it has been imported
 
-		glViewport(0, 0, width,height);
-
-		glClearColor(0.258f, 0.596f, 0.96f, 1.0f);
-		GLFlags.push_back(GL_CULL_FACE);
-		GLFlags.push_back(GL_DEPTH_TEST);
+		GXGraphicsContext::setViewPort(width, height);
+		GXGraphicsContext::setClearColor(0.258f, 0.596f, 0.96f, 1.0f);
+		renderingFlags.push_back(GX_CULL_FACE);
+		renderingFlags.push_back(GX_DEPTH_TEST);
 		windowFlags = 0;
 		quadRenderer = new GXQuad();
 
@@ -51,19 +50,19 @@ namespace gx {
 	void MainScene::start()
 	{
 		GBuffer->use(GX_FBO_RW); // upload data to the GBUFFER
-		GL_CALL(glViewport(0, 0, width, height));// let layers make glviewport according to their resolution
-		for (auto& ite : GLFlags) {
-			glEnable(ite);
+		GXGraphicsContext::setViewPort(width, height);// let layers make viewport according to their resolution
+		for (auto& ite : renderingFlags) {
+			GXGraphicsContext::enableFlag(ite);
 		}
-		GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+		GXGraphicsContext::clearBufferBits(GX_COLOR_BUFFER_BIT | GX_DEPTH_BUFFER_BIT);
 
 	}
 
 	void MainScene::end()
 	{
-		GLFrameBuffer::stop();
-		for (auto& ite : GLFlags) {
-			glDisable(ite);
+		GXFrameBuffer::stop();
+		for (auto& ite : renderingFlags) {
+			GXGraphicsContext::disableFlag(ite);
 		}
 	}
 
@@ -83,15 +82,15 @@ namespace gx {
 		getObjectID();
 		skydome->update(deltaTime);
 		mainSceneBuffer->use(GX_FBO_RW); // now its time for lightpass
-		GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+		GXGraphicsContext::clearBufferBits(GX_COLOR_BUFFER_BIT | GX_DEPTH_BUFFER_BIT);
 		lightingPassShader->use();
 		SceneLightManager::getInstance().setLightValues(lightingPassShader);
-		GLTexture2D::setActiveTexture(0);
-		GLTexture2D::use(GBuffer->getTextureID(GX_POSITION_ATTACHMENT));
-		GLTexture2D::setActiveTexture(1);
-		GLTexture2D::use(GBuffer->getTextureID(GX_NORMAL_ATTACHMENT));
-		GLTexture2D::setActiveTexture(2);
-		GLTexture2D::use(GBuffer->getTextureID(GX_COLOR_ATTACHMENT));
+		GXTexture2D::setActiveTexture(0);
+		GXTexture2D::use(GBuffer->getTextureID(GX_POSITION_TEXTURE));
+		GXTexture2D::setActiveTexture(1);
+		GXTexture2D::use(GBuffer->getTextureID(GX_NORMAL_TEXTURE));
+		GXTexture2D::setActiveTexture(2);
+		GXTexture2D::use(GBuffer->getTextureID(GX_COLOR_TEXTURE));
 		lightingPassShader->setVec3("viewPos", EditorCamera::getInstance().transform.position);
 		quadRenderer->update(deltaTime, lightingPassShader);
 
@@ -110,7 +109,7 @@ namespace gx {
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 		ImVec2 windowSize = ImGui::GetContentRegionAvail();
-		ImGui::Image(reinterpret_cast<void*>(mainSceneBuffer->getTextureID(GX_COLOR_ATTACHMENT)),windowSize,ImVec2(0,1),ImVec2(1,0));
+		ImGui::Image(reinterpret_cast<void*>(mainSceneBuffer->getTextureID(GX_COLOR_TEXTURE)),windowSize,ImVec2(0,1),ImVec2(1,0));
 		ImGui::PopStyleVar(3);
 		ImVec2 mops = ImGui::GetMousePos();
 		ImVec2 molc = ImGui::GetCursorScreenPos();
@@ -120,7 +119,7 @@ namespace gx {
 		mouseLocNormalized.second = static_cast<float>(mouseLoc.second) / windowSize.y;
 	
 		ImGui::End();
-		GLTexture2D::stop();
+		GXTexture2D::stop();
 		
 	}
 
@@ -133,9 +132,9 @@ namespace gx {
 		GXint32 y = mouseLocNormalized.second * height;
 		mouseWasPressed = false;
 		GXuint32 val;
-		glReadBuffer(GL_COLOR_ATTACHMENT0 + GX_ID_ATTACHMENT);
-		GL_CALL(glReadPixels(x,y, 1, 1, GL_RED_INTEGER, GL_UNSIGNED_INT, &val));
-		glReadBuffer(GL_NONE);
+		GXGraphicsContext::setReadAttachment(GX_COLOR_ATTACHMENT0 + GX_ID_TEXTURE);
+		GXGraphicsContext::readPixel(x, y, 1, 1, GX_RED_INTEGER, GX_UNSIGNED_INT, &val);
+		GXGraphicsContext::setReadAttachment(GX_NONE);
 		if (sceneModelObjects.find(val) == sceneModelObjects.end())return 0;
 		return val;
 	}

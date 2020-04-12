@@ -114,19 +114,20 @@
     <ClCompile Include="src\Object\GXMeshObject\GXModelObject.cpp" />
     <ClCompile Include="src\Object\GXObject.cpp" />
     <ClCompile Include="src\Physics\PhysicsManager.cpp" />
-    <ClCompile Include="src\Renderer\openGL\Buffers\GLBufferManager.cpp" />
-    <ClCompile Include="src\Renderer\openGL\Buffers\GLElementBuffer.cpp" />
-    <ClCompile Include="src\Renderer\openGL\Buffers\GLVertexArray.cpp" />
-    <ClCompile Include="src\Renderer\openGL\Buffers\GLVertexBuffer.cpp" />
-    <ClCompile Include="src\Renderer\openGL\GLLoader\glad.c">
+    <ClCompile Include="src\Renderer\API\openGL\Buffers\GLBufferManager.cpp" />
+    <ClCompile Include="src\Renderer\API\openGL\Buffers\GLElementBuffer.cpp" />
+    <ClCompile Include="src\Renderer\API\openGL\Buffers\GLVertexArray.cpp" />
+    <ClCompile Include="src\Renderer\API\openGL\Buffers\GLVertexBuffer.cpp" />
+    <ClCompile Include="src\Renderer\API\openGL\GLLoader\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Renderer\openGL\GLRenderer.cpp" />
-    <ClCompile Include="src\Renderer\openGL\Shader\GLShader.cpp" />
-    <ClCompile Include="src\Renderer\openGL\Shader\GLShaderLibrary.cpp" />
-    <ClCompile Include="src\Renderer\openGL\Shader\GLShaderManager.cpp" />
-    <ClCompile Include="src\Renderer\openGL\Texture\GLTexture2D.cpp" />
+    <ClCompile Include="src\Renderer\API\openGL\GLRenderer.cpp" />
+    <ClCompile Include="src\Renderer\API\openGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Renderer\API\openGL\Shader\GLShader.cpp" />
+    <ClCompile Include="src\Renderer\API\openGL\Shader\GLShaderLibrary.cpp" />
+    <ClCompile Include="src\Renderer\API\openGL\Shader\GLShaderManager.cpp" />
+    <ClCompile Include="src\Renderer\API\openGL\Texture\GLTexture2D.cpp" />
     <ClCompile Include="src\Shapes\2D\GXQuad.cpp" />
     <ClCompile Include="src\Terrain\Plane\Plane.cpp" />
     <ClCompile Include="src\UI\ImGuizmo.cpp" />
@@ -136,8 +137,7 @@
     <ClCompile Include="src\UI\IMGUI_FILES\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui_impl_sdl.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui_widgets.cpp" />
-    <ClCompile Include="src\UI\ImGUI_SDLGL.cpp" />
-    <ClCompile Include="src\Renderer\openGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\UI\ImGUI_SDLGL\ImGUI_SDLGL.cpp" />
     <ClCompile Include="src\Config\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -178,23 +178,33 @@
     <ClInclude Include="src\Object\GXObject.h" />
     <ClInclude Include="src\Physics\GXPickingCollider.h" />
     <ClInclude Include="src\Physics\PhysicsManager.h" />
-    <ClInclude Include="src\Renderer\openGL\Buffers\GLBufferManager.h" />
-    <ClInclude Include="src\Renderer\openGL\Buffers\GLElementBuffer.h" />
-    <ClInclude Include="src\Renderer\openGL\Buffers\GLFrameBufferObject.h" />
-    <ClInclude Include="src\Renderer\openGL\Buffers\GLVertexArray.h" />
-    <ClInclude Include="src\Renderer\openGL\Buffers\GLVertexBuffer.h" />
-    <ClInclude Include="src\Renderer\openGL\GLLoader\glad.h" />
-    <ClInclude Include="src\Renderer\openGL\GLLoader\khrplatform.h" />
-    <ClInclude Include="src\Renderer\openGL\GLRenderer.h" />
-    <ClInclude Include="src\Renderer\openGL\Shader\GLShader.h" />
-    <ClInclude Include="src\Renderer\openGL\Shader\GLShaderManager.h" />
-    <ClInclude Include="src\Renderer\openGL\Texture\GLTexture2D.h" />
+    <ClInclude Include="src\Renderer\API\openGL\Buffers\GLBufferManager.h" />
+    <ClInclude Include="src\Renderer\API\openGL\Buffers\GLElementBuffer.h" />
+    <ClInclude Include="src\Renderer\API\openGL\Buffers\GLFrameBufferObject.h" />
+    <ClInclude Include="src\Renderer\API\openGL\Buffers\GLVertexArray.h" />
+    <ClInclude Include="src\Renderer\API\openGL\Buffers\GLVertexBuffer.h" />
+    <ClInclude Include="src\Renderer\API\openGL\GLLoader\glad.h" />
+    <ClInclude Include="src\Renderer\API\openGL\GLLoader\khrplatform.h" />
+    <ClInclude Include="src\Renderer\API\openGL\GLRenderer.h" />
+    <ClInclude Include="src\Renderer\API\openGL\OpenGLContext.h" />
+    <ClInclude Include="src\Renderer\API\openGL\Shader\GLShader.h" />
+    <ClInclude Include="src\Renderer\API\openGL\Shader\GLShaderManager.h" />
+    <ClInclude Include="src\Renderer\API\openGL\Texture\GLTexture2D.h" />
+    <ClInclude Include="src\Renderer\Buffers\GXFrameBufferObject.h" />
+    <ClInclude Include="src\Renderer\Buffers\GXGraphicsBufferManager.h" />
+    <ClInclude Include="src\Renderer\Context\GXGraphicsContext.h" />
+    <ClInclude Include="src\Renderer\Enums.h" />
+    <ClInclude Include="src\Renderer\GXRenderer.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
+    <ClInclude Include="src\Renderer\Shader\GXShader.h" />
+    <ClInclude Include="src\Renderer\Shader\GXShaderManager.h" />
+    <ClInclude Include="src\Renderer\Texture\GXTexture2D.h" />
     <ClInclude Include="src\Shapes\2D\GXQuad.h" />
     <ClInclude Include="src\Terrain\HeightGenerators\HeightMapGenerator.h" />
     <ClInclude Include="src\Terrain\HeightGenerators\NoiseGenerator.h" />
     <ClInclude Include="src\Terrain\HeightGenerators\TextureMapGenerator.h" />
     <ClInclude Include="src\Terrain\Plane\Plane.h" />
+    <ClInclude Include="src\UI\GXUserInterface.h" />
     <ClInclude Include="src\UI\ImGuizmo.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imconfig.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imgui.h" />
@@ -204,8 +214,7 @@
     <ClInclude Include="src\UI\IMGUI_FILES\imstb_rectpack.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imstb_textedit.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imstb_truetype.h" />
-    <ClInclude Include="src\UI\ImGUI_SDLGL.h" />
-    <ClInclude Include="src\Renderer\openGL\OpenGLContext.h" />
+    <ClInclude Include="src\UI\ImGUI_SDLGL\ImGUI_SDLGL.h" />
     <ClInclude Include="src\Layers\Layer.h" />
     <ClInclude Include="src\Config\pch.h" />
     <ClInclude Include="src\Events\Event.h" />

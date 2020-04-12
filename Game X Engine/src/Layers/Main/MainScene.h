@@ -6,6 +6,7 @@
 #include "Terrain/Plane/Plane.h"
 #include "IOManagement/IOManager.h"
 #include "Shapes/2D/GXQuad.h"
+#include "Renderer/Enums.h"
 namespace gx {
 	class GX_DLL MainScene :public Layer {
 	public:
@@ -44,12 +45,12 @@ namespace gx {
 		static std::shared_ptr<GXPlane> mainPlane;
 		ImGuiWindowFlags windowFlags;
 		GXint32 width, height;
-		//just the openGL FBO for now
-		std::vector<GLenum> GLFlags;
-		std::unique_ptr<GLFrameBuffer> GBuffer;
-		GLShader* lightingPassShader;
+
+		std::vector<GXRendererFlag> renderingFlags;
+		std::unique_ptr<GXFrameBuffer> GBuffer;
+		GXShader* lightingPassShader;
 		GXQuad* quadRenderer;
-		std::unique_ptr<GLFrameBuffer> mainSceneBuffer;
+		std::unique_ptr<GXFrameBuffer> mainSceneBuffer;
 		friend class PlaneEditorLayer;
 		bool mouseWasPressed;
 	};

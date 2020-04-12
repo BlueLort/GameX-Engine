@@ -7,7 +7,7 @@ namespace gx {
 	class GX_DLL GXModelObject : public GXObject {
 	public:
 		inline GXModelObject(const char* objName = "NONE"):GXObject(GX_MODEL,objName){}
-		virtual void GLinit(const char* fileName,const char* shaderPath=nullptr);
+		virtual void init(const char* fileName,const char* shaderPath=nullptr) override;
 		virtual void update(float deltaTime) override;
 		virtual void destroy() override;
 		inline void fixComponentsID() {

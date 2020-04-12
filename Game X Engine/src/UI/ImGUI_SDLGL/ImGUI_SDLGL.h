@@ -1,9 +1,9 @@
 #pragma once
 #include "Config.h"
-#include "Renderer/openGL/OpenGLContext.h"
-#include "IMGUI_FILES/imgui.h"
-#include "IMGUI_FILES/imgui_impl_sdl.h"
-#include "IMGUI_FILES/imgui_impl_opengl3.h"
+#include "Renderer/Context/GXGraphicsContext.h"
+#include "UI/IMGUI_FILES/imgui.h"
+#include "UI/IMGUI_FILES/imgui_impl_sdl.h"
+#include "UI/IMGUI_FILES/imgui_impl_opengl3.h"
 
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
 extern inline void setMouseButton(GXuint32 button, bool val);

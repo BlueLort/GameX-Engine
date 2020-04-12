@@ -27,14 +27,11 @@ void initSystems(gx::GameXApp* gameInst) {
 	gx::GXTimer::getAppTimer().init(); GXE_INFO("Application Timer Started using SDL_GetTicks !");
 	gx::EditorCamera::getInstance().init(); GXE_INFO("Editor Camera initialized !");
 	//init Graphics Context and appropriate Rendering System
-#ifdef USING_OPENGL
 	GXE_INFO("Using OpenGL as rendering API !");
-	gx::GLRenderer::getInstance().init(); GXE_INFO("GLRenderer is Initialized Successfully !");
-	gameInst->UI_GL->init(); GXE_INFO("dear ImGUI v1.73 WIP initialized for OpenGL !");
-	GXE_PRINT("Initiating GLShaders");
-	gx::GLShaderManager::init(); GXE_INFO("OpenGL Shader Manager initialized !");
-
-#endif 
+	gx::GXRenderer::getInstance().init(); GXE_INFO("GXRenderer is Initialized Successfully !");
+	gameInst->gxUserInterface->init(); GXE_INFO("dear ImGUI v1.73 WIP initialized !");
+	GXE_PRINT("Initiating Shaders");
+	gx::GXShaderManager::init(); GXE_INFO("Shader Manager initialized !");
 	//preload models
 	gx::io::IORequestHandler::importModel("res/models/sphere/", "spheres.obj");
 	gx::io::IORequestHandler::waitTasks();

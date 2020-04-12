@@ -1,24 +1,10 @@
 #pragma once
 #include "Config.h"
-#include "../Texture/GLTexture2D.h"
+#include "Renderer/Enums.h"
+#include "Renderer/Texture/GXTexture2D.h"
 #include "../Window/GXWindow.h"
 namespace gx {
-	constexpr GXuint32 GX_ATTACHMENTS = 5;
-	enum GXAttachmentType {
-		GX_COLOR_ATTACHMENT = 0, // Albedo/Color Attachment
-		GX_DEPTH_ATTACHMENT,
-		GX_POSITION_ATTACHMENT,
-		GX_NORMAL_ATTACHMENT,
-		GX_ID_ATTACHMENT,
-		GX_STENCIL_ATTACHMENT
-
-	};
-	enum GXFBOBindMethod {
-		GX_FBO_READ = GL_READ_FRAMEBUFFER,
-		GX_FBO_WRITE = GL_DRAW_FRAMEBUFFER,
-		GX_FBO_RW = GL_FRAMEBUFFER
-
-	};
+	constexpr GXuint32 GX_ATTACHMENTS = 6;
 	class GX_DLL GLFrameBuffer {
 	public:
 
@@ -73,31 +59,31 @@ namespace gx {
 			//TODO Width and height to the actuall rendering window size along with glviewport
 			switch (type)
 			{
-			case gx::GX_COLOR_ATTACHMENT:
+			case gx::GX_COLOR_TEXTURE:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + type, GL_TEXTURE_2D, textureAttachments[type], 0);
 				break;
-			case gx::GX_DEPTH_ATTACHMENT:
+			case gx::GX_DEPTH_TEXTURE:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, textureAttachments[type], 0);
 				break;
-			case gx::GX_POSITION_ATTACHMENT:case gx::GX_NORMAL_ATTACHMENT:
+			case gx::GX_POSITION_TEXTURE:case gx::GX_NORMAL_TEXTURE:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + type, GL_TEXTURE_2D, textureAttachments[type], 0);
 				break;
-			case gx::GX_ID_ATTACHMENT:
+			case gx::GX_ID_TEXTURE:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_R32UI, width, height, 0, GL_RED_INTEGER, GL_UNSIGNED_INT, NULL);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + type, GL_TEXTURE_2D, textureAttachments[type], 0);
 				break;
-			case gx::GX_STENCIL_ATTACHMENT:
+			case gx::GX_STENCIL_TEXTURE:
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

@@ -1,9 +1,8 @@
 #pragma once
 #include "Config.h"
-#include "Renderer/openGL/Shader/GLShader.h"
-#include "Renderer/openGL/Shader/GLShader.h"
-#include "Renderer/openGL/Buffers/GLBufferManager.h"
-#include "Renderer/openGL/GLRenderer.h"
+#include "Renderer/Shader/GXShader.h"
+#include "Renderer/Buffers/GXGraphicsBufferManager.h"
+#include "Renderer/GXRenderer.h"
 namespace gx {
 	enum GXComponentType
 	{
@@ -29,7 +28,7 @@ namespace gx {
 		virtual inline GXuint32 getEventType() const = 0;
 		virtual inline GXuint32 getEventClass() const = 0;
 		virtual void update(float deltaTime) = 0;
-		virtual void draw(GLShader* glshader,bool isWireFrame) {};
+		virtual void draw(GXShader* shader,bool isWireFrame) {};
 		virtual void destroy() = 0;
 
 		inline bool isSameClassAs(GXComponentClass componentClass) const {

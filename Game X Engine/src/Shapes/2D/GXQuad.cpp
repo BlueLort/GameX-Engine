@@ -3,16 +3,16 @@
 
 namespace gx {
 	GXuint32 GXQuad::currentID = 0;
-	void GXQuad::update(float deltaTime,const GLShader* glshader)
+	void GXQuad::update(float deltaTime,const GXShader* glshader)
 	{
-		GLBM->use();
-		GLRenderer::getInstance().draw(GLBM->getNumberOfElements(), RenderType::GX_TRIANGLES, false);
-		GLBM->stop();
+		graphicsBufferManager->use();
+		GLRenderer::getInstance().draw(graphicsBufferManager->getNumberOfElements(), RenderType::GX_TRIANGLES, false);
+		graphicsBufferManager->stop();
 	}
 
 	void GXQuad::destroy()
 	{
-		GLBM->destroy();
+		graphicsBufferManager->destroy();
 	}
 
 }

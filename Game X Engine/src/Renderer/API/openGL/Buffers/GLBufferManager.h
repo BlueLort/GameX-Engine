@@ -6,8 +6,8 @@
 #include "GLElementBuffer.h"
 #include "GLVertexArray.h"
 #include "GLVertexBuffer.h"
-#include "../Texture/GLTexture2D.h"
-
+#include "Renderer/Texture/GXTexture2D.h"
+#include "Renderer/Enums.h"
 namespace gx {
 	class GX_DLL GLBufferManager {
 	public:
@@ -17,9 +17,9 @@ namespace gx {
 		void init(GXuint32 requiredSize, GXuint32 strideSize);
 		void initFull(void* data,GXuint32 requiredSize, GXuint32 strideSize);
 		void uploadDataToBuffer(void* data, GXuint32 size);
-		void setAttribPointer(GXuint32 loc,GXuint32 count, GLenum type, GXuint32 offset);
+		void setAttribPointer(GXuint32 loc,GXuint32 count, GXEnumType type, GXuint32 offset);
 		void uploadIndicesToBuffer(GXuint32* indices, GXuint32 size,GXuint32 length);
-		inline void addTexture(const std::shared_ptr<GLTexture2D>& tex) {
+		inline void addTexture(const std::shared_ptr<GXTexture2D>& tex) {
 			textures.emplace_back(tex);
 		}
 		//Delete the VBO and EBO and VAO ptrs
@@ -30,7 +30,7 @@ namespace gx {
 		inline static void stop() {
 			GLVertexArray::stop();
 		}
-		inline std::vector<std::shared_ptr<GLTexture2D>> getTextures()const { return textures; }
+		inline std::vector<std::shared_ptr<GXTexture2D>> getTextures()const { return textures; }
 		inline GXuint32 getNumberOfElements()const { return nElements; }
 		inline void destroy() {
 			GLVertexArray::destroy(VAOID);
@@ -43,7 +43,7 @@ namespace gx {
 		std::unique_ptr<GLVertexArray> VAO;
 		std::unique_ptr <GLVertexBuffer> VBO;
 		std::unique_ptr <GLElementBuffer> EBO;
-		std::vector<std::shared_ptr<GLTexture2D>> textures;
+		std::vector<std::shared_ptr<GXTexture2D>> textures;
 
 
 

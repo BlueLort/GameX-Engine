@@ -3,7 +3,7 @@
 #include "Config.h"
 #include "Events/Event.h"
 #include "Layers/LayerManager.h"
-#include "UI/ImGUI_SDLGL.h"
+#include "UI/GXUserInterface.h"
 #include "Renderer/Renderer.h"
 #include "Input/InputManager.h"
 #include "Object/GXMeshObject/GXModelObject.h"
@@ -27,7 +27,7 @@ namespace gx {
 		void Start();
 		GXEventCallBack getEventCallBack() const { return onEvent; }
 		//static std::unique_ptr<Renderer> renderer;
-		static std::unique_ptr<ImGUI_SDLGL> UI_GL;
+		static std::unique_ptr<GXUserInterface> gxUserInterface;
 	private:
 		
 		//EVENT HANDLING
@@ -57,7 +57,7 @@ namespace gx {
 		if (mainSceneSelected&&InputManager::getInstance().handleEvent(gxEvent)) {
 			handled = true;
 		}
-		if (UI_GL->handleEvent(gxEvent)) {
+		if (gxUserInterface->handleEvent(gxEvent)) {
 			handled = true;
 		}
 		if (handleEvent(gxEvent)) {

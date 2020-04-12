@@ -38,8 +38,8 @@ namespace gx {
 		if (isUpdated) {
 			isUpdated = false;
 			canUpdate = true;
-			if (this->texID != 0)GLTexture2D::destroy(this->texID);
-			GLTexture2D tex;
+			if (this->texID != 0)GXTexture2D::destroy(this->texID);
+			GXTexture2D tex;
 			tex.init(texColors, width, depth, GX_RGB, GX_DIFFUSE, GXTexture2DFilteringMethod::GX_NEAREST);
 			this->texID = tex.getID();
 			plane->uploadToBuffer(texID);
@@ -96,7 +96,7 @@ namespace gx {
 
 		ImGui::PopStyleVar(3);
 		ImGui::End();
-		GLTexture2D::stop();
+		GXTexture2D::stop();
 
 	}
 

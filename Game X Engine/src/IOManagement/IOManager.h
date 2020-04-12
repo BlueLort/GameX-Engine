@@ -6,8 +6,8 @@
 #include <assimp/postprocess.h>
 #include <stb_image/stb_image.h>
 #include <stb_image/stb_image_write.h>
-#include "Renderer/openGL/Buffers/GLBufferManager.h"
-#include "Renderer/openGL/Texture/GLTexture2D.h"
+#include "Renderer/Buffers/GXGraphicsBufferManager.h"
+#include "Renderer/Texture/GXTexture2D.h"
 #include "Maths/Data/Vertex3D.h"
 #include "Components/Mesh/GXMeshComponent.h"
 #include "Physics/GXPickingCollider.h"
@@ -40,9 +40,9 @@ namespace gx {
 			//TODO implement this to read custom shaders or any files.
 			static std::string readFile(const char* filePath);
 
-			static std::shared_ptr<ImageData> imageRead(const char* filePath, GXTexture2DType Type, bool addToGLTextures);
-			//Cached GLTexture reading.
-			static std::shared_ptr<GLTexture2D> GLReadTexture(std::shared_ptr<ImageData>& iData);
+			static std::shared_ptr<ImageData> imageRead(const char* filePath, GXTexture2DType Type, bool addToTextures);
+			//Cached Texture reading.
+			static std::shared_ptr<GXTexture2D> readTexture(std::shared_ptr<ImageData>& iData);
 			static void importModel(const char* filePath, const char* fileName);
 			static void finishAllTasks() { for (GXint32 i = 0; i < asyncTasks.size(); i++)asyncTasks[i].get(); }
 			static void update();
@@ -52,8 +52,8 @@ namespace gx {
 			static std::pair<std::string, std::vector< std::shared_ptr<MeshData> > > assimpProcessNode(const char* filePath, const char* fileName, aiNode* node, const aiScene* scene);
 			static std::shared_ptr<MeshData> assimpProcessMesh(const char* filePath, const char* fileName, aiMesh* mesh, const aiScene* scene);
 			static std::vector<std::shared_ptr<ImageData>> assimpImportTextures2D(const char* filePath, aiMaterial* mat, aiTextureType type, GXTexture2DType gxTexType);
-			static std::shared_ptr<GLBufferManager> GLCreateBufferLayout(std::vector<Vertex3D>& verts, std::vector<GXuint32>& indices, std::vector<std::shared_ptr<GLTexture2D>>& textures);
-			static void destroyGLModels();
+			static std::shared_ptr<GXGraphicsBufferManager> createBufferLayout(std::vector<Vertex3D>& verts, std::vector<GXuint32>& indices, std::vector<std::shared_ptr<GXTexture2D>>& textures);
+			static void destroyModels();
 			static void destroyTextures();
 
 			static std::unordered_map<std::string, GXuint32> texIDs;

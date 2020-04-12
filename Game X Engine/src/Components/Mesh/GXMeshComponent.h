@@ -1,7 +1,4 @@
 #pragma once
-
-#include <glad/glad.h> // holds all OpenGL type declarations
-
 #include "Maths/GXMaths.h"
 #include "Components/GXComponent.h"
 #include "Physics/GXPickingCollider.h"
@@ -12,16 +9,16 @@ namespace gx {
 
 
 		//TODO HANDLE GXID PASSING to this component
-		GXMeshComponent(GXuint32 GXID,const std::shared_ptr<gx::GLBufferManager>& GLBM, const std::shared_ptr<gx::GXPickingCollider>& pickingCollider) : GXComponent(GXID)
+		GXMeshComponent(GXuint32 GXID,const std::shared_ptr<gx::GXGraphicsBufferManager>& GBM, const std::shared_ptr<gx::GXPickingCollider>& pickingCollider) : GXComponent(GXID)
 		{
 			//TODO make input base shader and use macros to define which shader to use
-			this->GLBM = GLBM;
+			this->graphicsBufferManager = GBM;
 			this->gxPickingCollider = pickingCollider;
 		}
-		GXMeshComponent(GXuint32 GXID, const std::shared_ptr<gx::GLBufferManager>& GLBM) : GXComponent(GXID)
+		GXMeshComponent(GXuint32 GXID, const std::shared_ptr<gx::GXGraphicsBufferManager>& GBM) : GXComponent(GXID)
 		{
 			//TODO make input base shader and use macros to define which shader to use
-			this->GLBM = GLBM;
+			this->graphicsBufferManager = GBM;
 
 		}
 
@@ -35,7 +32,7 @@ namespace gx {
 			return GXComponentClass::GX_GRAPHICS;
 		}
 		virtual void destroy()override {
-			GLBM->destroy();
+			graphicsBufferManager->destroy();
 		}
 		void setOwnerID(GXuint32 GXID) override{
 			objectID = GXID;
@@ -44,16 +41,16 @@ namespace gx {
 		virtual void update(float deltaTime)override {
 		}
 	private:
-		std::shared_ptr<GLBufferManager> GLBM;
+		std::shared_ptr<GXGraphicsBufferManager> graphicsBufferManager;
 		std::shared_ptr<GXPickingCollider> gxPickingCollider;
 		// render the mesh
-		void draw(GLShader* glshader,bool isWireFrame) {
+		void draw(GXShader* shader,bool isWireFrame) {
 			GXuint32 nDiffuse = 1;
 			GXuint32 nSpecular = 1;
-			auto textures = GLBM->getTextures();
+			auto textures = graphicsBufferManager->getTextures();
 			for (GXuint32 i = 0; i < textures.size(); i++)
 			{
-				GLTexture2D::setActiveTexture(i);
+				GXTexture2D::setActiveTexture(i);
 				GXTexture2DType type = textures[i]->getType();
 				std::string name;
 				switch (type)
@@ -75,20 +72,20 @@ namespace gx {
 				default:
 					break;
 				}
-				glshader->setInt(name.c_str(), i);
+				shader->setInt(name.c_str(), i);
 
 				textures[i]->use();
 			}
 
 
 			// draw mesh
-			GLBM->use();
-			GLRenderer::getInstance().draw(GLBM->getNumberOfElements(), RenderType::GX_TRIANGLES,isWireFrame);
-			GLBM->stop();
+			graphicsBufferManager->use();
+			GXRenderer::getInstance().draw(graphicsBufferManager->getNumberOfElements(), RenderType::GX_TRIANGLES,isWireFrame);
+			graphicsBufferManager->stop();
 			
 			
-			GLTexture2D::setActiveTexture(0);
-			GLTexture2D::stop();
+			GXTexture2D::setActiveTexture(0);
+			GXTexture2D::stop();
 		}
 	};
 }

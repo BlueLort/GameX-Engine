@@ -3,37 +3,33 @@
 
 namespace gx {
 
-	void GXModelObject::GLinit(const char* fileName, const char* shaderPath) {
+	void GXModelObject::init(const char* fileName, const char* shaderPath) {
 	
 		if (shaderPath == nullptr) {
-			glshader = GLShaderManager::getShader(GLShaderType::DEFAULT_GBUFFER);
+			shader = GXShaderManager::getShader(GXCompiledShader::DEFAULT_GBUFFER);
 		}
 		else {
-			glshader = GLShaderManager::getShader(shaderPath);
+			shader = GXShaderManager::getShader(shaderPath);
 		}
 
 		io::IORequestHandler::getModel(fileName, &components, &isReady);
-#ifdef USING_OPENGL
 		//set constant data
-		this->glshader->use();
-		this->glshader->setFloat("material.shininess", 32.0f);
-		this->glshader->setUInt("objID", this->GXID);
-		GLShader::stop();
-#endif		
+		this->shader->use();
+		this->shader->setFloat("material.shininess", 32.0f);
+		this->shader->setUInt("objID", this->GXID);
+		GXShader::stop();		
 
 	}
 
 	void GXModelObject::update(float deltaTime) {
 		//For rendering as rendering happens in GXMeshComponent
-#ifdef USING_OPENGL
-		this->glshader->use();
-		SceneLightManager::getInstance().setLightValues(this->glshader);
-		this->glshader->setMat4("model", transform.getModel());
-		this->glshader->setMat4("vp", EditorCamera::getInstance().getPVMatrix());
-#endif
+		this->shader->use();
+		SceneLightManager::getInstance().setLightValues(this->shader);
+		this->shader->setMat4("model", transform.getModel());
+		this->shader->setMat4("vp", EditorCamera::getInstance().getPVMatrix());
 		for (auto& component : components) {
 			component->update(deltaTime);
-			component->draw(glshader,isWireFrame);
+			component->draw(shader,isWireFrame);
 		}
 	}
 

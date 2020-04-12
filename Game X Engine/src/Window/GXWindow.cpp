@@ -14,16 +14,10 @@ namespace gx {
 		GXE_ASSERT(GXWindow::window != nullptr, "Failed to create SDL Window ...\n", SDL_GetError());
 
 		GXWindow::windowData = std::make_shared<GXWindowData>(Width, Height, Flags, Title, SDL_GetWindowID(window));
-
-
-		
 	}
 
 	void GXWindow::destroy()
 	{
-	#ifdef USING_OPENGL
-		SDL_GL_DeleteContext(OpenGLContext::getGLContext());
-	#endif // USING_OPENGL
 		SDL_DestroyWindow(window);
 		SDL_Quit();
 	}

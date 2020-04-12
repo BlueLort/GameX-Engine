@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Config.h"
-#include "OpenGLContext.h"
-#include "../Renderer.h"
+
+#include "Renderer/Renderer.h"
 
 namespace gx {
 
@@ -16,7 +16,7 @@ namespace gx {
 		virtual void init() override;
 		virtual void draw(GXuint32 nElements, RenderType type, bool isWireFrame) override;
 		virtual inline void setViewPort(GXuint32 Width, GXuint32 Height) override {
-			gx::OpenGLContext::setViewPort(Width, Height);
+			GXGraphicsContext::setViewPort(Width, Height);
 		}
 		virtual inline void setDepthFunc(DepthFunc func) override {
 			glDepthFunc(func);

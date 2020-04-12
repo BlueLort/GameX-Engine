@@ -2,24 +2,13 @@
 
 #include "pch.h"
 #include "Config.h"
-#include "Window/GXWindow.h"
 #include "Maths/GXMaths.h"
-
+#include "Renderer/Enums.h"
 namespace gx {
-	enum GXShaderType {
-#ifdef USING_OPENGL
-		GX_VERTEX_SHADER=GL_VERTEX_SHADER,
-		GX_FRAGMENT_SHADER=GL_FRAGMENT_SHADER,
-		GX_COMPUTE_SHADER=GL_COMPUTE_SHADER,
-		GX_GEOMETRY_SHADER=GL_GEOMETRY_SHADER,
-		GX_TESS_CONTROL_SHADER=GL_TESS_CONTROL_SHADER,
-		GX_TESS_EVALUATION_SHADER=GL_TESS_EVALUATION_SHADER
-#endif
-	};
 	class GX_DLL GLShader
 	{
 	public:
-		
+		GLShader();
 		// activate the shader
 		// ------------------------------------------------------------------------
 		inline void use() {
@@ -103,13 +92,14 @@ namespace gx {
 		}
 		//---------------------------------------------------------------------
 
-		~GLShader() { glDeleteProgram(ID); }
+		inline void destroy() {
+			glDeleteProgram(ID);
+		}
+		void addShader(GXShaderType shaderType, const char* shaderCode);
 	private:
-		GLShader();
-		void addShader(GXShaderType shaderType,const char* shaderCode);
+	
 		GXuint32 ID;
 		GXuint32 compileShader(GXShaderType type, const char* code, char* log);
 		void linkProgram(char* log);
-		friend class GLShaderManager;
 	};
 }

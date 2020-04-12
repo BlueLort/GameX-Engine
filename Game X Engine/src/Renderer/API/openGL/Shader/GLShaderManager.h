@@ -2,7 +2,9 @@
 
 #include "pch.h"
 #include "Config.h"
-#include "GLShader.h"
+#include "Renderer/Enums.h"
+#include "Renderer/Shader/GXShader.h"
+
 namespace gx {
 	//0 vert 1 frag 2 geo
 	extern const char* GLDefaultColorShader[3];
@@ -12,23 +14,13 @@ namespace gx {
 	extern const char* GLDefaultPlaneShader[3];
 	extern const char* GLDefaultGBufferShader[3];
 	extern const char* GLDefaultDeferredShader[3];
-	enum GLShaderType
-	{	DEFAULT_COLOR = 0,//ADD MORE TYPES THAT ARE PRECOMPILED FOR THE USER
-		DEFAULT_LIGHT,
-		DEFAULT_MODEL,
-		DEFAULT_SKYDOME,
-		DEFAULT_PLANE,
-		DEFAULT_GBUFFER,
-		DEFAULT_DEFERRED
-	};
-	class GLShader;
 	class GX_DLL GLShaderManager {
 	public:
 		GLShaderManager() = delete;
 		static void init();
 
-		inline static GLShader* getShader(GLShaderType type) { return defaultShaders[type]; };
-		inline static GLShader* getShader(const char* filePath) { 
+		static GXShader* getShader(GXCompiledShader type) { return defaultShaders[type]; };
+		static GXShader* getShader(const char* filePath) { 
 			auto ite = customShaders.find(filePath);
 			if (ite != customShaders.end()) {
 				return ite->second;
@@ -38,10 +30,10 @@ namespace gx {
 		
 		static void destroy();
 	private:
-		static std::vector<GLShader*> defaultShaders;
-		static std::unordered_map<const char*, GLShader*> customShaders;
+		static std::vector<GXShader*> defaultShaders;
+		static std::unordered_map<const char*, GXShader*> customShaders;
 
-		static GLShader* createShader(const char* filePath);
+		static GXShader* createShader(const char* filePath);
 
 
 	};

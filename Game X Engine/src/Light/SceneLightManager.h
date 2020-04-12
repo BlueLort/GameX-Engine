@@ -22,34 +22,34 @@ namespace gx {
 		std::vector<std::shared_ptr<PointLight>> getPointLights() const { return pLights; }
 		std::shared_ptr<SpotLight> getSpotLight() const { return flashLight; }
 		std::shared_ptr<DirectionalLight> getDirLight() const { return dirLight; }
-		inline void setLightValues(GLShader* glshader) {
+		inline void setLightValues(GXShader* shader) {
 			//Directional light
-			glshader->setVec3("dirLight.direction", dirLight->direction);
-			glshader->setVec3("dirLight.ambient", dirLight->ambientColor);
-			glshader->setVec3("dirLight.diffuse", dirLight->diffuseColor);
-			glshader->setVec3("dirLight.specular", dirLight->specularColor);
+			shader->setVec3("dirLight.direction", dirLight->direction);
+			shader->setVec3("dirLight.ambient", dirLight->ambientColor);
+			shader->setVec3("dirLight.diffuse", dirLight->diffuseColor);
+			shader->setVec3("dirLight.specular", dirLight->specularColor);
 			for (GXint32 i = 0; i < pLights.size();i++) {
 				//TODO IMPROVE THIS
 				std::string loc = "pointLights[" + std::to_string(i)+"]";
-				glshader->setVec3(std::string(loc+".position").c_str(), pLights[i]->position);
-				glshader->setVec3(std::string(loc + ".ambient").c_str(), pLights[i]->ambientColor);
-				glshader->setVec3(std::string(loc + ".diffuse").c_str(), pLights[i]->diffuseColor);
-				glshader->setVec3(std::string(loc + ".specular").c_str(), pLights[i]->specularColor);
-				glshader->setFloat(std::string(loc + ".constant").c_str(), pLights[i]->constant);
-				glshader->setFloat(std::string(loc + ".linear").c_str(), pLights[i]->linear);
-				glshader->setFloat(std::string(loc + ".quadratic").c_str(), pLights[i]->quadratic);
+				shader->setVec3(std::string(loc+".position").c_str(), pLights[i]->position);
+				shader->setVec3(std::string(loc + ".ambient").c_str(), pLights[i]->ambientColor);
+				shader->setVec3(std::string(loc + ".diffuse").c_str(), pLights[i]->diffuseColor);
+				shader->setVec3(std::string(loc + ".specular").c_str(), pLights[i]->specularColor);
+				shader->setFloat(std::string(loc + ".constant").c_str(), pLights[i]->constant);
+				shader->setFloat(std::string(loc + ".linear").c_str(), pLights[i]->linear);
+				shader->setFloat(std::string(loc + ".quadratic").c_str(), pLights[i]->quadratic);
 			}
 			// spotLight
-			glshader->setVec3("spotLight.position", flashLight->position);
-			glshader->setVec3("spotLight.direction", flashLight->direction);
-			glshader->setVec3("spotLight.ambient", flashLight->ambientColor);
-			glshader->setVec3("spotLight.diffuse", flashLight->diffuseColor);
-			glshader->setVec3("spotLight.specular", flashLight->specularColor);
-			glshader->setFloat("spotLight.constant", flashLight->constant);
-			glshader->setFloat("spotLight.linear", flashLight->linear);
-			glshader->setFloat("spotLight.quadratic", flashLight->quadratic);
-			glshader->setFloat("spotLight.cutOff", flashLight->cutOff);
-			glshader->setFloat("spotLight.outerCutOff", flashLight->outerCutOff);
+			shader->setVec3("spotLight.position", flashLight->position);
+			shader->setVec3("spotLight.direction", flashLight->direction);
+			shader->setVec3("spotLight.ambient", flashLight->ambientColor);
+			shader->setVec3("spotLight.diffuse", flashLight->diffuseColor);
+			shader->setVec3("spotLight.specular", flashLight->specularColor);
+			shader->setFloat("spotLight.constant", flashLight->constant);
+			shader->setFloat("spotLight.linear", flashLight->linear);
+			shader->setFloat("spotLight.quadratic", flashLight->quadratic);
+			shader->setFloat("spotLight.cutOff", flashLight->cutOff);
+			shader->setFloat("spotLight.outerCutOff", flashLight->outerCutOff);
 		}
 	private:
 		SceneLightManager() {

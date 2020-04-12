@@ -1,8 +1,8 @@
 #pragma once
 #include "Config.h"
 #include "pch.h"
-#include "Renderer/openGL/Buffers/GLFrameBufferObject.h"
-#include "UI/ImGUI_SDLGL.h"
+#include "Renderer//Buffers/GXFrameBufferObject.h"
+#include "UI/GXUserInterface.h"
 /*
 	Each layer is a framebuffer object that have a texture result asscoiated with it.
 */

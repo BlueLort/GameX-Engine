@@ -8,7 +8,7 @@
  dispatchSystemEvent<##ev>(gxEvent,windowID)
 
 namespace gx {
-	std::unique_ptr<ImGUI_SDLGL> GameXApp::UI_GL = std::make_unique<ImGUI_SDLGL>("ImGUI Editor");
+	std::unique_ptr<GXUserInterface> GameXApp::gxUserInterface = std::make_unique<GXUserInterface>("ImGUI Editor");
 	bool GameXApp::isRunning = true;
 	bool GameXApp::mainSceneSelected = false;
 
@@ -24,7 +24,7 @@ namespace gx {
 	void GameXApp::Start() {
 		//OBJECT FOR DEBUGGING
 		std::shared_ptr<GXModelObject> object = std::make_shared<GXModelObject>("my nanosuit object");
-		object->GLinit("res/models/nanosuit/nanosuit.obj");
+		object->init("res/models/nanosuit/nanosuit.obj");
 		LayerManager::getInstance().addModelObject(object);
 		//TODO do RAY PICKING WITH PHYSICS ENGINE ?
 		//rayPickingTask = std::async(std::launch::async, rayPicking);
@@ -38,17 +38,15 @@ namespace gx {
 			io::IORequestHandler::update();//check if something is imported and init it using openGL context
 			GXPhysicsManager::getInstance().stepSimulation(deltaTime);
 			//Render
-#ifdef USING_OPENGL  
 			LayerManager::getInstance().renderUpdateLayers(1.0f / GXTimer::getAppTimer().getDeltaTicks());
 			//ImGUI Rendering
-			UI_GL->startFrame();
-			UI_GL->onGUIRender();
+			gxUserInterface->startFrame();
+			gxUserInterface->onGUIRender();
 			LayerManager::getInstance().onGUIRender();
-			UI_GL->render();
-			UI_GL->endFrame();
+			gxUserInterface->render();
+			gxUserInterface->endFrame();
 
-			GXWindow::swapWindow_GL();
-#endif
+			GXWindow::swapWindow();
 
 
 		}

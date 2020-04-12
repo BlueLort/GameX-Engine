@@ -37,8 +37,8 @@ namespace gx {
 		if (isUpdated) {
 			isUpdated = false;
 			canUpdate = true;
-			if(this->texID!=0)GLTexture2D::destroy(this->texID);
-			GLTexture2D tex;
+			if(this->texID!=0)GXTexture2D::destroy(this->texID);
+			GXTexture2D tex;
 			tex.init(heightValues, texWidth, texHeight,GX_RGB, GX_HEIGHT,GXTexture2DFilteringMethod::GX_LINEAR);
 			this->texID = tex.getID();
 		}
@@ -90,7 +90,7 @@ namespace gx {
 			, ImVec2(1, 1), ImVec2(0, 0));
 		ImGui::PopStyleVar(3);
 		ImGui::End();
-		GLTexture2D::stop();
+		GXTexture2D::stop();
 
 	}
 

@@ -3,9 +3,9 @@
 
 namespace gx {
 
-	void GXSkydomeObject::GLinit(const char* fileName) {
+	void GXSkydomeObject::init(const char* fileName, const char* shaderPath) {
 
-		glshader = GLShaderManager::getShader(GLShaderType::DEFAULT_SKYDOME);
+		shader = GXShaderManager::getShader(GXCompiledShader::DEFAULT_SKYDOME);
 		transform.scale = GXVec3(3000.0f, 3000.0f, 3000.0f);//enlarge the sphere
 		staticModelMat4 = transform.getModel();
 		//GET THE MODEL DATA
@@ -15,24 +15,20 @@ namespace gx {
 
 	void GXSkydomeObject::update(float deltaTime) {
 		//For rendering as rendering happens in GXMeshComponent
-#ifdef USING_OPENGL
 		//First set the proper depth func to allow us draw skydome at the end of the frame
-		GLRenderer::getInstance().setDepthFunc(DepthFunc::GX_LEQUAL);
-		GLRenderer::getInstance().setWindingOrder(WindingOrder::GX_CW);//must be CW because we are inside it
-		this->glshader->use();
-		this->glshader->setMat4("model", staticModelMat4);
-		this->glshader->setMat4("view", EditorCamera::getInstance().getViewMatrix());
-		this->glshader->setMat4("projection", EditorCamera::getInstance().getProjectionMatrix());
-#endif
+		GXRenderer::getInstance().setDepthFunc(DepthFunc::GX_LEQUAL);
+		GXRenderer::getInstance().setWindingOrder(WindingOrder::GX_CW);//must be CW because we are inside it
+		this->shader->use();
+		this->shader->setMat4("model", staticModelMat4);
+		this->shader->setMat4("view", EditorCamera::getInstance().getViewMatrix());
+		this->shader->setMat4("projection", EditorCamera::getInstance().getProjectionMatrix());
 		for (auto component : components) {
 			component->update(deltaTime);
-			component->draw(glshader,isWireFrame);
+			component->draw(shader,isWireFrame);
 		}
-#ifdef USING_OPENGL
 		//reset values to default
-		GLRenderer::getInstance().setDepthFunc(DepthFunc::GX_LESS);
-		GLRenderer::getInstance().setWindingOrder(WindingOrder::GX_CCW);
-#endif
+		GXRenderer::getInstance().setDepthFunc(DepthFunc::GX_LESS);
+		GXRenderer::getInstance().setWindingOrder(WindingOrder::GX_CCW);
 	}
 
 	void GXSkydomeObject::destroy() {

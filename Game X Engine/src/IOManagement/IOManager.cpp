@@ -38,9 +38,9 @@ namespace gx {
 			if(async)texturesNeedToBeProcessed.emplace(iData);
 			return iData;
 		}
-		std::shared_ptr<GLTexture2D> IOManager::GLReadTexture(std::shared_ptr<ImageData>& iData) {
-			std::shared_ptr<GLTexture2D> tex;
-			tex.reset(new GLTexture2D());
+		std::shared_ptr<GXTexture2D> IOManager::readTexture(std::shared_ptr<ImageData>& iData) {
+			std::shared_ptr<GXTexture2D> tex;
+			tex.reset(new GXTexture2D());
 			std::string fPath(iData->filePath);
 			if (texIDs[fPath] != 0) {
 				tex->init(texIDs[fPath], iData->type);
@@ -48,11 +48,11 @@ namespace gx {
 			}
 			if (iData->data) {
 				tex->init(iData->data, iData->width,iData->height,iData->nChannels==4?GX_RGBA:GX_RGB,iData->type,GXTexture2DFilteringMethod::GX_LINEAR);
-				GXE_DEBUG("GLTexture2D imported successfully\nPath: {0}", iData->filePath);
+				GXE_DEBUG("Texture2D imported successfully\nPath: {0}", iData->filePath);
 				texIDs[fPath] = tex->getID();
 			}
 			else {
-				GXE_ERROR("Failed to import GLTexture2D\nPath: {0}", iData->filePath);
+				GXE_ERROR("Failed to import Texture2D\nPath: {0}", iData->filePath);
 			}
 			
 			//Data Freed on destruction using the destructor of ImageData
@@ -197,17 +197,17 @@ namespace gx {
 
 	
 		
-		std::shared_ptr<GLBufferManager> IOManager::GLCreateBufferLayout(std::vector<Vertex3D>& verts, std::vector<GXuint32>& indices, std::vector<std::shared_ptr<GLTexture2D>>& textures)
+		std::shared_ptr<GXGraphicsBufferManager> IOManager::createBufferLayout(std::vector<Vertex3D>& verts, std::vector<GXuint32>& indices, std::vector<std::shared_ptr<GXTexture2D>>& textures)
 		{
-			std::shared_ptr<GLBufferManager> Buffer;
-			Buffer.reset(new GLBufferManager());
+			std::shared_ptr<GXGraphicsBufferManager> Buffer;
+			Buffer.reset(new GXGraphicsBufferManager());
 			Buffer->initFull(&verts[0], sizeof(Vertex3D) * verts.size(), sizeof(Vertex3D));
 			Buffer->uploadIndicesToBuffer(&indices[0], indices.size() * sizeof(GXuint32),indices.size());
-			Buffer->setAttribPointer(0, 3, GL_FLOAT, offsetof(Vertex3D, position));
-			Buffer->setAttribPointer(1, 3, GL_FLOAT, offsetof(Vertex3D, normal));
-			Buffer->setAttribPointer(2, 2, GL_FLOAT, offsetof(Vertex3D, texCoords));
-			Buffer->setAttribPointer(3, 3, GL_FLOAT, offsetof(Vertex3D, tangent));
-			Buffer->setAttribPointer(4, 3, GL_FLOAT, offsetof(Vertex3D, bitangent));
+			Buffer->setAttribPointer(0, 3, GX_FLOAT, offsetof(Vertex3D, position));
+			Buffer->setAttribPointer(1, 3, GX_FLOAT, offsetof(Vertex3D, normal));
+			Buffer->setAttribPointer(2, 2, GX_FLOAT, offsetof(Vertex3D, texCoords));
+			Buffer->setAttribPointer(3, 3, GX_FLOAT, offsetof(Vertex3D, tangent));
+			Buffer->setAttribPointer(4, 3, GX_FLOAT, offsetof(Vertex3D, bitangent));
 			//TODO Add Tangents bitangents later
 			Buffer->endStream();
 			for(GXint32 i=0;i<textures.size();i++){
@@ -223,12 +223,12 @@ namespace gx {
 				meshesNeedToBeProcessed.pop();
 				std::vector<std::shared_ptr<GXMeshComponent>> components;
 				for (auto& mesh : meshes.second) {
-					std::vector<std::shared_ptr<GLTexture2D>> textures;
+					std::vector<std::shared_ptr<GXTexture2D>> textures;
 					for (auto& tex : mesh->texturesData) {
-						textures.emplace_back(GLReadTexture(tex));
+						textures.emplace_back(readTexture(tex));
 					}
 					//TODO HANDLE GXID initializing to this component
-					components.emplace_back(new GXMeshComponent(mesh->ownerID,GLCreateBufferLayout(mesh->verts, mesh->indices, textures),std::make_shared<GXPickingCollider>(mesh->verts)));
+					components.emplace_back(new GXMeshComponent(mesh->ownerID,createBufferLayout(mesh->verts, mesh->indices, textures),std::make_shared<GXPickingCollider>(mesh->verts)));
 				}
 
 				GXE_INFO("Model has been imported successfully ,File Path: {0} ", meshes.first);
@@ -240,20 +240,20 @@ namespace gx {
 			if (!texturesNeedToBeProcessed.empty()) {
 				auto tex = texturesNeedToBeProcessed.front();
 				texturesNeedToBeProcessed.pop();
-				GLReadTexture(tex);
+				readTexture(tex);
 			}
 
 		}
 		void IOManager::destroy()
 		{
-			destroyGLModels();
+			destroyModels();
 			destroyTextures();
 			while (!asyncTasks.empty()) {
 				asyncTasks.pop_back();
 			}
 		}
 
-		inline void IOManager::destroyGLModels() {
+		inline void IOManager::destroyModels() {
 			for (auto& ite : modelsImported) {
 				for (auto& meshComp : ite.second) {
 					meshComp->destroy();
@@ -263,7 +263,7 @@ namespace gx {
 		}
 		inline void IOManager::destroyTextures() {
 			for (auto& ite : texIDs) {
-				GLTexture2D::destroy(ite.second);
+				GXTexture2D::destroy(ite.second);
 			}
 		}
 	}

@@ -68,23 +68,23 @@ namespace gx {
 
 	void GXPlane::uploadToBuffer(GXuint32 textureID)
 	{
-		std::shared_ptr<GLBufferManager> Buffer;
-		Buffer.reset(new GLBufferManager());
+		std::shared_ptr<GXGraphicsBufferManager> Buffer;
+		Buffer.reset(new GXGraphicsBufferManager());
 		Buffer->initFull(&verts[0], sizeof(Vertex3D) * verts.size(), sizeof(Vertex3D));
 		GXuint32 totalIndicesSize = (n - 1) * (m - 1) * 6;
 		Buffer->uploadIndicesToBuffer(indices, totalIndicesSize * sizeof(GXuint32), totalIndicesSize);
-		Buffer->setAttribPointer(0, 3, GL_FLOAT, offsetof(Vertex3D, position));
-		Buffer->setAttribPointer(1, 3, GL_FLOAT, offsetof(Vertex3D, normal));
-		Buffer->setAttribPointer(2, 2, GL_FLOAT, offsetof(Vertex3D, texCoords));
-		Buffer->setAttribPointer(3, 3, GL_FLOAT, offsetof(Vertex3D, tangent));
-		Buffer->setAttribPointer(4, 3, GL_FLOAT, offsetof(Vertex3D, bitangent));
+		Buffer->setAttribPointer(0, 3, GX_FLOAT, offsetof(Vertex3D, position));
+		Buffer->setAttribPointer(1, 3, GX_FLOAT, offsetof(Vertex3D, normal));
+		Buffer->setAttribPointer(2, 2, GX_FLOAT, offsetof(Vertex3D, texCoords));
+		Buffer->setAttribPointer(3, 3, GX_FLOAT, offsetof(Vertex3D, tangent));
+		Buffer->setAttribPointer(4, 3, GX_FLOAT, offsetof(Vertex3D, bitangent));
 		//TODO Add Tangents bitangents later
 		Buffer->endStream();
 		/*for (GXint32 i = 0; i < textures.size(); i++) {
 			Buffer->addTexture(textures[i]);
 		}*/
-		std::shared_ptr<GLTexture2D> tex;
-		tex.reset(new GLTexture2D());
+		std::shared_ptr<GXTexture2D> tex;
+		tex.reset(new GXTexture2D());
 		tex->init(textureID, GXTexture2DType::GX_DIFFUSE);
 		Buffer->addTexture(tex);
 		std::shared_ptr<GXMeshComponent> planeMeshComp;
@@ -96,15 +96,13 @@ namespace gx {
 	void GXPlane::update(float deltaTime)
 	{
 		//For rendering as rendering happens in GXMeshComponent
-#ifdef USING_OPENGL
-		this->glshader->use();
-		SceneLightManager::getInstance().setLightValues(this->glshader);
-		this->glshader->setMat4("model", transform.getModel());
-		this->glshader->setMat4("vp", EditorCamera::getInstance().getPVMatrix());
-#endif
+		this->shader->use();
+		SceneLightManager::getInstance().setLightValues(this->shader);
+		this->shader->setMat4("model", transform.getModel());
+		this->shader->setMat4("vp", EditorCamera::getInstance().getPVMatrix());
 		for (auto& component : components) {
 			component->update(deltaTime);
-			component->draw(glshader, isWireFrame);
+			component->draw(shader, isWireFrame);
 		}
 	}
 

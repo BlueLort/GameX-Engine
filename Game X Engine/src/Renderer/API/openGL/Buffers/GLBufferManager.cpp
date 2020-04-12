@@ -41,7 +41,7 @@ namespace gx {
 	}
 
 
-	void GLBufferManager::setAttribPointer(GXuint32 loc, GXuint32 count,GLenum type, GXuint32 offset)
+	void GLBufferManager::setAttribPointer(GXuint32 loc, GXuint32 count,GXEnumType type, GXuint32 offset)
 	{
 		VAO->setAttribPointers(loc, count, type, offset);
 	}
