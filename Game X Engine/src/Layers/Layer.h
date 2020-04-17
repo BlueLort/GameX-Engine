@@ -9,7 +9,7 @@
 namespace gx {
 	class GX_DLL Layer {
 	public:
-		inline Layer(const std::string& layerName) : name(layerName) {}
+		inline Layer(const std::string& layerName) : name(layerName) ,selected(false),isOpen(true){}
 		virtual void init() = 0;
 		virtual void destroy() = 0;
 

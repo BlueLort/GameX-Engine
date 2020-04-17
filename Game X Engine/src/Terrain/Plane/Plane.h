@@ -42,21 +42,21 @@ namespace gx {
 			///  ver3---->interpolation2<-----ver4
 			GXint32 intX = static_cast<GXint32>(x);
 			GXint32 intZ = static_cast<GXint32>(z);
-			float floatX = abs(x - intX);
-			float floatZ = abs(z - intZ);
+			GXFloat floatX = static_cast<GXFloat>(abs(x - intX));
+			GXFloat floatZ = static_cast<GXFloat>(abs(z - intZ));
 			GXint32 nextX = intX < (width - 1) ? intX + 1 : intX;
 			GXint32 nextZ = intZ < (depth - 1) ? intZ + 1 : intZ;
 			GXint32 loc1 = intZ * width + intX;
 			GXint32 loc2 = intZ * width + nextX;
 			GXint32 loc3 = nextZ * width + intX;
 			GXint32 loc4 = nextZ * width + nextX;
-			float h1 = heights[loc1];
-			float h2 = heights[loc2];
-			float h3 = heights[loc3];
-			float h4 = heights[loc4];
-			float interpolant1 = GXMaths::cosinterp(floatX, h1, h2);
-			float interpolant2 = GXMaths::cosinterp(floatX, h3, h4);
-			return  GXMaths::cosinterp(floatZ, interpolant1, interpolant2);
+			GXFloat h1 = heights[loc1];
+			GXFloat h2 = heights[loc2];
+			GXFloat h3 = heights[loc3];
+			GXFloat h4 = heights[loc4];
+			GXFloat interpolant1 = static_cast<GXFloat>(GXMaths::cosinterp(floatX, h1, h2));
+			GXFloat interpolant2 = static_cast<GXFloat>(GXMaths::cosinterp(floatX, h3, h4));
+			return  static_cast<GXFloat>(GXMaths::cosinterp(floatZ, interpolant1, interpolant2));
 		}
 	};
 }

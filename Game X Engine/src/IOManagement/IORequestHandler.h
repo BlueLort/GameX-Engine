@@ -59,7 +59,7 @@ namespace gx {
 				}
 				auto it = requestedFiles.find(sFileName);
 				if (it == requestedFiles.end()) {
-					GXint32 lastSlash = sFileName.find_last_of('/')+1;
+					GXint32 lastSlash = static_cast<GXint32>(sFileName.find_last_of('/')+1);
 					importModel(
 						sFileName.substr(0, lastSlash).c_str()
 						, sFileName.substr(lastSlash, sFileName.length()).c_str()

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "GX/GXTypes.h"
 #include "GX/GameXApp.h"
 #include "GX/GXTimer.h"

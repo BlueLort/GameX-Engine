@@ -1,7 +1,6 @@
 #pragma once
 #include "Config.h"
 #include <Bullet/btBulletDynamicsCommon.h>
-
 namespace gx {
 
 	class GX_DLL GXPhysicsManager {
@@ -23,11 +22,11 @@ namespace gx {
 
 		}
 		~GXPhysicsManager();
-		btBroadphaseInterface* broadphase;
-		btDefaultCollisionConfiguration* collisionConfiguration;
-		btCollisionDispatcher* dispatcher;
-		btSequentialImpulseConstraintSolver* solver;
-		btDiscreteDynamicsWorld* dynamicsWorld;
+		btBroadphaseInterface* broadphase = nullptr;
+		btDefaultCollisionConfiguration* collisionConfiguration = nullptr;
+		btCollisionDispatcher* dispatcher = nullptr;
+		btSequentialImpulseConstraintSolver* solver = nullptr;
+		btDiscreteDynamicsWorld* dynamicsWorld = nullptr;
 		std::vector<btCollisionShape*> collisionShapes;
 
 	};

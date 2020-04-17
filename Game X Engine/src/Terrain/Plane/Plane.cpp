@@ -21,12 +21,12 @@ namespace gx {
 		GXint32 totalIndicesSize = nMinusOne * mMinusOne * 6;
 		indices = new GXuint32[totalIndicesSize];
 
-		for (GXuint32 i = 0; i < m; i++)
+		for (GXint32 i = 0; i < m; i++)
 		{
 			float z = i * dz;
 			float posZ = topLeftZ + z;
 			float v = static_cast<float>(i) / m;
-			for (GXuint32 j = 0; j < n; j++)
+			for (GXint32 j = 0; j < n; j++)
 			{
 				float x = j * dx;
 				float posX = topLeftX + x;

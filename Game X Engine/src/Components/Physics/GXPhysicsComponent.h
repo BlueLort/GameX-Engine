@@ -9,7 +9,7 @@ namespace gx {
 	class GX_DLL GXPhysicsComponent : public GXComponent {
 	public:
 
-		inline GXPhysicsComponent(GXuint32 GXID) : GXComponent(GXID)
+		inline GXPhysicsComponent(GXuint32 GXID) : GXComponent(GXID) ,isDynamic(false)
 		{
 			//TODO Make all of this options controllable
 			collisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));

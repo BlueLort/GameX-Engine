@@ -7,10 +7,10 @@ namespace gx {
 		HeightMapGenerator(GXint32 Width, GXint32 Height, float Scale)
 			:width(Width), height(Height), scale(Scale)
 		{
-			heightsNormalized = new float[Width * Height];
-			heightsColor = new uint8_t[Width * Height*3];
+			heightsNormalized = new GXFloat[Width * Height];
+			heightsColor = new GXuint8[Width * Height*3];
 		}
-		HeightMapGenerator() {}
+		HeightMapGenerator():height(256),width(256) {}
 		inline float getValueNormalized(GXint32 x, GXint32 y) const {
 			return heightsNormalized[width * y + x];
 		}
@@ -23,7 +23,7 @@ namespace gx {
 		GXint32 getWidth()const { return width; }
 		GXint32 getHeight()const { return height; }
 	protected:
-		float* heightsNormalized;
+		GXFloat* heightsNormalized;
 		uint8_t* heightsColor;
 		GXint32 width;
 		GXint32 height;

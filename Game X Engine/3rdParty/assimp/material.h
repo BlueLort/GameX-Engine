@@ -1,3 +1,6 @@
+#pragma warning(push,1)// push in start of file and pop at the end to disable some warnings
+#pragma warning(disable:26812)
+
 /*
 ---------------------------------------------------------------------------
 Open Asset Import Library (assimp)
@@ -1563,3 +1566,5 @@ C_ENUM aiReturn aiGetMaterialTexture(const C_STRUCT aiMaterial* mat,
 
 #endif //!__cplusplus
 #endif //!!AI_MATERIAL_H_INC
+
+#pragma warning(pop)

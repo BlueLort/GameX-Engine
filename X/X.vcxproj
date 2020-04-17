@@ -45,8 +45,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)/Game X Engine/src/Config;$(SolutionDir)/Game X Engine/3rdParty/;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)/Game X Engine/deps/include;$(SolutionDir)/Game X Engine/src/</IncludePath>
-    <LibraryPath>$(SolutionDir)/Game X Engine/deps/lib/x64/$(Configuration)/SDL;$(SolutionDir)/Game X Engine/deps/lib/x64/$(Configuration)/GameX;$(LibraryPath)</LibraryPath>
+    <IncludePath>
+    </IncludePath>
+    <LibraryPath>$(SolutionDir)/Game X Engine/deps/lib/x64/$(Configuration)/SDL;$(SolutionDir)/Game X Engine/deps/lib/x64/$(Configuration)/GameX;$(LibraryPath);$(SolutionDir)/Game X Engine/deps/lib/x64/$(Configuration)/Assimp;$(SolutionDir)/Game X Engine/deps/lib/x64/$(Configuration)/Bullet</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
@@ -61,11 +62,12 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>GX_GET_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GX_BUILD_STATIC;GX_GET_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)/Game X Engine/src/Config;$(SolutionDir)/Game X Engine/3rdParty/;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)/Game X Engine/deps/include;$(SolutionDir)/Game X Engine/src/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;assimp-vc140-mt.lib;BulletDynamics_Debug.lib;BulletCollision_Debug.lib;LinearMath_Debug.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

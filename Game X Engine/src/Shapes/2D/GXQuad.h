@@ -23,7 +23,7 @@ namespace gx {
 	//QUAD FOR BEING USED AS TEXTURE RENDERER
 	class GX_DLL GXQuad {
 	public:
-		inline GXQuad() {
+		inline GXQuad():quadVAO(0),quadVBO(0),quadEBO(0),TEXID(0) {
 			TEXID = currentID;
 			currentID++;
 			graphicsBufferManager.reset(new GXGraphicsBufferManager());

@@ -11,6 +11,7 @@ typedef	long long			GXint64;
 typedef	unsigned long long GXuint64;
 typedef float			    GXFloat;
 typedef double			   GXDouble;
+typedef bool			     GXBool;
 
 /* GX-specific types */
 //TODO insert types here when needed

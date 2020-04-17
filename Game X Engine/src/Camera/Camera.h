@@ -14,14 +14,15 @@ namespace gx {
 	class GX_DLL Camera
 	{
 	public:
+		Camera() : yaw(0.0f), pitch(0.0f), movementSpeed(30.0f), mouseSensitivity(5.0f), zoom(45.0f) {}
 		GXTransform transform;
 		// Euler Angles
-		float yaw;
-		float pitch;
+		GXFloat yaw;
+		GXFloat pitch;
 		// Camera options
-		float movementSpeed;
-		float mouseSensitivity;
-		float zoom;
+		GXFloat movementSpeed;
+		GXFloat mouseSensitivity;
+		GXFloat zoom;
 		virtual inline GXMat4 calculateViewMatrix()
 		{
 			return GXMaths::lookAt(transform.position, transform.position + transform.forward, transform.up);

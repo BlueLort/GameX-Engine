@@ -39,7 +39,7 @@ namespace gx {
 	private:
 		std::unordered_map<GXuint32,std::shared_ptr<GXModelObject>> sceneModelObjects;
 		std::shared_ptr<GXSkydomeObject> skydome;
-		std::pair<float, float> mouseLocNormalized;
+		std::pair<GXFloat, GXFloat> mouseLocNormalized;
 		std::pair<GXint32, GXint32> mouseLoc;
 		std::shared_ptr<GXPlane> plane;
 		static std::shared_ptr<GXPlane> mainPlane;
@@ -48,8 +48,8 @@ namespace gx {
 
 		std::vector<GXRendererFlag> renderingFlags;
 		std::unique_ptr<GXFrameBuffer> GBuffer;
-		GXShader* lightingPassShader;
-		GXQuad* quadRenderer;
+		GXShader* lightingPassShader = nullptr;
+		GXQuad* quadRenderer = nullptr;
 		std::unique_ptr<GXFrameBuffer> mainSceneBuffer;
 		friend class PlaneEditorLayer;
 		bool mouseWasPressed;

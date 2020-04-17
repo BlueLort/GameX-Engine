@@ -11,7 +11,7 @@ namespace gx {
 		inline GXPickingCollider(std::vector<Vertex3D>& verts) {
 			//collisionShape = new btConvexHullShape();
 			collisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
-			GXint32 size = verts.size();
+			GXint32 size = static_cast<GXint32>(verts.size());
 			//for (GXint32 i = 0; i < size; i++) {
 			//	static_cast<btConvexHullShape*>(collisionShape)->addPoint(btVector3(verts[i].position.x, verts[i].position.y, verts[i].position.z));
 			//}

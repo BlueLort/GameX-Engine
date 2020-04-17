@@ -8,9 +8,9 @@ namespace gx {
 	public:
 		virtual inline  void init() override {
 			if (HMapImg->data == nullptr)return;
-			int64_t size = HMapImg->width * HMapImg->height * 3;
+			GXint64 size = HMapImg->width * HMapImg->height * 3;
 			heightsColor= new uint8_t[size];
-			heightsNormalized = new float[size];
+			heightsNormalized = new GXFloat[size];
 
 			GXint32 k = 0;
 			GXint32 l = 0;
@@ -23,7 +23,7 @@ namespace gx {
 					heightsColor[k] = val / HMapImg->nChannels;
 					heightsColor[k + 1] = heightsColor[k];
 					heightsColor[k + 2] = heightsColor[k];
-					heightsNormalized[l] = heightsColor[k] / 255;
+					heightsNormalized[l] = static_cast<GXFloat>(heightsColor[k] / 255.0f);
 					k+=3;
 					l++;
 				}

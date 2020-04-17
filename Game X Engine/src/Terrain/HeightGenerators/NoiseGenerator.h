@@ -19,7 +19,7 @@ namespace gx {
 				for (GXint32 j = 0; j < nOctaves; j++) {
 
 					GXint32 X = i % width, Y = static_cast<GXint32>(i / width);
-					curr += abs(PerlinNoise::noise(X / quality, Y / quality, zPlane) * quality * amp);
+					curr += static_cast<GXFloat>(abs(PerlinNoise::noise(X / quality, Y / quality, zPlane) * quality * amp));
 					quality *= scale/lacunarity;
 					amp *= persistence;
 				}
@@ -34,8 +34,8 @@ namespace gx {
 			for (GXint32 y = 0; y < height; y++) {
 				for (GXint32 x = 0; x < totalWidth; x += 3) {
 					GXint32 loc = totalWidth * y + x;
-					heightsNormalized[k] = GXMaths::inverseLerp(heightsNormalized[k], minH, maxH);
-					heightsColor[loc] = heightsNormalized[k] * 255;
+					heightsNormalized[k] = static_cast<GXFloat>(GXMaths::inverseLerp(heightsNormalized[k], minH, maxH));
+					heightsColor[loc] = static_cast<GXuint8>(heightsNormalized[k] * 255);
 					heightsColor[loc + 1] = heightsColor[loc];
 					heightsColor[loc + 2] = heightsColor[loc];
 					k++;
@@ -56,10 +56,10 @@ namespace gx {
 	private:
 
 		GXint32 nOctaves;
-		float persistence;
-		float lacunarity;
-		GXint32 zPlane;
-		inline bool isValid(GXint32 x, GXint32 y, GXint32 totalWidth)
+		GXFloat persistence;
+		GXFloat lacunarity;
+		GXFloat zPlane;
+		inline GXBool isValid(GXint32 x, GXint32 y, GXint32 totalWidth)
 		{
 			// True if ij are valid indices; false otherwise.
 			return

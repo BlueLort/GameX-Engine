@@ -6,18 +6,18 @@ namespace gx {
 	void MainScene::init()
 	{
 		GBuffer.reset(new GXFrameBuffer());
-		GBuffer->init(width,height);
+		GBuffer->init(width, height);
 		// Setting up the G-Buffer
-		GBuffer->addTextureAttachment(GX_COLOR_TEXTURE);
 		GBuffer->addTextureAttachment(GX_POSITION_TEXTURE);
 		GBuffer->addTextureAttachment(GX_NORMAL_TEXTURE);
+		GBuffer->addTextureAttachment(GX_COLOR_TEXTURE);
 		GBuffer->addTextureAttachment(GX_ID_TEXTURE);
 		GXuint32 attachments[4] = {
 									GBuffer->getAttachmentIndex(GX_POSITION_TEXTURE),
 									GBuffer->getAttachmentIndex(GX_NORMAL_TEXTURE),
 									GBuffer->getAttachmentIndex(GX_COLOR_TEXTURE) ,
 									GBuffer->getAttachmentIndex(GX_ID_TEXTURE) };
-		GBuffer->setDrawBuffeers(4,attachments);
+		GBuffer->setDrawBuffeers(4, attachments);
 
 		mainSceneBuffer.reset(new GXFrameBuffer());
 		mainSceneBuffer->init(width, height);
@@ -74,13 +74,13 @@ namespace gx {
 	void MainScene::onUpdate(float deltaTime)
 	{
 		auto ite = sceneModelObjects.begin();
-		while(ite!= sceneModelObjects.end()){
+		while (ite != sceneModelObjects.end()) {
 			ite->second->update(deltaTime);
 			ite++;
 		}
-		if(mainPlane.get()!=nullptr)mainPlane->update(deltaTime);
-		getObjectID();
+		if (mainPlane.get() != nullptr)mainPlane->update(deltaTime);
 		skydome->update(deltaTime);
+		getObjectID();
 		mainSceneBuffer->use(GX_FBO_RW); // now its time for lightpass
 		GXGraphicsContext::clearBufferBits(GX_COLOR_BUFFER_BIT | GX_DEPTH_BUFFER_BIT);
 		lightingPassShader->use();
@@ -99,37 +99,37 @@ namespace gx {
 
 	void MainScene::onGUIRender()
 	{
-		
+
 		ImGui::Begin(name.c_str(), NULL, windowFlags);
 
 		// get mouse loc relative to main window
-		selected=ImGui::IsWindowFocused();
-	
+		selected = ImGui::IsWindowFocused();
+
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 		ImVec2 windowSize = ImGui::GetContentRegionAvail();
-		ImGui::Image(reinterpret_cast<void*>(mainSceneBuffer->getTextureID(GX_COLOR_TEXTURE)),windowSize,ImVec2(0,1),ImVec2(1,0));
+		ImGui::Image(reinterpret_cast<void*>(mainSceneBuffer->getTextureID(GX_COLOR_TEXTURE)), windowSize, ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::PopStyleVar(3);
 		ImVec2 mops = ImGui::GetMousePos();
 		ImVec2 molc = ImGui::GetCursorScreenPos();
-		mouseLoc.first = mops.x - molc.x;
-		mouseLoc.second = molc.y - mops.y;
-		mouseLocNormalized.first = static_cast<float>(mouseLoc.first) / windowSize.x;
-		mouseLocNormalized.second = static_cast<float>(mouseLoc.second) / windowSize.y;
-	
+		mouseLoc.first = static_cast<GXint32>(mops.x - molc.x);
+		mouseLoc.second = static_cast<GXint32>(molc.y - mops.y);
+		mouseLocNormalized.first = static_cast<GXFloat>(mouseLoc.first) / windowSize.x;
+		mouseLocNormalized.second = static_cast<GXFloat>(mouseLoc.second) / windowSize.y;
+
 		ImGui::End();
 		GXTexture2D::stop();
-		
+
 	}
 
 	GXuint32 MainScene::getObjectID()
 	{
 		if (!selected || !mouseWasPressed) return 0;
-		if (!(mouseLocNormalized.first <= 1.0f && mouseLocNormalized.first >= 0.0f 
+		if (!(mouseLocNormalized.first <= 1.0f && mouseLocNormalized.first >= 0.0f
 			&& mouseLocNormalized.second <= 1.0f && mouseLocNormalized.second >= 0)) return 0;
-		GXint32 x = mouseLocNormalized.first * width;
-		GXint32 y = mouseLocNormalized.second * height;
+		GXint32 x = static_cast<GXint32>(mouseLocNormalized.first * width);
+		GXint32 y = static_cast<GXint32>(mouseLocNormalized.second * height);
 		mouseWasPressed = false;
 		GXuint32 val;
 		GXGraphicsContext::setReadAttachment(GX_COLOR_ATTACHMENT0 + GX_ID_TEXTURE);

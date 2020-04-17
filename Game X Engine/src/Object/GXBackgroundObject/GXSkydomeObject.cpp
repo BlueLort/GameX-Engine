@@ -22,7 +22,7 @@ namespace gx {
 		this->shader->setMat4("model", staticModelMat4);
 		this->shader->setMat4("view", EditorCamera::getInstance().getViewMatrix());
 		this->shader->setMat4("projection", EditorCamera::getInstance().getProjectionMatrix());
-		for (auto component : components) {
+		for (auto& component : components) {
 			component->update(deltaTime);
 			component->draw(shader,isWireFrame);
 		}

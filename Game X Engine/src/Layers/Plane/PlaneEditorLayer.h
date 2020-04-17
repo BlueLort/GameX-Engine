@@ -14,8 +14,8 @@ LayerManager::getInstance().setPlane(plane);
 
 namespace gx {
 	struct LevelData {
-		float colors[3];
-		float heightVal;
+		GXFloat colors[3]; // tweaked through GUI and also used to represent 0 to 255 value color
+		GXFloat heightVal;
 		inline LevelData() :heightVal(-0.0001f) {
 			colors[0] = 0.0f;
 			colors[1] = 0.0f;
@@ -42,8 +42,8 @@ namespace gx {
 		GXuint32 texID;
 		static uint8_t* texColors;
 		static std::shared_ptr<GXPlane> plane;
-		static bool isUpdated;
-		static bool canUpdate;
+		static GXBool isUpdated;
+		static GXBool canUpdate;
 		GXint32 width;
 		GXint32 depth;
 		GXint32 height;
@@ -62,7 +62,7 @@ namespace gx {
 			std::sort(levels.begin(), levels.end(), [](LevelData& l1, LevelData& l2) {
 				return l1.heightVal > l2.heightVal;
 				});
-			GXint32 nLevels = levels.size();
+			GXint32 nLevels = static_cast<GXint32>(levels.size());
 			nLevels--;
 			for (GXint32 i = 0; i <= nLevels; i++) {
 				levels[i].colors[0] = static_cast<uint8_t>(levels[i].colors[0]*255);
@@ -71,8 +71,8 @@ namespace gx {
 			}
 			GXint32 generatedHeightTexSize = NoiseGeneratorLayer::texHeight * NoiseGeneratorLayer::texWidth * 3;
 			GXint32 texSize = width * depth * 3;
-			float* heights = new float[width * depth];
-			texColors = new uint8_t[texSize];
+			GXFloat* heights = new GXFloat[width * depth];
+			texColors = new GXuint8[texSize];
 			GXint32 widthFactor = width / NoiseGeneratorLayer::texWidth;
 			GXint32 depthFactor = depth / NoiseGeneratorLayer::texHeight;
 			GXint32 stepX = widthFactor == 0 ? 1 : widthFactor;
@@ -90,14 +90,14 @@ namespace gx {
 					GXint32 loc = iteDepth * NoiseGeneratorLayer::texWidth + iteWidth;
 					heights[k] = NoiseGeneratorLayer::heightsNormalized[loc]*height;
 					//set base color first
-					texColors[l] = levels[nLevels].colors[0];
-					texColors[l + 1] = levels[nLevels].colors[1];
-					texColors[l + 2] = levels[nLevels].colors[2];
+					texColors[l] = static_cast<GXuint8>(levels[nLevels].colors[0]);
+					texColors[l + 1] = static_cast<GXuint8>(levels[nLevels].colors[1]);
+					texColors[l + 2] = static_cast<GXuint8>(levels[nLevels].colors[2]);
 					for (GXint32 i = 0; i < nLevels; i++) {
 						if (NoiseGeneratorLayer::heightsNormalized[loc] > levels[i].heightVal) {
-							texColors[l] = levels[i].colors[0];
-							texColors[l + 1] = levels[i].colors[1];
-							texColors[l + 2] = levels[i].colors[2];
+							texColors[l] = static_cast<GXuint8>(levels[i].colors[0]);
+							texColors[l + 1] = static_cast<GXuint8>(levels[i].colors[1]);
+							texColors[l + 2] = static_cast<GXuint8>(levels[i].colors[2]);
 							break;
 						}
 					}

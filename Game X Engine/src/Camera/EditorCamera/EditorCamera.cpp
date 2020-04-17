@@ -50,7 +50,7 @@ namespace gx {
 		PVMatrix = projection * view;
 	}
 
-	inline void EditorCamera::processKeyboard(CameraMovement direction,float deltaTime)
+	void EditorCamera::processKeyboard(CameraMovement direction,float deltaTime)
 	{
 		
 		float velocity = movementSpeed * deltaTime;
@@ -65,7 +65,7 @@ namespace gx {
 
 		updateCameraVectors();
 	}
-	inline void EditorCamera::processMouseMovement(float xoffset, float yoffset, bool constrainPitch)
+	void EditorCamera::processMouseMovement(float xoffset, float yoffset, bool constrainPitch)
 	{
 		xoffset *= mouseSensitivity;
 		yoffset *= mouseSensitivity;

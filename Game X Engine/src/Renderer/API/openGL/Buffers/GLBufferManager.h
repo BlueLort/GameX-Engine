@@ -11,7 +11,7 @@
 namespace gx {
 	class GX_DLL GLBufferManager {
 	public:
-		GLBufferManager() {
+		GLBufferManager():VAOID(0), VBOID(0), EBOID(0){
 
 		}
 		void init(GXuint32 requiredSize, GXuint32 strideSize);
