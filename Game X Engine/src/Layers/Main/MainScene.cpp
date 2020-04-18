@@ -8,14 +8,14 @@ namespace gx {
 		GBuffer.reset(new GXFrameBuffer());
 		GBuffer->init(width, height);
 		// Setting up the G-Buffer
+		GBuffer->addTextureAttachment(GX_COLOR_TEXTURE);
 		GBuffer->addTextureAttachment(GX_POSITION_TEXTURE);
 		GBuffer->addTextureAttachment(GX_NORMAL_TEXTURE);
-		GBuffer->addTextureAttachment(GX_COLOR_TEXTURE);
 		GBuffer->addTextureAttachment(GX_ID_TEXTURE);
 		GXuint32 attachments[4] = {
+									GBuffer->getAttachmentIndex(GX_COLOR_TEXTURE),
 									GBuffer->getAttachmentIndex(GX_POSITION_TEXTURE),
 									GBuffer->getAttachmentIndex(GX_NORMAL_TEXTURE),
-									GBuffer->getAttachmentIndex(GX_COLOR_TEXTURE) ,
 									GBuffer->getAttachmentIndex(GX_ID_TEXTURE) };
 		GBuffer->setDrawBuffeers(4, attachments);
 
@@ -24,10 +24,10 @@ namespace gx {
 		mainSceneBuffer->addTextureAttachment(GX_COLOR_TEXTURE);
 		lightingPassShader = GXShaderManager::getShader(GXCompiledShader::DEFAULT_DEFERRED);
 		lightingPassShader->use();
-		lightingPassShader->setInt("gPosition", 0);
-		lightingPassShader->setInt("gNormal", 1);
-		lightingPassShader->setInt("gAlbedoSpec", 2);
-
+		lightingPassShader->setInt("gAlbedoSpec", 0);
+		lightingPassShader->setInt("gPosition", 1);
+		lightingPassShader->setInt("gNormal", 2);
+	
 		skydome.reset(new GXSkydomeObject());
 		skydome->init("res/models/sphere/spheres.obj");//will wait until it has been imported
 
@@ -51,7 +51,7 @@ namespace gx {
 	{
 		GBuffer->use(GX_FBO_RW); // upload data to the GBUFFER
 		GXGraphicsContext::setViewPort(width, height);// let layers make viewport according to their resolution
-		for (auto& ite : renderingFlags) {
+		for (auto ite : renderingFlags) {
 			GXGraphicsContext::enableFlag(ite);
 		}
 		GXGraphicsContext::clearBufferBits(GX_COLOR_BUFFER_BIT | GX_DEPTH_BUFFER_BIT);
@@ -61,7 +61,7 @@ namespace gx {
 	void MainScene::end()
 	{
 		GXFrameBuffer::stop();
-		for (auto& ite : renderingFlags) {
+		for (auto ite : renderingFlags) {
 			GXGraphicsContext::disableFlag(ite);
 		}
 	}
@@ -79,19 +79,21 @@ namespace gx {
 			ite++;
 		}
 		if (mainPlane.get() != nullptr)mainPlane->update(deltaTime);
-		skydome->update(deltaTime);
 		getObjectID();
+		skydome->update(deltaTime); //rendering to the COLOR_TEXTURE in the framebuffer
 		mainSceneBuffer->use(GX_FBO_RW); // now its time for lightpass
 		GXGraphicsContext::clearBufferBits(GX_COLOR_BUFFER_BIT | GX_DEPTH_BUFFER_BIT);
 		lightingPassShader->use();
 		SceneLightManager::getInstance().setLightValues(lightingPassShader);
 		GXTexture2D::setActiveTexture(0);
-		GXTexture2D::use(GBuffer->getTextureID(GX_POSITION_TEXTURE));
-		GXTexture2D::setActiveTexture(1);
-		GXTexture2D::use(GBuffer->getTextureID(GX_NORMAL_TEXTURE));
-		GXTexture2D::setActiveTexture(2);
 		GXTexture2D::use(GBuffer->getTextureID(GX_COLOR_TEXTURE));
+		GXTexture2D::setActiveTexture(1);
+		GXTexture2D::use(GBuffer->getTextureID(GX_POSITION_TEXTURE));
+		GXTexture2D::setActiveTexture(2);
+		GXTexture2D::use(GBuffer->getTextureID(GX_NORMAL_TEXTURE));
+
 		lightingPassShader->setVec3("viewPos", EditorCamera::getInstance().transform.position);
+		
 		quadRenderer->update(deltaTime, lightingPassShader);
 
 

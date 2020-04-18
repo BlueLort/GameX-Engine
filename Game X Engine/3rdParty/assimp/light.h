@@ -1,5 +1,3 @@
-#pragma warning(push,1)// push in start of file and pop at the end to disable some warnings
-#pragma warning(disable:26812)
 /*
 ---------------------------------------------------------------------------
 Open Asset Import Library (assimp)
@@ -259,4 +257,3 @@ struct aiLight
 
 
 #endif // !! AI_LIGHT_H_INC
-#pragma warning(pop)

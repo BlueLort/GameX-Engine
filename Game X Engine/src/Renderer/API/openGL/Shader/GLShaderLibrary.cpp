@@ -411,9 +411,9 @@ void main()
 //Fragment Shader
 R"( 
 #version 430 core
-layout (location = 0) out vec3 gPosition;
-layout (location = 1) out vec3 gNormal;
-layout (location = 2) out vec4 gAlbedoSpec;
+layout (location = 0) out vec4 gAlbedoSpec;
+layout (location = 1) out vec3 gPosition;
+layout (location = 2) out vec3 gNormal;
 layout (location = 3) out uint gID;
 
 in vec2 TexCoords;
@@ -472,9 +472,10 @@ R"(
 out vec4 FragColor;
 in vec2 TexCoords;
 
+uniform sampler2D gAlbedoSpec;
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
-uniform sampler2D gAlbedoSpec;
+
 
 struct DirLight {
     vec3 direction;

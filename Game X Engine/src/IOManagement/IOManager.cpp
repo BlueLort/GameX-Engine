@@ -184,7 +184,7 @@ namespace gx {
 		std::vector<std::shared_ptr<ImageData>> IOManager::assimpImportTextures2D(const char* filePath, aiMaterial* mat, aiTextureType type, GXTexture2DType gxTexType)
 		{
 			std::vector<std::shared_ptr<ImageData>> textures;
-			for (GXint32 i = 0; i < mat->GetTextureCount(type); i++)
+			for (GXuint32 i = 0; i < mat->GetTextureCount(type); i++)
 			{
 				aiString fileName;
 				mat->GetTexture(type, i, &fileName);
