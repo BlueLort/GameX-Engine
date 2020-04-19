@@ -3,34 +3,34 @@
 
 namespace gx {
 	//heights must be bigger in width & height than plane
-	void GXPlane::init(const float* heights)
+	void GXPlane::init(const GXFloat* heights)
 	{
 		verts.reserve(n * m);
 		GXint32 nMinusOne = n - 1;
 		GXint32 mMinusOne = m - 1;
-		float dx = static_cast<float>(width) / n;
-		float dz = static_cast<float>(depth) / m;
+		GXFloat dx = static_cast<GXFloat>(width) / n;
+		GXFloat dz = static_cast<GXFloat>(depth) / m;
 
 		/* i*dv or j *du alternative to get u&v
 		float du = 1.0f / nMinusOne;
 		float dv = 1.0f / mMinusOne;
 		*/
 		//Using topLeft to center Plane aroung origin
-		float topLeftX = width / -2.0f;
-		float topLeftZ = depth / -2.0f;
+		GXFloat topLeftX = width / -2.0f;
+		GXFloat topLeftZ = depth / -2.0f;
 		GXint32 totalIndicesSize = nMinusOne * mMinusOne * 6;
 		indices = new GXuint32[totalIndicesSize];
 
 		for (GXint32 i = 0; i < m; i++)
 		{
-			float z = i * dz;
-			float posZ = topLeftZ + z;
-			float v = static_cast<float>(i) / m;
+			GXFloat z = i * dz;
+			GXFloat posZ = topLeftZ + z;
+			GXFloat v = static_cast<GXFloat>(i) / m;
 			for (GXint32 j = 0; j < n; j++)
 			{
-				float x = j * dx;
-				float posX = topLeftX + x;
-				float u = static_cast<float>(j) / n;
+				GXFloat x = j * dx;
+				GXFloat posX = topLeftX + x;
+				GXFloat u = static_cast<GXFloat>(j) / n;
 				verts.emplace_back(
 					GXVec3(posX, getHeightValue(x, z, heights), posZ)// POS
 					, GXVec2(u, v));// TEXCOORDS
@@ -93,7 +93,7 @@ namespace gx {
 		verts.clear();//no need for the data anymore.
 	}
 
-	void GXPlane::update(float deltaTime)
+	void GXPlane::update(GXFloat deltaTime)
 	{
 		//For rendering as rendering happens in GXMeshComponent
 		this->shader->use();

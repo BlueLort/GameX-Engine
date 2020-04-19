@@ -33,7 +33,7 @@ namespace gx {
 		return 0;
 	}
 
-	void  PlaneEditorLayer::onUpdate(float deltaTime)
+	void  PlaneEditorLayer::onUpdate(GXFloat deltaTime)
 	{
 		if (isUpdated) {
 			isUpdated = false;

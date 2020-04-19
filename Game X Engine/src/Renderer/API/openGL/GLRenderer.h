@@ -18,12 +18,22 @@ namespace gx {
 		virtual inline void setViewPort(GXuint32 Width, GXuint32 Height) override {
 			GXGraphicsContext::setViewPort(Width, Height);
 		}
-		virtual inline void setDepthFunc(DepthFunc func) override {
+		virtual inline void setDepthFunc(GXCompareFunc func) override {
 			glDepthFunc(func);
+		}
+		virtual inline void setStencilFunc(GXCompareFunc func, GXint32 ref, GXuint32 mask) {
+			glStencilFunc(func,ref,mask);
+		}
+		virtual inline void setStencilOperation(GXRenderingOperation stencilFail, GXRenderingOperation depthFail, GXRenderingOperation depthPass) {
+			glStencilOp(stencilFail, depthFail, depthPass);
+		}
+		virtual inline void setStencilMask(GXuint32 mask) {
+			glStencilMask(mask);
 		}
 		virtual inline void setWindingOrder(WindingOrder type) override {
 			glFrontFace(type);
 		}
+
 	private:
 		GLRenderer() {
 

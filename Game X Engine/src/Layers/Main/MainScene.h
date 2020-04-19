@@ -22,7 +22,7 @@ namespace gx {
 			return sceneModelObjects[GXID];
 		}
 		inline void setPlane(std::shared_ptr<GXPlane>& p) { plane = p; }
-		inline std::pair<float, float> getMouseLocNormalized() {
+		inline std::pair<GXFloat,GXFloat> getMouseLocNormalized() {
 			return mouseLocNormalized;
 		}
 		inline std::pair<GXint32, GXint32> getMouseLoc() {
@@ -31,13 +31,17 @@ namespace gx {
 		virtual void start()override;
 		virtual void end()override;
 		virtual GXint32 onEvent(const gx::event::GXEventType& eventType)override;
-		virtual void onUpdate(float deltaTime)override;
+		virtual void onUpdate(GXFloat deltaTime)override;
 		virtual void onGUIRender()override;
 		virtual void mousePressRequest() { mouseWasPressed = true; }
-		virtual GXuint32 getObjectID();
+		virtual GXuint32 selectObjectUnderCursor();
+		virtual void updateObjects(GXFloat deltaTime);
+		virtual GXBool updatePlane(GXFloat deltaTime);
+		virtual GXBool updateSelectedObject(GXFloat deltaTime);
 
 	private:
 		std::unordered_map<GXuint32,std::shared_ptr<GXModelObject>> sceneModelObjects;
+		std::shared_ptr<GXModelObject> selectedObject;
 		std::shared_ptr<GXSkydomeObject> skydome;
 		std::pair<GXFloat, GXFloat> mouseLocNormalized;
 		std::pair<GXint32, GXint32> mouseLoc;

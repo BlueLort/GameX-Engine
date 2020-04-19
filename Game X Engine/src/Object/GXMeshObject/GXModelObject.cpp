@@ -12,12 +12,7 @@ namespace gx {
 			shader = GXShaderManager::getShader(shaderPath);
 		}
 
-		io::IORequestHandler::getModel(fileName, &components, &isReady);
-		//set constant data
-		this->shader->use();
-		this->shader->setFloat("material.shininess", 32.0f);
-		this->shader->setUInt("objID", this->GXID);
-		GXShader::stop();		
+		io::IORequestHandler::getModel(fileName, &components, &isReady);	
 
 	}
 
@@ -27,6 +22,8 @@ namespace gx {
 		SceneLightManager::getInstance().setLightValues(this->shader);
 		this->shader->setMat4("model", transform.getModel());
 		this->shader->setMat4("vp", EditorCamera::getInstance().getPVMatrix());
+		this->shader->setFloat("material.shininess", 32.0f);
+		this->shader->setUInt("objID", this->GXID);
 		for (auto& component : components) {
 			component->update(deltaTime);
 			component->draw(shader,isWireFrame);

@@ -11,7 +11,7 @@ uniform mat4 model;
 uniform mat4 vp;
 void main()
 {
-    gl_Position = vp*model * vec4(aPos, 1.0);
+    gl_Position = vp * model * vec4( aPos, 1.0);
 }
 
 )"
@@ -544,4 +544,33 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir ,vec3 color)
 //Geometry Shader
 nullptr
 	};
+    //Default Outline Shader Shader
+    const char* GLDefaultOutlineShader[] = {
+        //Vertex Shader
+        R"( 
+#version 430 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aNormal;
+uniform mat4 model;
+uniform mat4 vp;
+void main()
+{
+    gl_Position = vp * model * vec4( aPos + aNormal * 0.1, 1.0); //scale along the normals
+}
+
+)"
+,
+//Fragment Shader
+R"( 
+#version 430 core
+out vec4 FragColor;
+void main()
+{
+    FragColor = vec4(0.95f,0.95f,0.95f,1.0f);
+} 
+)"
+,
+//Geometry Shader
+nullptr
+    };
 }

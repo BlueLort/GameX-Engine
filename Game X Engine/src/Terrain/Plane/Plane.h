@@ -14,9 +14,9 @@ namespace gx {
 			}
 		}
 		void init(const char* fileName, const char* shaderPath = nullptr){}
-		void init(const float* heights);
+		void init(const GXFloat* heights);
 		void uploadToBuffer(GXuint32 textureID);
-		virtual void update(float deltaTime) override;
+		virtual void update(GXFloat deltaTime) override;
 		virtual void destroy() override;
 		~GXPlane() { if (indices != nullptr)delete[] indices; }
 	protected:
@@ -34,7 +34,7 @@ namespace gx {
 			GXVec3 v2 = verts[idx1].position - verts[idx2].position;
 			return GXMaths::normalize(GXMaths::cross(v1, v2));
 		}
-		inline float getHeightValue(float x, float z, const float* heights)
+		inline GXFloat getHeightValue(GXFloat x, GXFloat z, const GXFloat* heights)
 		{
 			///  ver1---->interpolation1<----- ver2
 			///          float place 

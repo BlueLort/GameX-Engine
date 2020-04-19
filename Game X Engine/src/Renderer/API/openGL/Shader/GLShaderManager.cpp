@@ -16,41 +16,41 @@ namespace gx {
 		sh->addShader(GX_VERTEX_SHADER, GLDefaultColorShader[0]);
 		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultColorShader[1]);
 		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultColorShader[2]);
-		defaultShaders.emplace_back(sh);
+		defaultShaders.push_back(sh);
 		GXE_DEBUG("Default Color GLShader Compiled Successfully");
 
 		sh = new GXShader();
 		sh->addShader(GX_VERTEX_SHADER, GLDefaultLightingShader[0]);
 		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultLightingShader[1]);
 		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultLightingShader[2]);
-		defaultShaders.emplace_back(sh);
+		defaultShaders.push_back(sh);
 		GXE_DEBUG("Default Lighting GLShader Compiled Successfully");
 		sh = new GXShader();
 		sh->addShader(GX_VERTEX_SHADER, GLDefaultModelShader[0]);
 		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultModelShader[1]);
 		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultModelShader[2]);
-		defaultShaders.emplace_back(sh);
+		defaultShaders.push_back(sh);
 		GXE_DEBUG("Default Model GLShader Compiled Successfully");
 
 		sh = new GXShader();
 		sh->addShader(GX_VERTEX_SHADER, GLDefaultSkydomeShader[0]);
 		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultSkydomeShader[1]);
 		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultSkydomeShader[2]);
-		defaultShaders.emplace_back(sh);
+		defaultShaders.push_back(sh);
 		GXE_DEBUG("Default Skydome GLShader Compiled Successfully");
 
 		sh = new GXShader();
 		sh->addShader(GX_VERTEX_SHADER, GLDefaultPlaneShader[0]);
 		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultPlaneShader[1]);
 		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultPlaneShader[2]);
-		defaultShaders.emplace_back(sh);
+		defaultShaders.push_back(sh);
 		GXE_DEBUG("Default Plane GLShader Compiled Successfully");
 
 		sh = new GXShader();
 		sh->addShader(GX_VERTEX_SHADER, GLDefaultGBufferShader[0]);
 		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultGBufferShader[1]);
 		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultGBufferShader[2]);
-		defaultShaders.emplace_back(sh);
+		defaultShaders.push_back(sh);
 		GXE_DEBUG("Default GBuffer GLShader Compiled Successfully");
 
 		
@@ -59,8 +59,15 @@ namespace gx {
 		sh->addShader(GX_VERTEX_SHADER, GLDefaultDeferredShader[0]);
 		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultDeferredShader[1]);
 		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultDeferredShader[2]);
-		defaultShaders.emplace_back(sh);
+		defaultShaders.push_back(sh);
 		GXE_DEBUG("Default Deferred Lighting Pass Shader Compiled Successfully");
+
+		sh = new GXShader();
+		sh->addShader(GX_VERTEX_SHADER, GLDefaultOutlineShader[0]);
+		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultOutlineShader[1]);
+		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultOutlineShader[2]);
+		defaultShaders.push_back(sh);
+		GXE_DEBUG("Default Outline Shader Compiled Successfully");
 
 	}
 

@@ -27,25 +27,25 @@ namespace gx {
 		inline void setUInt(const char* name, GXuint32 value) const {
 			glShader.setUInt(name,value);
 		}
-		inline void setFloat(const  char* name, float value) const {
+		inline void setFloat(const  char* name, GXFloat value) const {
 			glShader.setFloat(name, value);
 		}
 		inline void setVec2(const  char* name, const GXVec2& value) const {
 			glShader.setVec2(name,value);
 		}
-		inline void setVec2(const char* name, float x, float y) const {
+		inline void setVec2(const char* name, GXFloat x, GXFloat y) const {
 			glShader.setVec2(name, x, y);
 		}
 		inline void setVec3(const  char* name, const GXVec3& value) const {
 			glShader.setVec3(name,value);
 		}
-		inline void setVec3(const char* name, float x, float y, float z) const {
+		inline void setVec3(const char* name, GXFloat x, GXFloat y, GXFloat z) const {
 			glShader.setVec3(name, x, y, z);
 		}
 		inline void setVec4(const  char* name, const GXVec4& value) const {
 			glShader.setVec4(name,value);
 		}
-		inline void setVec4(const  char* name, float x, float y, float z, float w) const {
+		inline void setVec4(const  char* name, GXFloat x, GXFloat y, GXFloat z, GXFloat w) const {
 			glShader.setVec4(name, x,y,z,w);
 		}
 		inline void setMat2(const char* name, const GXMat2& mat) const {

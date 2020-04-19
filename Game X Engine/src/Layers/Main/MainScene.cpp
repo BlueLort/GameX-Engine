@@ -3,6 +3,7 @@
 
 namespace gx {
 	std::shared_ptr<GXPlane> MainScene::mainPlane;
+	constexpr GXFloat OUTLINE_SCALE = 1.1f;
 	void MainScene::init()
 	{
 		GBuffer.reset(new GXFrameBuffer());
@@ -35,9 +36,11 @@ namespace gx {
 		GXGraphicsContext::setClearColor(0.258f, 0.596f, 0.96f, 1.0f);
 		renderingFlags.push_back(GX_CULL_FACE);
 		renderingFlags.push_back(GX_DEPTH_TEST);
+		renderingFlags.push_back(GX_STENCIL_TEST);
+		GXRenderer::getInstance().setStencilFunc(GX_NOTEQUAL, 1, 0xFF);
+		GXRenderer::getInstance().setStencilOperation(GX_KEEP, GX_KEEP, GX_REPLACE);
 		windowFlags = 0;
 		quadRenderer = new GXQuad();
-
 	}
 
 	void MainScene::destroy()
@@ -54,7 +57,7 @@ namespace gx {
 		for (auto ite : renderingFlags) {
 			GXGraphicsContext::enableFlag(ite);
 		}
-		GXGraphicsContext::clearBufferBits(GX_COLOR_BUFFER_BIT | GX_DEPTH_BUFFER_BIT);
+		GXGraphicsContext::clearBufferBits(GX_COLOR_BUFFER_BIT | GX_DEPTH_BUFFER_BIT | GX_STENCIL_BUFFER_BIT);
 
 	}
 
@@ -71,18 +74,22 @@ namespace gx {
 		return 0;
 	}
 
-	void MainScene::onUpdate(float deltaTime)
+	void MainScene::onUpdate(GXFloat deltaTime)
 	{
-		auto ite = sceneModelObjects.begin();
-		while (ite != sceneModelObjects.end()) {
-			ite->second->update(deltaTime);
-			ite++;
-		}
-		if (mainPlane.get() != nullptr)mainPlane->update(deltaTime);
-		getObjectID();
+		//Render selected object
+		GXRenderer::getInstance().setStencilFunc(GX_ALWAYS, 1, 0xFF);
+		GXRenderer::getInstance().setStencilMask(0xFF);
+		updateObjects(deltaTime);
+		updatePlane(deltaTime);
+		GXRenderer::getInstance().setStencilMask(0x00);
 		skydome->update(deltaTime); //rendering to the COLOR_TEXTURE in the framebuffer
+		updateSelectedObject(deltaTime);
+		selectObjectUnderCursor();
 		mainSceneBuffer->use(GX_FBO_RW); // now its time for lightpass
-		GXGraphicsContext::clearBufferBits(GX_COLOR_BUFFER_BIT | GX_DEPTH_BUFFER_BIT);
+		//disable stencil and depth testing during lighting pass
+		GXGraphicsContext::disableFlag(GX_DEPTH_TEST);
+		GXGraphicsContext::disableFlag(GX_STENCIL_TEST);
+		GXGraphicsContext::clearBufferBits(GX_COLOR_BUFFER_BIT);
 		lightingPassShader->use();
 		SceneLightManager::getInstance().setLightValues(lightingPassShader);
 		GXTexture2D::setActiveTexture(0);
@@ -125,7 +132,7 @@ namespace gx {
 
 	}
 
-	GXuint32 MainScene::getObjectID()
+	GXuint32 MainScene::selectObjectUnderCursor()
 	{
 		if (!selected || !mouseWasPressed) return 0;
 		if (!(mouseLocNormalized.first <= 1.0f && mouseLocNormalized.first >= 0.0f
@@ -137,8 +144,49 @@ namespace gx {
 		GXGraphicsContext::setReadAttachment(GX_COLOR_ATTACHMENT0 + GX_ID_TEXTURE);
 		GXGraphicsContext::readPixel(x, y, 1, 1, GX_RED_INTEGER, GX_UNSIGNED_INT, &val);
 		GXGraphicsContext::setReadAttachment(GX_NONE);
-		if (sceneModelObjects.find(val) == sceneModelObjects.end())return 0;
+		auto ite = sceneModelObjects.find(val);
+		if (ite == sceneModelObjects.end()) {
+			if (selectedObject != nullptr) {
+				selectedObject.reset();
+			}
+			return 0;
+		}
+		selectedObject = ite->second;
 		return val;
+	}
+
+	void MainScene::updateObjects(GXFloat deltaTime)
+	{
+		auto ite = sceneModelObjects.begin();
+		while (ite != sceneModelObjects.end()) {
+			ite->second->update(deltaTime);
+			ite++;
+		}
+	}
+
+	GXBool MainScene::updatePlane(GXFloat deltaTime)
+	{
+		if (mainPlane.get() != nullptr) {
+			mainPlane->update(deltaTime);
+			return true;
+		}
+		return false;
+	}
+
+	GXBool MainScene::updateSelectedObject(GXFloat deltaTime)
+	{
+		if (selectedObject == nullptr)return false;
+		//Render selected object outline
+		GXShader* objShader = selectedObject->getShader();
+		selectedObject->setShader(GXShaderManager::getShader(GXCompiledShader::DEFAULT_OUTLINE));
+		GXRenderer::getInstance().setStencilFunc(GX_NOTEQUAL, 1, 0xFF);
+		GXRenderer::getInstance().setStencilMask(0x00);
+		GXGraphicsContext::disableFlag(GX_DEPTH_TEST);
+		selectedObject->update(deltaTime);
+		selectedObject->setShader(objShader);//return to object shader
+		GXRenderer::getInstance().setStencilMask(0xFF);
+		GXGraphicsContext::enableFlag(GX_DEPTH_TEST);
+		return true;
 	}
 
 }

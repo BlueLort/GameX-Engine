@@ -13,10 +13,10 @@ namespace gx {
 		objName = "Skydome";
 	}
 
-	void GXSkydomeObject::update(float deltaTime) {
+	void GXSkydomeObject::update(GXFloat deltaTime) {
 		//For rendering as rendering happens in GXMeshComponent
 		//First set the proper depth func to allow us draw skydome at the end of the frame
-		GXRenderer::getInstance().setDepthFunc(DepthFunc::GX_LEQUAL);
+		GXRenderer::getInstance().setDepthFunc(GXCompareFunc::GX_LEQUAL);
 		GXRenderer::getInstance().setWindingOrder(WindingOrder::GX_CW);//must be CW because we are inside it
 		this->shader->use();
 		this->shader->setMat4("model", staticModelMat4);
@@ -27,7 +27,7 @@ namespace gx {
 			component->draw(shader,isWireFrame);
 		}
 		//reset values to default
-		GXRenderer::getInstance().setDepthFunc(DepthFunc::GX_LESS);
+		GXRenderer::getInstance().setDepthFunc(GXCompareFunc::GX_LESS);
 		GXRenderer::getInstance().setWindingOrder(WindingOrder::GX_CCW);
 	}
 

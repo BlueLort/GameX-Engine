@@ -9,7 +9,7 @@ namespace gx {
 	void OpenGLContext::init() {
 		GXWindow::setAttr(SDL_GL_CONTEXT_FLAGS, 0);
 		GXWindow::setAttr(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-		//SDL Context for OpenGL 3.3 
+		//SDL Context for OpenGL 4.3
 		GXWindow::setAttr(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 		GXWindow::setAttr(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 

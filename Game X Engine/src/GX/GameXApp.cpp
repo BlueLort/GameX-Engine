@@ -23,13 +23,16 @@ namespace gx {
 
 	void GameXApp::Start() {
 		//OBJECT FOR DEBUGGING
-		std::shared_ptr<GXModelObject> object = std::make_shared<GXModelObject>("my nanosuit object");
-		object->init("res/models/nanosuit/nanosuit.obj");
-		LayerManager::getInstance().addModelObject(object);
+		std::shared_ptr<GXModelObject> object1 = std::make_shared<GXModelObject>("my nanosuit object");
+		object1->init("res/models/nanosuit/nanosuit.obj");
+		std::shared_ptr<GXModelObject> object2 = std::make_shared<GXModelObject>("my monkey object");
+		object2->init("res/models/monkey/monkey.obj");
+		LayerManager::getInstance().addModelObject(object1);
+		LayerManager::getInstance().addModelObject(object2);
 		//TODO do RAY PICKING WITH PHYSICS ENGINE ?
 		//rayPickingTask = std::async(std::launch::async, rayPicking);
 		while (isRunning) {
-			float deltaTime = 1.0f / GXTimer::getAppTimer().getDeltaTicks();
+			GXFloat deltaTime = 1.0f / GXTimer::getAppTimer().getDeltaTicks();
 			GXTimer::getAppTimer().update();
 			InputManager::getInstance().update();
 			while (GXPollEvents(&GX_SDLEvent()) == 1);//Send events to callback
@@ -109,7 +112,7 @@ namespace gx {
 	{
 		while (isRunning) {
 			if (InputManager::getInstance().isPressed(event::key::GXK_MOUSE_LEFT)) {
-				std::pair<float, float> ml = LayerManager::getInstance().getSceneMouseLocNormalized();
+				std::pair<GXFloat, GXFloat> ml = LayerManager::getInstance().getSceneMouseLocNormalized();
 				std::string message = "";
 				
 				if (ml.first <= 1.0f && ml.first >= 0.0f && ml.second <= 1.0f && ml.second >= 0) {

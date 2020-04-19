@@ -48,7 +48,7 @@ namespace gx {
 		virtual void destroy()override {
 
 		}
-		virtual void update(float deltaTime)override {
+		virtual void update(GXFloat deltaTime)override {
 			//TODO update the other details of owners data
 			ownerTransform->position.x = transform.getOrigin().getX();
 			ownerTransform->position.y = transform.getOrigin().getY();

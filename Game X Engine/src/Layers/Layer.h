@@ -16,7 +16,7 @@ namespace gx {
 		virtual void start() = 0;
 		virtual void end() = 0;
 		virtual GXint32 onEvent(const gx::event::GXEventType& eventType) = 0;
-		virtual void onUpdate(float deltaTime) {}
+		virtual void onUpdate(GXFloat deltaTime) {}
 		virtual void onGUIRender() {}
 		inline std::string getName() const { return this->name; }
 		virtual inline bool isSelected()const { return selected; }
@@ -33,7 +33,7 @@ namespace gx {
 			layers.emplace_back(layer);
 			std::sort(layers.begin(), layers.end(), comparator);
 		}
-		inline void	renderUpdateLayers(float deltaTime) {
+		inline void	renderUpdateLayers(GXFloat deltaTime) {
 			for (auto& layer : layers) {
 				layer.second->start();
 				layer.second->onUpdate(deltaTime);

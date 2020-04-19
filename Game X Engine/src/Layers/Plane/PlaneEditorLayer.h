@@ -34,7 +34,7 @@ namespace gx {
 		virtual void start()override;
 		virtual void end()override;
 		virtual GXint32 onEvent(const gx::event::GXEventType& eventType)override;
-		virtual void onUpdate(float deltaTime)override;
+		virtual void onUpdate(GXFloat deltaTime)override;
 		virtual void onGUIRender()override;
 
 	private:
