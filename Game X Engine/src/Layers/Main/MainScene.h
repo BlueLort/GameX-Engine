@@ -33,13 +33,21 @@ namespace gx {
 		virtual GXint32 onEvent(const gx::event::GXEventType& eventType)override;
 		virtual void onUpdate(GXFloat deltaTime)override;
 		virtual void onGUIRender()override;
-		virtual void mousePressRequest() { mouseWasPressed = true; }
+		virtual void mousePressRequest() { if(selected)mouseWasPressed = true; }
 		virtual GXuint32 selectObjectUnderCursor();
 		virtual void updateObjects(GXFloat deltaTime);
 		virtual GXBool updatePlane(GXFloat deltaTime);
 		virtual GXBool updateSelectedObject(GXFloat deltaTime);
+		virtual void manipulateSelectedObject();
+		virtual void drawGizmoOnSelectedObject();
 
 	private:
+		//GIZMOS RELATED FUNCTIONS
+		static GXGizmoOperation currentGizmoOperation;
+		static GXGizmoMode currentGizmoMode;
+		static GXBool useSnap;
+		static GXFloat snap[];
+
 		std::unordered_map<GXuint32,std::shared_ptr<GXModelObject>> sceneModelObjects;
 		std::shared_ptr<GXModelObject> selectedObject;
 		std::shared_ptr<GXSkydomeObject> skydome;

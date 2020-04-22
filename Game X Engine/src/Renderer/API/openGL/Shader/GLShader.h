@@ -21,7 +21,7 @@ namespace gx {
 		}
 		// utility uniform functions
 		// ------------------------------------------------------------------------
-		inline void setBool(const char* name, bool value) const {
+		inline void setBool(const char* name, GXBool value) const {
 			GXuint32 loc = glGetUniformLocation(ID, name);
 			glUniform1i(loc, static_cast<GXint32>(value));
 		}
@@ -37,7 +37,7 @@ namespace gx {
 			glUniform1ui(loc, value);
 		}
 		// ------------------------------------------------------------------------
-		inline void setFloat(const  char* name, float value) const {
+		inline void setFloat(const  char* name, GXFloat value) const {
 			GXuint32 loc = glGetUniformLocation(ID, name);
 			glUniform1f(loc, value);
 		}
@@ -55,7 +55,7 @@ namespace gx {
 			GXuint32 loc = glGetUniformLocation(ID, name); 
 			glUniform3fv(loc, 1, &value[0]);
 		}
-		inline void setVec3(const char* name, float x, float y, float z) const {
+		inline void setVec3(const char* name, GXFloat x, GXFloat y, GXFloat z) const {
 			GXuint32 loc = glGetUniformLocation(ID, name); 
 			glUniform3f(loc, x, y, z);
 		}
@@ -64,7 +64,7 @@ namespace gx {
 			GXuint32 loc = glGetUniformLocation(ID, name); 
 			glUniform4fv(loc, 1, &value[0]);
 		}
-		inline void setVec4(const  char* name, float x, float y, float z, float w) const {
+		inline void setVec4(const  char* name, GXFloat x, GXFloat y, GXFloat z, GXFloat w) const {
 			GXuint32 loc = glGetUniformLocation(ID, name);
 			glUniform4f(loc, x, y, z, w);
 		}
@@ -85,7 +85,7 @@ namespace gx {
 		}
 		//---------------------------------------------------------------------
 		//updates the shader with known Shader Values Such as projection view light pos.
-		inline void update(glm::mat4 proj, glm::mat4 view, glm::mat4 model, glm::vec3 camPos) {
+		inline void update(GXMat4 proj, GXMat4 view, GXMat4 model, GXVec3 camPos) {
 
 			//update shader data
 

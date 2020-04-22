@@ -2,7 +2,6 @@
 #include "Maths/GXMaths.h"
 #include "Components/GXComponent.h"
 #include "Physics/GXPickingCollider.h"
-
 namespace gx {
 	class GX_DLL GXMeshComponent : public GXComponent {
 	public:
@@ -76,7 +75,6 @@ namespace gx {
 
 				textures[i]->use();
 			}
-
 
 			// draw mesh
 			graphicsBufferManager->use();

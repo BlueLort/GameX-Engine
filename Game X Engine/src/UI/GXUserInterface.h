@@ -1,6 +1,6 @@
 #pragma once
 #include "Config.h"
-#include "ImGUI_SDLGL/ImGUI_SDLGL.h"
+#include "UI/ImGUI_SDLGL/ImGUI_SDLGL.h"
 
 namespace gx {
 #ifdef USING_OPENGL

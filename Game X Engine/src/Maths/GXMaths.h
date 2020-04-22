@@ -14,6 +14,7 @@ namespace gx {
 	using GXVec4 = glm::vec4;
 	using GXVec3 = glm::vec3;
 	using GXVec2 = glm::vec2;
+#define GXPtr(structure) glm::value_ptr(structure)
 #define GXRad glm::radians
 #define GXCos glm::cos
 #define GXSin glm::sin
@@ -46,7 +47,7 @@ namespace gx {
 		inline static GXMat4 translate(const GXMat4& Model,const GXVec3& Amount) {
 			return glm::translate(Model,Amount);
 		}
-		inline static GXMat4 rotate(const GXMat4& Model,const float& Angle, const GXVec3& Axis) {
+		inline static GXMat4 rotate(const GXMat4& Model,const GXFloat& Angle, const GXVec3& Axis) {
 			return glm::rotate(Model,Angle,Axis);
 		}
 		inline static GXMat4 scale(const GXMat4& Model,const GXVec3& Amount) {
@@ -65,5 +66,41 @@ namespace gx {
 			return glm::cross(vec1, vec2);
 		}
 
+		// IMPROVE THE NEXT FUNCTIONS [ remove redundency  ? curiously recurring template pattern? ]
+		inline static GXMat4 transpose(const GXMat4& mat) {
+			return glm::transpose(mat);
+		}
+		inline static GXMat4 transpose(const GXMat3& mat) {
+			return glm::transpose(mat);
+		}
+
+		//DO NOT FORGET TO DELETE THE DATA 
+		inline static GXFloat* getDataPtr(const GXMat4& data) {
+			const GXFloat* cptr = GXPtr(data);
+			GXFloat* out= new GXFloat[16];
+			for (GXint32 i = 0; i < 16; i++)out[i] = cptr[i];
+			return out;
+		}
+		//DO NOT FORGET TO DELETE THE DATA 
+		inline static GXFloat* getDataPtr(const GXMat3& data) {
+			const GXFloat* cptr = GXPtr(data);
+			GXFloat* out = new GXFloat[9];
+			for (GXint32 i = 0; i < 9; i++)out[i] = cptr[i];
+			return out;
+		}
+		//DO NOT FORGET TO DELETE THE DATA 
+		inline static GXFloat* getDataPtr(const GXVec3& data) {
+			const GXFloat* cptr = GXPtr(data);
+			GXFloat* out = new GXFloat[3];
+			for (GXint32 i = 0; i < 3; i++)out[i] = cptr[i];
+			return out;
+		}
+		//DO NOT FORGET TO DELETE THE DATA 
+		inline static GXFloat* getDataPtr(const GXVec4& data) {
+			const GXFloat* cptr = GXPtr(data);
+			GXFloat* out = new GXFloat[4];
+			for (GXint32 i = 0; i < 4; i++)out[i] = cptr[i];
+			return out;
+		}
 	};
 }

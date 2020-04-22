@@ -130,7 +130,7 @@
     <ClCompile Include="src\Renderer\API\openGL\Texture\GLTexture2D.cpp" />
     <ClCompile Include="src\Shapes\2D\GXQuad.cpp" />
     <ClCompile Include="src\Terrain\Plane\Plane.cpp" />
-    <ClCompile Include="src\UI\ImGuizmo.cpp" />
+    <ClCompile Include="src\UI\ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui_demo.cpp" />
     <ClCompile Include="src\UI\IMGUI_FILES\imgui_draw.cpp" />
@@ -204,8 +204,9 @@
     <ClInclude Include="src\Terrain\HeightGenerators\NoiseGenerator.h" />
     <ClInclude Include="src\Terrain\HeightGenerators\TextureMapGenerator.h" />
     <ClInclude Include="src\Terrain\Plane\Plane.h" />
+    <ClInclude Include="src\UI\GXGizmo.h" />
     <ClInclude Include="src\UI\GXUserInterface.h" />
-    <ClInclude Include="src\UI\ImGuizmo.h" />
+    <ClInclude Include="src\UI\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imconfig.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imgui.h" />
     <ClInclude Include="src\UI\IMGUI_FILES\imgui_impl_opengl3.h" />

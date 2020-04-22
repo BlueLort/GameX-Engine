@@ -27,11 +27,13 @@ namespace gx {
 
 
 		inline GXMat4 getModel() {
+			
 			GXMat4 model(1.0f);
 			model = GXMaths::translate(model, position);
-			model = GXMaths::rotate(model, rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-			model = GXMaths::rotate(model, rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-			model = GXMaths::rotate(model, rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+			GXMat4 rotMat(1.0f);
+			//TODO MOVE TO Quaternions
+			rotMat = GXMaths::rotate(rotMat, GXRad(rotation.x), GXVec3(1.0f, 0.0f, 0.0f)) * GXMaths::rotate(rotMat, GXRad(rotation.y), GXVec3(0.0f, 1.0f, 0.0f)) * GXMaths::rotate(rotMat, GXRad(rotation.z), GXVec3(0.0f, 0.0f, 1.0f));
+			model = model * rotMat;
 			model = GXMaths::scale(model, scale);
 			return model;
 		}

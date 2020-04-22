@@ -3,7 +3,7 @@
 
 namespace gx {
 	
-	void EditorCamera::init(const GXVec3& position, const GXVec3& up, float yaw, float pitch,float AR,float zNear,float zFar)
+	void EditorCamera::init(const GXVec3& position, const GXVec3& up, GXFloat yaw, GXFloat pitch,GXFloat AR,GXFloat zNear,GXFloat zFar)
 	{
 		transform.position = position;
 		transform.worldUp = up;
@@ -21,7 +21,7 @@ namespace gx {
 
 	}
 	//Controlled by input manager
-	void EditorCamera::processMouseScroll(float yoffset)
+	void EditorCamera::processMouseScroll(GXFloat yoffset)
 	{
 			if (zoom >= 1.0f && zoom <= 45.0f)
 				zoom -= yoffset;
@@ -50,7 +50,7 @@ namespace gx {
 		PVMatrix = projection * view;
 	}
 
-	void EditorCamera::processKeyboard(CameraMovement direction,float deltaTime)
+	void EditorCamera::processKeyboard(CameraMovement direction,GXFloat deltaTime)
 	{
 		
 		float velocity = movementSpeed * deltaTime;
@@ -65,7 +65,7 @@ namespace gx {
 
 		updateCameraVectors();
 	}
-	void EditorCamera::processMouseMovement(float xoffset, float yoffset, bool constrainPitch)
+	void EditorCamera::processMouseMovement(GXFloat xoffset, GXFloat yoffset, GXBool constrainPitch)
 	{
 		xoffset *= mouseSensitivity;
 		yoffset *= mouseSensitivity;

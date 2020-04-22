@@ -19,7 +19,6 @@ namespace gx {
 		GX_AUDIO = 1 << 2,
 		GX_GRAPHICS = 1 << 3,//Materials , Mesh
 		GX_ANIMATION = 1 << 4
-
 	};
 	class GX_DLL GXComponent {
 	public:

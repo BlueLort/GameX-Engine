@@ -17,7 +17,7 @@ namespace gx {
 		inline static void stop() {
 			GLShader::stop();
 		}
-		inline void setBool(const char* name, bool value) const {
+		inline void setBool(const char* name, GXBool value) const {
 			glShader.setBool(name,value);
 		}
 		inline void setInt(const char* name, GXint32 value) const {

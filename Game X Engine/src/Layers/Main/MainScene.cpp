@@ -2,6 +2,10 @@
 #include "MainScene.h"
 
 namespace gx {
+	GXGizmoOperation MainScene::currentGizmoOperation = GXGizmoOperation::GX_TRANSLATE;
+	GXGizmoMode MainScene::currentGizmoMode = GXGizmoMode::GX_LOCAL;
+	GXBool MainScene::useSnap = false;
+	GXFloat MainScene::snap[] = { 1.0f,1.0f,1.0f };
 	std::shared_ptr<GXPlane> MainScene::mainPlane;
 	constexpr GXFloat OUTLINE_SCALE = 1.1f;
 	void MainScene::init()
@@ -83,7 +87,7 @@ namespace gx {
 		updatePlane(deltaTime);
 		GXRenderer::getInstance().setStencilMask(0x00);
 		skydome->update(deltaTime); //rendering to the COLOR_TEXTURE in the framebuffer
-		updateSelectedObject(deltaTime);
+		updateSelectedObject(deltaTime);//TODO change outline approach [benchmark mathematical dilation]
 		selectObjectUnderCursor();
 		mainSceneBuffer->use(GX_FBO_RW); // now its time for lightpass
 		//disable stencil and depth testing during lighting pass
@@ -108,17 +112,16 @@ namespace gx {
 
 	void MainScene::onGUIRender()
 	{
-
+		manipulateSelectedObject();//Another window if object selected
 		ImGui::Begin(name.c_str(), NULL, windowFlags);
-
 		// get mouse loc relative to main window
 		selected = ImGui::IsWindowFocused();
-
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 		ImVec2 windowSize = ImGui::GetContentRegionAvail();
 		ImGui::Image(reinterpret_cast<void*>(mainSceneBuffer->getTextureID(GX_COLOR_TEXTURE)), windowSize, ImVec2(0, 1), ImVec2(1, 0));
+		drawGizmoOnSelectedObject();//Draw Guizmo on selected Object
 		ImGui::PopStyleVar(3);
 		ImVec2 mops = ImGui::GetMousePos();
 		ImVec2 molc = ImGui::GetCursorScreenPos();
@@ -129,12 +132,16 @@ namespace gx {
 
 		ImGui::End();
 		GXTexture2D::stop();
-
+		
 	}
 
 	GXuint32 MainScene::selectObjectUnderCursor()
 	{
 		if (!selected || !mouseWasPressed) return 0;
+		if (GXGizmo::isOver()) {
+			mouseWasPressed = false;
+			return 0;
+		}
 		if (!(mouseLocNormalized.first <= 1.0f && mouseLocNormalized.first >= 0.0f
 			&& mouseLocNormalized.second <= 1.0f && mouseLocNormalized.second >= 0)) return 0;
 		GXint32 x = static_cast<GXint32>(mouseLocNormalized.first * width);
@@ -188,5 +195,108 @@ namespace gx {
 		GXGraphicsContext::enableFlag(GX_DEPTH_TEST);
 		return true;
 	}
+
+	void MainScene::manipulateSelectedObject()
+	{
+		ImGui::Begin("Editor");
+		//SET initial modes
+		
+		if (selectedObject == nullptr) {
+			ImGui::Text("No Object Selected");
+			GXGizmo::setEnabled(false);
+		}
+		else {
+			
+			//camera & selected object are needed
+			//Hotkeys to Change operation
+			if (InputManager::getInstance().isPressed(gx::event::key::GXK_E)) {
+				currentGizmoOperation = GXGizmoOperation::GX_TRANSLATE;
+			}
+			if (InputManager::getInstance().isPressed(gx::event::key::GXK_R)) {
+				currentGizmoOperation = GXGizmoOperation::GX_ROTATE;
+			}
+			if (InputManager::getInstance().isPressed(gx::event::key::GXK_T)) {
+				currentGizmoOperation = GXGizmoOperation::GX_SCALE;
+			}
+			//Change operations using UI	
+			if (ImGui::RadioButton("Translate", currentGizmoOperation == GXGizmoOperation::GX_TRANSLATE))
+				currentGizmoOperation = GXGizmoOperation::GX_TRANSLATE;
+			ImGui::SameLine();
+			if (ImGui::RadioButton("Rotate", currentGizmoOperation == GXGizmoOperation::GX_ROTATE))
+				currentGizmoOperation = GXGizmoOperation::GX_ROTATE;
+			ImGui::SameLine();
+			if (ImGui::RadioButton("Scale", currentGizmoOperation == GXGizmoOperation::GX_SCALE))
+				currentGizmoOperation = GXGizmoOperation::GX_SCALE;
+
+			//Change object using UI
+			GXFloat* position = GXMaths::getDataPtr(selectedObject->transform.position);
+			GXFloat* rotation = GXMaths::getDataPtr(selectedObject->transform.rotation);
+			GXFloat* scale = GXMaths::getDataPtr(selectedObject->transform.scale);
+			ImGui::InputFloat3("Position", position, 3);
+			ImGui::InputFloat3("Rotation", rotation, 3);
+			ImGui::InputFloat3("Scale", scale, 3);
+			CLAMP(scale[0], 0.001f, FLT_MAX);
+			CLAMP(scale[1], 0.001f, FLT_MAX);
+			CLAMP(scale[2], 0.001f, FLT_MAX);
+			selectedObject->transform.position = GXVec3(position[0], position[1], position[2]);
+			selectedObject->transform.rotation = GXVec3(rotation[0], rotation[1], rotation[2]);
+			selectedObject->transform.scale = GXVec3(scale[0], scale[1], scale[2]);
+			
+			//Change Mode using UI
+			if (currentGizmoOperation != GXGizmoOperation::GX_SCALE)
+			{
+				if (ImGui::RadioButton("Local", currentGizmoMode == GXGizmoMode::GX_LOCAL))
+					currentGizmoMode = GXGizmoMode::GX_LOCAL;
+				ImGui::SameLine();
+				if (ImGui::RadioButton("World", currentGizmoMode == GXGizmoMode::GX_WORLD))
+					currentGizmoMode = GXGizmoMode::GX_WORLD;
+			}
+
+			//change snap or not using UI
+			ImGui::Checkbox("##", &useSnap);
+			ImGui::SameLine();
+			
+			switch (currentGizmoOperation)
+			{
+			case GXGizmoOperation::GX_TRANSLATE:
+				ImGui::InputFloat3("Snap", snap);
+				break;
+			case  GXGizmoOperation::GX_ROTATE:
+				ImGui::InputFloat("Angle Snap", snap);
+				break;
+			case  GXGizmoOperation::GX_SCALE:
+				ImGui::InputFloat("Scale Snap", snap);
+				break;
+			}
+			ImGui::Checkbox("Wire Frame", &selectedObject->isWireFrame);
+			
+			//TODO HANDLE THIS WITH A MEMORY MANAGER
+			delete[] position;
+			delete[] rotation;
+			delete[] scale;
+		}
+		ImGui::End();
+	}
+
+	void MainScene::drawGizmoOnSelectedObject()
+	{
+		if (selectedObject == nullptr)return;
+		GXGizmo::setOrthographic(false);
+		GXGizmo::setEnabled(true);
+		GXFloat* objMatrix = GXMaths::getDataPtr(selectedObject->transform.getModel());
+		
+		ImVec2 windowSize = ImGui::GetWindowSize();
+		ImVec2 windowPos = ImGui::GetWindowPos();
+		GXGizmo::setRect(windowPos.x, windowPos.y, windowSize.x, windowSize.y);
+		GXGizmo::manipulate(GXPtr(EditorCamera::getInstance().getViewMatrix()), GXPtr(EditorCamera::getInstance().getProjectionMatrix()), currentGizmoOperation, currentGizmoMode, objMatrix, NULL, useSnap ? snap : NULL);
+		GXFloat pos[3], rot[3], scl[3];
+		GXGizmo::decomposeMatrix(objMatrix, pos, rot, scl);
+		selectedObject->transform.position = GXVec3(pos[0], pos[1], pos[2]);
+		selectedObject->transform.rotation = GXVec3(rot[0], rot[1],rot[2]);
+		selectedObject->transform.scale = GXVec3(scl[0], scl[1], scl[2]);
+		//TODO HANDLE THIS WITH A MEMORY MANAGER
+		delete[] objMatrix;
+	}
+
 
 }

@@ -28,12 +28,21 @@ namespace gx {
 		void init(const GXVec3& position = GXVec3(0.0f, 10.0f, 10.0f), const GXVec3& up = GXVec3(0.0f, 1.0f, 0.0f), GXFloat yaw = YAW, GXFloat pitch = PITCH, GXFloat AR=ASPECT_RATIO, GXFloat zNear=zNEAR, GXFloat zFar=zFAR);
 
 		virtual void processKeyboard(CameraMovement direction,GXFloat deltaTime)override;
-		virtual void processMouseMovement(GXFloat xoffset, GXFloat yoffset, bool constrainPitch = true) override;
+		virtual void processMouseMovement(GXFloat xoffset, GXFloat yoffset, GXBool constrainPitch = true) override;
 		virtual void processMouseScroll(GXFloat yoffset) override;
 		virtual inline GXMat4 getPVMatrix() const { return PVMatrix; }
 		virtual inline GXMat4 getViewMatrix() const
 		{
 			return view;
+		}
+		virtual inline void setViewMatrix(GXFloat* viewMat) {
+			GXint32 k = 0;
+			for (GXint32 i = 0; i < 4; i++) {
+				for (GXint32 j = 0; j < 4; j++) {
+					view[i][j] = viewMat[k++];
+				}
+			}
+			PVMatrix = projection * view; // Keep PVMatrix Updated
 		}
 		virtual inline GXMat4 getProjectionMatrix()const {
 			return projection;
