@@ -2,11 +2,12 @@
 #include "GXGrid.h"
 
 namespace gx {
-	constexpr GXFloat HORIZONTAL_SPACING = 8.0f;
-	constexpr GXFloat VERTICAL_SPACING = 8.0f;
-	constexpr GXuint32 N_HORIZONTAL = 50;
-	constexpr GXuint32 N_VERTICAL = 50;
-	static void createGrid(std::vector<Vertex3D>& gridVerts ) {
+	constexpr GXFloat HORIZONTAL_SPACING = 1.0f;
+	constexpr GXFloat VERTICAL_SPACING = 1.0f;
+	constexpr GXuint32 N_HORIZONTAL = 150;
+	constexpr GXuint32 N_VERTICAL = 150;
+	GXuint32 GXGrid::createGrid(std::vector<Vertex3D>& gridVerts) {
+		
 		gridVerts.reserve(N_HORIZONTAL * N_VERTICAL);
 		GXFloat halfSpacingVertical = (N_VERTICAL / 2.0f) * VERTICAL_SPACING; // used to center grid
 		GXFloat halfSpacingHorizontal = (N_HORIZONTAL / 2.0f) * HORIZONTAL_SPACING;// used to center grid
@@ -18,26 +19,11 @@ namespace gx {
 				gridVerts.emplace_back(GXVec3(xLoc, 0.0f, zLoc));
 			}
 		}
-	}
-	void GXGrid::init(const char* shaderPath) {
-
-		if (shaderPath == nullptr) {
-			shader = GXShaderManager::getShader(GXCompiledShader::DEFAULT_GRID);
-		}
-		else {
-			shader = GXShaderManager::getShader(shaderPath);
-		}
-
-		
-
-		//SET UP THE GRID
-		std::vector<Vertex3D> verts;
-		createGrid(verts);
 		GXint32 k = 0;
 		GXuint32 nQuadsVertical = N_VERTICAL - 1;
 		GXuint32 nQuadsHorizontal = N_HORIZONTAL - 1;
 		GXuint32 nIndices = nQuadsVertical * nQuadsHorizontal * 8;
-		GXuint32* indices = new GXuint32[nIndices];
+		indices = new GXuint32[nIndices];
 		for (GXint32 z = 0; z < nQuadsVertical; z++)
 		{
 			for (GXint32 x = 0; x < nQuadsHorizontal; x++)
@@ -56,6 +42,19 @@ namespace gx {
 				k += 8; // next quad
 			}
 		}
+		return nIndices;
+	}
+	void GXGrid::init(const char* shaderPath) {
+
+		if (shaderPath == nullptr) {
+			shader = GXShaderManager::getShader(GXCompiledShader::DEFAULT_GRID);
+		}
+		else {
+			shader = GXShaderManager::getShader(shaderPath);
+		}
+		//SET UP THE GRID
+		std::vector<Vertex3D> verts;
+		GXuint32 nIndices = createGrid(verts);
 		//SET UP THE BUFFER
 		std::shared_ptr<GXGraphicsBufferManager> GBM;
 		GBM.reset(new GXGraphicsBufferManager());

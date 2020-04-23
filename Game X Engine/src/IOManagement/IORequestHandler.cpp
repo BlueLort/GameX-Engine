@@ -2,7 +2,7 @@
 #include "IORequestHandler.h"
 namespace gx {
 	namespace io {
-		std::queue <Request>				IORequestHandler::requests;
+		std::vector <Request>				IORequestHandler::requests;
 		std::unordered_set<std::string>		IORequestHandler::requestedFiles;
 	}
 }

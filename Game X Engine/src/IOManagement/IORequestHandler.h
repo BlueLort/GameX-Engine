@@ -5,11 +5,11 @@ namespace gx {
 	namespace io {
 		struct Request {
 			std::string fileName;
-			std::vector<std::shared_ptr<GXComponent>>* appendToThis; 
+			std::vector<std::shared_ptr<GXComponent>>* comps; 
 			bool* isReady;
 			Request(std::string name,
 			std::vector<std::shared_ptr<GXComponent>>* loc,
-				bool* ready) :fileName(name),appendToThis(loc),isReady(ready){
+				bool* ready) :fileName(name),comps(loc),isReady(ready){
 
 			}
 		};
@@ -65,20 +65,21 @@ namespace gx {
 						, sFileName.substr(lastSlash, sFileName.length()).c_str()
 					);
 				}
-				requests.emplace(fileName,appendToThis, isReady);
+				requests.emplace_back(fileName,appendToThis, isReady);
 			}
 			inline static void update()
 			{
 				IOManager::update();
 				
 				if (!requests.empty()) {
-					auto front = requests.front();
-					auto ite = IOManager::modelsImported.find(front.fileName);
-					if (ite != IOManager::modelsImported.end()) {
-						front.appendToThis->insert(front.appendToThis->end(), ite->second.begin(), ite->second.end());
-						*front.isReady = true;
-						requests.pop();
-
+					for (GXint32 i = 0; i < requests.size(); i++) {
+						auto ite = IOManager::modelsImported.find(requests[i].fileName);
+						if (ite != IOManager::modelsImported.end()) {
+							requests[i].comps->insert(requests[i].comps->end(), ite->second.begin(), ite->second.end());
+							*requests[i].isReady = true;
+							requests.erase(requests.begin() + i);
+							i--;
+						}
 					}
 				}
 			}
@@ -90,7 +91,7 @@ namespace gx {
 			
 			
 		private:
-			static std::queue <Request>	requests;
+			static std::vector <Request>	requests;
 			static std::unordered_set<std::string> requestedFiles;
 		};
 

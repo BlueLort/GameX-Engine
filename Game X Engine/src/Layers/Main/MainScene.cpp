@@ -88,12 +88,13 @@ namespace gx {
 		GXRenderer::getInstance().setStencilFunc(GX_ALWAYS, 1, 0xFF);
 		GXRenderer::getInstance().setStencilMask(0xFF);
 		updateObjects(deltaTime);
+		selectObjectUnderCursor();
 		updatePlane(deltaTime);
 		GXRenderer::getInstance().setStencilMask(0x00);
 		skydome->update(deltaTime); //rendering to the COLOR_TEXTURE in the framebuffer
 		debuggingGrid->update(deltaTime);//TODO MAKE IT POSSIBLE TO HIDE THE GRID
 		updateSelectedObject(deltaTime);//TODO change outline approach [benchmark mathematical dilation]
-		selectObjectUnderCursor();
+		
 		mainSceneBuffer->use(GX_FBO_RW); // now its time for lightpass
 		//disable stencil and depth testing during lighting pass
 		GXGraphicsContext::disableFlag(GX_DEPTH_TEST);

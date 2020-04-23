@@ -29,7 +29,7 @@ namespace gx {
 			if (obj->isReady)
 				mainSceneLayer->addModelObject(obj);
 			else {
-				modelObjectRequests.emplace(obj);
+				modelObjectRequests.push_back(obj);
 			}
 				
 		}
@@ -56,10 +56,13 @@ namespace gx {
 		}
 		inline void renderUpdateLayers(float deltaTime) {
 			if (!modelObjectRequests.empty()) {
-				if (modelObjectRequests.front()->isReady) {
-					modelObjectRequests.front()->fixComponentsID();
-					mainSceneLayer->addModelObject(modelObjectRequests.front());
-					modelObjectRequests.pop();
+				for (GXint32 i = 0; i < modelObjectRequests.size(); i++) {
+					if (modelObjectRequests[i]->isReady) {
+						modelObjectRequests[i]->fixComponentsID();
+						mainSceneLayer->addModelObject(modelObjectRequests[i]);
+						modelObjectRequests.erase(modelObjectRequests.begin() + i);
+						i--;
+					}
 				}
 			}
 			layers.renderUpdateLayers(deltaTime);
@@ -73,7 +76,7 @@ namespace gx {
 		inline LayerManager() { 
 			
 		}
-		std::queue<std::shared_ptr<GXModelObject>> modelObjectRequests;
+		std::vector<std::shared_ptr<GXModelObject>> modelObjectRequests;
 		std::shared_ptr<MainScene> mainSceneLayer;
 		std::shared_ptr<LogLayer> logLayer;
 		std::shared_ptr<NoiseGeneratorLayer> noiseGenerationLayer;
