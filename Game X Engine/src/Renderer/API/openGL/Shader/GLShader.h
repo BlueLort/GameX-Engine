@@ -12,7 +12,10 @@ namespace gx {
 		// activate the shader
 		// ------------------------------------------------------------------------
 		inline void use() {
-			glUseProgram(ID);
+			if (this->ID != usedShaderID) { // Trying to eliminate overhead of changing shader state if same shader is used again
+				usedShaderID = this->ID;
+				glUseProgram(this->ID);
+			}
 		}
 		// deactivate shaders
 		// ------------------------------------------------------------------------
@@ -99,6 +102,7 @@ namespace gx {
 	private:
 	
 		GXuint32 ID;
+		static GXuint32 usedShaderID;
 		GXuint32 compileShader(GXShaderType type, const char* code, char* log);
 		void linkProgram(char* log);
 	};

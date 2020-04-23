@@ -38,6 +38,9 @@ namespace gx {
 		inline static void setClearColor(GXFloat r, GXFloat g, GXFloat b, GXFloat a) {
 			OpenGLContext::setClearColor(r, g, b, a);
 		}
+		inline static void setLineWidth(GXFloat width) {
+			OpenGLContext::setLineWidth(width);
+		}
 		inline static void setReadAttachment(GXint32 idx) {
 			OpenGLContext::setReadAttachment(idx);
 		}

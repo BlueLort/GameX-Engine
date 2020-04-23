@@ -264,6 +264,9 @@
     <ClInclude Include="src\UI\GXGizmo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Object\Debug\GXGrid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window\GXWindow.cpp">
@@ -378,6 +381,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\UI\ImGuizmo\ImGuizmo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Object\Debug\GXGrid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

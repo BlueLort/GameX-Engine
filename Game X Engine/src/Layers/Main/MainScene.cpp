@@ -36,6 +36,10 @@ namespace gx {
 		skydome.reset(new GXSkydomeObject());
 		skydome->init("res/models/sphere/spheres.obj");//will wait until it has been imported
 
+		debuggingGrid.reset(new GXGrid("Debugging Grid"));
+		debuggingGrid->init();
+
+
 		GXGraphicsContext::setViewPort(width, height);
 		GXGraphicsContext::setClearColor(0.258f, 0.596f, 0.96f, 1.0f);
 		renderingFlags.push_back(GX_CULL_FACE);
@@ -87,6 +91,7 @@ namespace gx {
 		updatePlane(deltaTime);
 		GXRenderer::getInstance().setStencilMask(0x00);
 		skydome->update(deltaTime); //rendering to the COLOR_TEXTURE in the framebuffer
+		debuggingGrid->update(deltaTime);//TODO MAKE IT POSSIBLE TO HIDE THE GRID
 		updateSelectedObject(deltaTime);//TODO change outline approach [benchmark mathematical dilation]
 		selectObjectUnderCursor();
 		mainSceneBuffer->use(GX_FBO_RW); // now its time for lightpass

@@ -69,6 +69,13 @@ namespace gx {
 		defaultShaders.push_back(sh);
 		GXE_DEBUG("Default Outline Shader Compiled Successfully");
 
+		sh = new GXShader();
+		sh->addShader(GX_VERTEX_SHADER, GLDefaultGridShader[0]);
+		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultGridShader[1]);
+		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultGridShader[2]);
+		defaultShaders.push_back(sh);
+		GXE_DEBUG("Default Grid Shader Compiled Successfully");
+
 	}
 
 	void GLShaderManager::destroy()

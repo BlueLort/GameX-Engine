@@ -295,11 +295,11 @@ out vec4 FragColor;
 in vec3 FragPos;
 void main()
 {
-	const vec3 baseColor=vec3(0.203,0.596,0.921);
+	const vec3 baseColor=vec3(0.2,0.5,0.92);
 	float factor=FragPos.y-1000;
 	float r= -0.0002*factor+baseColor.r;
-	float g= -0.00022*factor+baseColor.g;
-	float b= -0.0001*factor+baseColor.b;
+	float g= -0.00025*factor+baseColor.g;
+	float b= -0.0005*factor+baseColor.b;
     FragColor = vec4(r,g,b,1.0);
 } 
 )"
@@ -567,6 +567,36 @@ out vec4 FragColor;
 void main()
 {
     FragColor = vec4(0.95f,0.95f,0.95f,1.0f);
+} 
+)"
+,
+//Geometry Shader
+nullptr
+    };
+
+
+    //Default Grid Shader Shader
+    const char* GLDefaultGridShader[] = {
+        //Vertex Shader
+        R"( 
+#version 430 core
+layout (location = 0) in vec3 aPos;
+uniform mat4 model;
+uniform mat4 vp;
+void main()
+{
+    gl_Position = vp * model * vec4( aPos , 1.0);
+}
+
+)"
+,
+//Fragment Shader
+R"( 
+#version 430 core
+out vec4 FragColor;
+void main()
+{
+    FragColor = vec4(0.2f,0.4f,0.2f,1.0f);
 } 
 )"
 ,

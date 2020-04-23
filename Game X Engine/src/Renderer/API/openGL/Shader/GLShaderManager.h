@@ -15,6 +15,7 @@ namespace gx {
 	extern const char* GLDefaultGBufferShader[3];
 	extern const char* GLDefaultDeferredShader[3];
 	extern const char* GLDefaultOutlineShader[3];
+	extern const char* GLDefaultGridShader[3];
 	class GX_DLL GLShaderManager {
 	public:
 		GLShaderManager() = delete;

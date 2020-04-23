@@ -67,5 +67,6 @@ namespace gx {
 	private:
 		GLShader glShader;
 	};
+
 #endif
 }

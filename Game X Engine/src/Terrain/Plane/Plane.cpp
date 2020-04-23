@@ -72,7 +72,7 @@ namespace gx {
 		Buffer.reset(new GXGraphicsBufferManager());
 		Buffer->initFull(&verts[0], sizeof(Vertex3D) * verts.size(), sizeof(Vertex3D));
 		GXuint32 totalIndicesSize = (n - 1) * (m - 1) * 6;
-		Buffer->uploadIndicesToBuffer(indices, totalIndicesSize * sizeof(GXuint32), totalIndicesSize);
+		Buffer->uploadIndicesToBuffer(&indices[0], totalIndicesSize * sizeof(GXuint32), totalIndicesSize);
 		Buffer->setAttribPointer(0, 3, GX_FLOAT, offsetof(Vertex3D, position));
 		Buffer->setAttribPointer(1, 3, GX_FLOAT, offsetof(Vertex3D, normal));
 		Buffer->setAttribPointer(2, 2, GX_FLOAT, offsetof(Vertex3D, texCoords));
@@ -102,7 +102,7 @@ namespace gx {
 		this->shader->setMat4("vp", EditorCamera::getInstance().getPVMatrix());
 		for (auto& component : components) {
 			component->update(deltaTime);
-			component->draw(shader, isWireFrame);
+			component->draw(shader,RenderType::GX_TRIANGLES, isWireFrame);
 		}
 	}
 

@@ -10,11 +10,6 @@ namespace gx {
 		virtual void init(const char* fileName,const char* shaderPath=nullptr) override;
 		virtual void update(float deltaTime) override;
 		virtual void destroy() override;
-		inline void fixComponentsID() {
-			for (auto& comp : components) {
-				comp->setOwnerID(this->GXID);
-			}
-		}
 
 	};
 

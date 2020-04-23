@@ -43,7 +43,7 @@ namespace gx {
 		std::shared_ptr<GXGraphicsBufferManager> graphicsBufferManager;
 		std::shared_ptr<GXPickingCollider> gxPickingCollider;
 		// render the mesh
-		void draw(GXShader* shader,bool isWireFrame) {
+		void draw(GXShader* shader , RenderType type,bool isWireFrame) override{
 			GXuint32 nDiffuse = 1;
 			GXuint32 nSpecular = 1;
 			auto textures = graphicsBufferManager->getTextures();
@@ -78,7 +78,7 @@ namespace gx {
 
 			// draw mesh
 			graphicsBufferManager->use();
-			GXRenderer::getInstance().draw(graphicsBufferManager->getNumberOfElements(), RenderType::GX_TRIANGLES,isWireFrame);
+			GXRenderer::getInstance().draw(graphicsBufferManager->getNumberOfElements(), type,isWireFrame);
 			graphicsBufferManager->stop();
 			
 			

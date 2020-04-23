@@ -26,7 +26,7 @@ namespace gx {
 		this->shader->setUInt("objID", this->GXID);
 		for (auto& component : components) {
 			component->update(deltaTime);
-			component->draw(shader,isWireFrame);
+			component->draw(shader, RenderType::GX_TRIANGLES,isWireFrame);
 		}
 	}
 

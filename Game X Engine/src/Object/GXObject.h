@@ -12,7 +12,7 @@
 #include "IOManagement/IORequestHandler.h"
 
 namespace gx {
-	enum GXObjectType { GX_MODEL, GX_SKYDOME,GX_PLANE };
+	enum GXObjectType { GX_MODEL, GX_SKYDOME,GX_PLANE,GX_GRID};
 	class GX_DLL GXObject {
 	public:
 		inline GXObject(GXObjectType ObjectType,const char* objName) :objType(ObjectType), isReady(false),isWireFrame(false){
@@ -22,6 +22,7 @@ namespace gx {
 		GXTransform transform;
 
 		virtual void init(const char* fileName, const char* shaderPath = nullptr) = 0;
+		virtual void init(const char* shaderPath = nullptr) {};
 		virtual void update(float deltaTime) = 0;
 		virtual void destroy() = 0;
 
@@ -34,7 +35,11 @@ namespace gx {
 		inline void setShader(GXShader* sh) { this->shader = sh; }
 		inline GXShader* getShader() const { return shader; }
 		inline const char* getName() const { return objName.c_str(); }
-		
+		inline void fixComponentsID() {
+			for (auto& comp : components) {
+				comp->setOwnerID(this->GXID);
+			}
+		}
 		bool isReady;
 		bool isWireFrame;
 	protected:

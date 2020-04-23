@@ -100,6 +100,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Object\Debug\GXGrid.cpp" />
     <ClCompile Include="src\IOManagement\image\stb_image.cpp" />
     <ClCompile Include="src\IOManagement\IORequestHandler.cpp" />
     <ClCompile Include="src\Layers\Debug\Logging\LogLayer.cpp" />
@@ -148,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="3rdParty\stb_image\stb_image.h" />
     <ClInclude Include="3rdParty\stb_image\stb_image_write.h" />
+    <ClInclude Include="src\Object\Debug\GXGrid.h" />
     <ClInclude Include="src\Components\Physics\GXPhysicsComponent.h" />
     <ClInclude Include="src\GX\GXTypes.h" />
     <ClInclude Include="src\IOManagement\IORequestHandler.h" />

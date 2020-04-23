@@ -3,6 +3,7 @@
 #include "Layers/Layer.h"
 #include "Object/GXObject.h"
 #include "Object/GXBackgroundObject/GXSkydomeObject.h"
+#include "Object/Debug/GXGrid.h"
 #include "Terrain/Plane/Plane.h"
 #include "IOManagement/IOManager.h"
 #include "Shapes/2D/GXQuad.h"
@@ -51,6 +52,7 @@ namespace gx {
 		std::unordered_map<GXuint32,std::shared_ptr<GXModelObject>> sceneModelObjects;
 		std::shared_ptr<GXModelObject> selectedObject;
 		std::shared_ptr<GXSkydomeObject> skydome;
+		std::shared_ptr<GXGrid> debuggingGrid;
 		std::pair<GXFloat, GXFloat> mouseLocNormalized;
 		std::pair<GXint32, GXint32> mouseLoc;
 		std::shared_ptr<GXPlane> plane;

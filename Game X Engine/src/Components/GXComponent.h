@@ -9,7 +9,8 @@ namespace gx {
 		GX_COLLIDER=0,
 		GX_RIGIDBODY,
 		GX_SPRITE,
-		GX_MESH
+		GX_MESH,
+		GX_DEBUG
 		//ADD MORE LATER
 	};
 
@@ -27,7 +28,7 @@ namespace gx {
 		virtual inline GXuint32 getEventType() const = 0;
 		virtual inline GXuint32 getEventClass() const = 0;
 		virtual void update(GXFloat deltaTime) = 0;
-		virtual void draw(GXShader* shader,bool isWireFrame) {};
+		virtual void draw(GXShader* shader, RenderType type,bool isWireFrame) {};
 		virtual void destroy() = 0;
 
 		inline bool isSameClassAs(GXComponentClass componentClass) const {

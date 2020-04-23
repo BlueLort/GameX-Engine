@@ -17,6 +17,7 @@ namespace gx {
 		inline static void disableFlag(GXRendererFlag flag) {glDisable(flag);}
 		inline static void clearBufferBits(GXint32 bits) {glClear(bits);}
 		inline static void setClearColor(GXFloat r,GXFloat g,GXFloat b,GXFloat a ) {glClearColor(r,g,b,a);}
+		inline static void setLineWidth(GXFloat width){ glLineWidth(width); }
 		inline static void setReadAttachment(GXint32 idx) {glReadBuffer(idx);}
 		inline static void readPixel(GXint32 locX, GXint32 locY, GXint32 width, GXint32 height,GXint32 internalFormat,GXint32 type ,void* storage) {
 			GL_CALL(glReadPixels(locX, locY, width, height,internalFormat,type, storage));

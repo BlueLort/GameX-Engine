@@ -3,7 +3,7 @@
 
 
 namespace gx {
-
+	GXuint32 GLShader::usedShaderID = 0;
 
 	GLShader::GLShader()
 	{
