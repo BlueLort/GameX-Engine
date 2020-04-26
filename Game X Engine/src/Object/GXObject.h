@@ -35,6 +35,7 @@ namespace gx {
 		inline void setShader(GXShader* sh) { this->shader = sh; }
 		inline GXShader* getShader() const { return shader; }
 		inline const char* getName() const { return objName.c_str(); }
+		inline void setName(const char* objName) { this->objName = std::string(objName); }
 		inline void fixComponentsID() {
 			for (auto& comp : components) {
 				comp->setOwnerID(this->GXID);

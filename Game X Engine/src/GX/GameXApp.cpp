@@ -22,13 +22,6 @@ namespace gx {
 	}
 
 	void GameXApp::Start() {
-		//OBJECT FOR DEBUGGING
-		std::shared_ptr<GXModelObject> object1 = std::make_shared<GXModelObject>("my nanosuit object");
-		object1->init("res/models/nanosuit/nanosuit.obj");
-		std::shared_ptr<GXModelObject> object2 = std::make_shared<GXModelObject>("my monkey object");
-		object2->init("res/models/monkey/monkey.obj");
-		LayerManager::getInstance().addModelObject(object1);
-		LayerManager::getInstance().addModelObject(object2);
 		//TODO do RAY PICKING WITH PHYSICS ENGINE ?
 		//rayPickingTask = std::async(std::launch::async, rayPicking);
 		while (isRunning) {

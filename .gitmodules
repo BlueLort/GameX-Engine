@@ -13,3 +13,6 @@
 [submodule "Game X Engine/3rdParty/debug-draw"]
 	path = Game X Engine/3rdParty/debug-draw
 	url = https://github.com/glampert/debug-draw/
+[submodule "imgui-filebrowser"]
+	path = imgui-filebrowser
+	url = https://github.com/AirGuanZ/imgui-filebrowser.git

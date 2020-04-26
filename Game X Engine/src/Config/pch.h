@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <filesystem>
 #include <algorithm>
 #include <memory>
 #include <functional>

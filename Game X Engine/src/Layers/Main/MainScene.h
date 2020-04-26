@@ -15,7 +15,13 @@ namespace gx {
 		virtual void init()override;
 		virtual void destroy()override;
 		//IOManagers add the object after it has been instantiated
-		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) { sceneModelObjects[obj->getID()]=obj; };
+		inline void addModelObject(std::shared_ptr<GXModelObject>& obj) {
+			if (obj->isReady)
+				sceneModelObjects[obj->getID()] = obj;
+			else {
+				modelObjectRequests.push_back(obj);
+			}			
+		};
 		//does not handle wrong ids.
 		inline std::shared_ptr<GXModelObject> getModelObject(GXuint32 GXID){
 			auto ite = sceneModelObjects.find(GXID);
@@ -35,11 +41,13 @@ namespace gx {
 		virtual void onUpdate(GXFloat deltaTime)override;
 		virtual void onGUIRender()override;
 		virtual void mousePressRequest() { if(selected)mouseWasPressed = true; }
+	protected:
 		virtual GXuint32 selectObjectUnderCursor();
 		virtual void updateObjects(GXFloat deltaTime);
 		virtual GXBool updatePlane(GXFloat deltaTime);
 		virtual GXBool updateSelectedObject(GXFloat deltaTime);
 		virtual void manipulateSelectedObject();
+		virtual void displayHierarchy();
 		virtual void drawGizmoOnSelectedObject();
 
 	private:
@@ -48,6 +56,8 @@ namespace gx {
 		static GXGizmoMode currentGizmoMode;
 		static GXBool useSnap;
 		static GXFloat snap[];
+		ImGui::FileBrowser fileDialog;//file browser using imfilebrowser
+		std::vector<std::shared_ptr<GXModelObject>> modelObjectRequests;
 
 		std::unordered_map<GXuint32,std::shared_ptr<GXModelObject>> sceneModelObjects;
 		std::shared_ptr<GXModelObject> selectedObject;
@@ -67,6 +77,19 @@ namespace gx {
 		std::unique_ptr<GXFrameBuffer> mainSceneBuffer;
 		friend class PlaneEditorLayer;
 		bool mouseWasPressed;
+
+		inline void updateModelRequests() {
+			if (!modelObjectRequests.empty()) {
+				for (GXint32 i = 0; i < modelObjectRequests.size(); i++) {
+					if (modelObjectRequests[i]->isReady) {
+						modelObjectRequests[i]->fixComponentsID();
+						sceneModelObjects[modelObjectRequests[i]->getID()] = modelObjectRequests[i];
+						modelObjectRequests.erase(modelObjectRequests.begin() + i);
+						i--;
+					}
+				}
+			}
+		}
 	};
 
 }

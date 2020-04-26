@@ -1,5 +1,5 @@
 #pragma once
-#include "UI/ImGuizmo/ImGuizmo.h"
+#include <ImGuizmo/ImGuizmo.h>
 #include "Maths/GXMaths.h"
 namespace gx {
 	enum GXGizmoOperation

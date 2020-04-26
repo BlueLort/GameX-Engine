@@ -70,6 +70,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)/Game X Engine/src/Config;$(SolutionDir)/Game X Engine/3rdParty/;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)/Game X Engine/deps/include;$(SolutionDir)/Game X Engine/src/</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -100,6 +101,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="3rdParty\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="3rdParty\ImGUI\examples\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="3rdParty\ImGUI\examples\imgui_impl_sdl.cpp" />
+    <ClCompile Include="3rdParty\ImGUI\imgui.cpp" />
+    <ClCompile Include="3rdParty\ImGUI\imgui_demo.cpp" />
+    <ClCompile Include="3rdParty\ImGUI\imgui_draw.cpp" />
+    <ClCompile Include="3rdParty\ImGUI\imgui_widgets.cpp" />
     <ClCompile Include="src\Object\Debug\GXGrid.cpp" />
     <ClCompile Include="src\IOManagement\image\stb_image.cpp" />
     <ClCompile Include="src\IOManagement\IORequestHandler.cpp" />
@@ -131,13 +139,6 @@
     <ClCompile Include="src\Renderer\API\openGL\Texture\GLTexture2D.cpp" />
     <ClCompile Include="src\Shapes\2D\GXQuad.cpp" />
     <ClCompile Include="src\Terrain\Plane\Plane.cpp" />
-    <ClCompile Include="src\UI\ImGuizmo\ImGuizmo.cpp" />
-    <ClCompile Include="src\UI\IMGUI_FILES\imgui.cpp" />
-    <ClCompile Include="src\UI\IMGUI_FILES\imgui_demo.cpp" />
-    <ClCompile Include="src\UI\IMGUI_FILES\imgui_draw.cpp" />
-    <ClCompile Include="src\UI\IMGUI_FILES\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="src\UI\IMGUI_FILES\imgui_impl_sdl.cpp" />
-    <ClCompile Include="src\UI\IMGUI_FILES\imgui_widgets.cpp" />
     <ClCompile Include="src\UI\ImGUI_SDLGL\ImGUI_SDLGL.cpp" />
     <ClCompile Include="src\Config\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -208,15 +209,6 @@
     <ClInclude Include="src\Terrain\Plane\Plane.h" />
     <ClInclude Include="src\UI\GXGizmo.h" />
     <ClInclude Include="src\UI\GXUserInterface.h" />
-    <ClInclude Include="src\UI\ImGuizmo\ImGuizmo.h" />
-    <ClInclude Include="src\UI\IMGUI_FILES\imconfig.h" />
-    <ClInclude Include="src\UI\IMGUI_FILES\imgui.h" />
-    <ClInclude Include="src\UI\IMGUI_FILES\imgui_impl_opengl3.h" />
-    <ClInclude Include="src\UI\IMGUI_FILES\imgui_impl_sdl.h" />
-    <ClInclude Include="src\UI\IMGUI_FILES\imgui_internal.h" />
-    <ClInclude Include="src\UI\IMGUI_FILES\imstb_rectpack.h" />
-    <ClInclude Include="src\UI\IMGUI_FILES\imstb_textedit.h" />
-    <ClInclude Include="src\UI\IMGUI_FILES\imstb_truetype.h" />
     <ClInclude Include="src\UI\ImGUI_SDLGL\ImGUI_SDLGL.h" />
     <ClInclude Include="src\Layers\Layer.h" />
     <ClInclude Include="src\Config\pch.h" />

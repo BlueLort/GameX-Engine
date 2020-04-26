@@ -49,6 +49,10 @@ namespace gx {
 		GXRenderer::getInstance().setStencilOperation(GX_KEEP, GX_KEEP, GX_REPLACE);
 		windowFlags = 0;
 		quadRenderer = new GXQuad();
+
+
+		fileDialog.SetTitle("File Browser");
+		fileDialog.SetTypeFilters({ ".obj", ".fbx" });
 	}
 
 	void MainScene::destroy()
@@ -84,6 +88,8 @@ namespace gx {
 
 	void MainScene::onUpdate(GXFloat deltaTime)
 	{
+
+		updateModelRequests();
 		//Render selected object
 		GXRenderer::getInstance().setStencilFunc(GX_ALWAYS, 1, 0xFF);
 		GXRenderer::getInstance().setStencilMask(0xFF);
@@ -119,6 +125,7 @@ namespace gx {
 	void MainScene::onGUIRender()
 	{
 		manipulateSelectedObject();//Another window if object selected
+		displayHierarchy();//Simple hierarchy window
 		ImGui::Begin(name.c_str(), NULL, windowFlags);
 		// get mouse loc relative to main window
 		selected = ImGui::IsWindowFocused();
@@ -212,7 +219,15 @@ namespace gx {
 			GXGizmo::setEnabled(false);
 		}
 		else {
-			
+			ImGui::Text(selectedObject->getName());
+			ImGui::Spacing();
+			static char buffer[64] = "\0";
+			ImGui::InputTextWithHint(" ","Enter Obj. Name",buffer,64);
+			ImGui::SameLine();
+			if (ImGui::Button("Update")) {
+				selectedObject->setName(buffer);
+				memset(buffer, 0, 64);
+			}
 			//camera & selected object are needed
 			//Hotkeys to Change operation
 			if (InputManager::getInstance().isPressed(gx::event::key::GXK_E)) {
@@ -238,9 +253,9 @@ namespace gx {
 			GXFloat* position = GXMaths::getDataPtr(selectedObject->transform.position);
 			GXFloat* rotation = GXMaths::getDataPtr(selectedObject->transform.rotation);
 			GXFloat* scale = GXMaths::getDataPtr(selectedObject->transform.scale);
-			ImGui::InputFloat3("Position", position, 3);
-			ImGui::InputFloat3("Rotation", rotation, 3);
-			ImGui::InputFloat3("Scale", scale, 3);
+			ImGui::DragFloat3("Position", position, 0.1f);
+			ImGui::DragFloat3("Rotation", rotation, 0.1f);
+			ImGui::DragFloat3("Scale", scale, 0.1f);
 			CLAMP(scale[0], 0.001f, FLT_MAX);
 			CLAMP(scale[1], 0.001f, FLT_MAX);
 			CLAMP(scale[2], 0.001f, FLT_MAX);
@@ -275,13 +290,68 @@ namespace gx {
 				break;
 			}
 			ImGui::Checkbox("Wire Frame", &selectedObject->isWireFrame);
-			
+			//ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(7.0f, 0.6f, 0.6f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(7.0f, 0.7f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(7.0f, 0.8f, 0.8f));
+			if (ImGui::Button("Delete Object")) {
+				sceneModelObjects.erase(selectedObject->getID());
+				selectedObject->destroy();
+				selectedObject = nullptr;
+			}
+			ImGui::PopStyleColor(2);
+
 			//TODO HANDLE THIS WITH A MEMORY MANAGER
 			delete[] position;
 			delete[] rotation;
 			delete[] scale;
 		}
 		ImGui::End();
+	}
+
+	void MainScene::displayHierarchy()
+	{
+
+		/*this is the main menu bar for now it has functionality to import objects*/
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("Import Object"))
+				{
+					fileDialog.Open();
+				}
+				if (ImGui::BeginMenu("Add Shape"))
+				{
+					if (ImGui::MenuItem("Sphere")) {}
+					if (ImGui::MenuItem("Box")) {}
+					if (ImGui::MenuItem("Ico Sphere")) {}
+					ImGui::EndMenu();
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
+		}
+	    fileDialog.Display();
+		if (fileDialog.HasSelected())
+		{
+			std::shared_ptr<GXModelObject> obj = std::make_shared<GXModelObject>("GXGameObject");
+			obj->init(fileDialog.GetSelected().string().c_str());
+			addModelObject(obj);
+			fileDialog.ClearSelected();
+		}
+		ImGui::Begin("Simple Hierarchy");
+		GXint32 i = 0;
+		for (auto& obj : sceneModelObjects)
+		{
+			ImGui::PushID(i);
+			if (ImGui::Selectable(obj.second->getName(),selectedObject != nullptr && selectedObject->getID() == obj.second->getID())) {
+				selectedObject = obj.second;
+			}
+			i++;
+			ImGui::PopID();
+		}
+		ImGui::End();
+
 	}
 
 	void MainScene::drawGizmoOnSelectedObject()

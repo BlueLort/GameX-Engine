@@ -31,7 +31,7 @@ namespace gx {
 			return GXComponentClass::GX_GRAPHICS;
 		}
 		virtual void destroy()override {
-			graphicsBufferManager->destroy();
+			//graphicsBufferManager->destroy(); //mesh components are currently cached into the iomanager so i can't delete their GBM
 		}
 		void setOwnerID(GXuint32 GXID) override{
 			objectID = GXID;

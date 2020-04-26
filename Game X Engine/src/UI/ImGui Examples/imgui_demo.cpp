@@ -1,4 +1,3 @@
-#include "pch.h"
 // dear imgui, v1.73
 // (demo code)
 
@@ -871,7 +870,8 @@ static void ShowDemoWindowWidgets()
             ImGui::PopID();
             ImGui::SameLine();
         }
-        ImGui::NewLine();        
+        ImGui::NewLine();
+        ImGui::Text("Pressed %d times.", pressed_count);
         ImGui::TreePop();
     }
 
