@@ -76,6 +76,12 @@ namespace gx {
 		defaultShaders.push_back(sh);
 		GXE_DEBUG("Default Grid Shader Compiled Successfully");
 
+		sh = new GXShader();
+		sh->addShader(GX_VERTEX_SHADER, GLDefaultShadowMapShader[0]);
+		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultShadowMapShader[1]);
+		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultShadowMapShader[2]);
+		defaultShaders.push_back(sh);
+		GXE_DEBUG("Default Shadow Map Shader Compiled Successfully");
 	}
 
 	void GLShaderManager::destroy()

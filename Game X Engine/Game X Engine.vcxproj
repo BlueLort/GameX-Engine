@@ -102,12 +102,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="3rdParty\ImGuizmo\ImGuizmo.cpp" />
-    <ClCompile Include="3rdParty\ImGUI\examples\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="3rdParty\ImGUI\examples\imgui_impl_sdl.cpp" />
-    <ClCompile Include="3rdParty\ImGUI\imgui.cpp" />
-    <ClCompile Include="3rdParty\ImGUI\imgui_demo.cpp" />
-    <ClCompile Include="3rdParty\ImGUI\imgui_draw.cpp" />
-    <ClCompile Include="3rdParty\ImGUI\imgui_widgets.cpp" />
+    <ClCompile Include="3rdParty\ImGUI\examples\imgui_impl_opengl3.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGUI\examples\imgui_impl_sdl.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGUI\imgui.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGUI\imgui_demo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGUI\imgui_draw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGUI\imgui_widgets.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\Object\Debug\GXGrid.cpp" />
     <ClCompile Include="src\IOManagement\image\stb_image.cpp" />
     <ClCompile Include="src\IOManagement\IORequestHandler.cpp" />

@@ -603,4 +603,32 @@ void main()
 //Geometry Shader
 nullptr
     };
+    //Default Shadow Map Shader Shader
+    const char* GLDefaultShadowMapShader[] = {
+        //Vertex Shader
+        R"( 
+#version 430 core
+layout (location = 0) in vec3 aPos;
+
+uniform mat4 lightSpaceMatrix;
+uniform mat4 model;
+
+void main()
+{
+    gl_Position = lightSpaceMatrix * model * vec4(aPos, 1.0);
+}
+)"
+,
+//Fragment Shader
+R"( 
+void main()
+{             
+    gl_FragDepth = gl_FragCoord.z;
+}  
+)"
+,
+//Geometry Shader
+nullptr
+    };
+
 }

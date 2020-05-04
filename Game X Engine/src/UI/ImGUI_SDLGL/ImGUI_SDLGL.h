@@ -6,7 +6,7 @@
 #include <ImGUI/examples/imgui_impl_opengl3.h>
 
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
-extern inline void setMouseButton(GXuint32 button, bool val);
+//extern inline void setMouseButton(GXuint32 button, bool val);
 namespace gx {
 	class GX_DLL ImGUI_SDLGL
 	{
@@ -116,7 +116,7 @@ namespace gx {
 	}
 	template<>
 	inline GXint32 ImGUI_SDLGL::handleEvent<gx::event::MousePressEvent>(std::shared_ptr<gx::event::MousePressEvent>& Event) {
-		setMouseButton(Event->getKeyVal() - 1, true);
+		//setMouseButton(Event->getKeyVal() - 1, true);// function should be modified externally first
 		return 1;
 	}
 

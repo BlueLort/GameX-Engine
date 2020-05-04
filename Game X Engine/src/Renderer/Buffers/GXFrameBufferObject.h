@@ -11,8 +11,8 @@ namespace gx {
 	class GX_DLL GXFrameBuffer {
 	public:
 		//init frame buffer with defaul RBO
-		inline void init(GXint32 width, GXint32 height) {
-			glFBO.init(width, height);
+		inline void init(GXint32 width, GXint32 height,GXBool initDepthStencilRBO = true) {
+			glFBO.init(width, height, initDepthStencilRBO);
 		}
 		inline void use(GXFBOBindMethod method) {
 			glFBO.use(method);
