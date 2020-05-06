@@ -15,6 +15,7 @@ namespace gx {
 		inline static void setViewPort(GXuint32 Width, GXuint32 Height) { glViewport(0, 0, Width, Height); }
 		inline static void enableFlag(GXRendererFlag flag) {glEnable(flag);}
 		inline static void disableFlag(GXRendererFlag flag) {glDisable(flag);}
+		inline static void setCullFace(GXCullFace cullingFace) { glCullFace(cullingFace); }
 		inline static void clearBufferBits(GXint32 bits) {glClear(bits);}
 		inline static void setClearColor(GXFloat r,GXFloat g,GXFloat b,GXFloat a ) {glClearColor(r,g,b,a);}
 		inline static void setLineWidth(GXFloat width){ glLineWidth(width); }

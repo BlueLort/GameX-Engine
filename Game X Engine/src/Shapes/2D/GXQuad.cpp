@@ -3,7 +3,7 @@
 
 namespace gx {
 	GXuint32 GXQuad::currentID = 0;
-	void GXQuad::update(float deltaTime,const GXShader* glshader)
+	void GXQuad::draw(const GXShader* glshader)
 	{
 		graphicsBufferManager->use();
 		GLRenderer::getInstance().draw(graphicsBufferManager->getNumberOfElements(), RenderType::GX_TRIANGLES, false);

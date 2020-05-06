@@ -3,6 +3,7 @@
 #include "Renderer/Enums.h"
 #include "Renderer/Texture/GXTexture2D.h"
 #include "../Window/GXWindow.h"
+static GXFloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 }; //black color if i can't tell its shadow or not then let it be without shadows
 namespace gx {
 	constexpr GXuint32 GX_ATTACHMENTS = 6;
 	class GX_DLL GLFrameBuffer {
@@ -15,16 +16,16 @@ namespace gx {
 			glGenFramebuffers(1, &ID);
 			glBindFramebuffer(GL_FRAMEBUFFER, ID);
 			if (initDepthStencilRBO) {
-
 				//Render Buffer Object
 				glGenRenderbuffers(1, &RBO);
 				glBindRenderbuffer(GL_RENDERBUFFER, RBO);
 				glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
 				glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
+				if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+					GXE_ERROR("Error Creating FBO !");
+				}
 			}
-			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-				GXE_ERROR("Error Creating FBO !");
-			}
+		
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
@@ -67,11 +68,12 @@ namespace gx {
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + type, GL_TEXTURE_2D, textureAttachments[type], 0);
 				break;
 			case gx::GX_DEPTH_TEXTURE:
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 1024/*DirectionalLight::SHADOW_RESOLUTION*/, 1024/* DirectionalLight::SHADOW_RESOLUTION*/, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,SHADOW_RESOLUTION,SHADOW_RESOLUTION, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+				glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, textureAttachments[type], 0);
 				// depth for the framebuffer -> should disable rbo depth and stencil and use stencil texture attachment if needed
 				// mostly this used with Shadow Mapping

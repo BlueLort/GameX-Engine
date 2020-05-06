@@ -95,14 +95,20 @@ namespace gx {
 
 	void GXPlane::update(GXFloat deltaTime)
 	{
+		for (auto& component : components) {
+			component->update(deltaTime);
+		}
+	}
+
+	void GXPlane::draw()
+	{
 		//For rendering as rendering happens in GXMeshComponent
 		this->shader->use();
 		SceneLightManager::getInstance().setLightValues(this->shader);
 		this->shader->setMat4("model", transform.getModel());
 		this->shader->setMat4("vp", EditorCamera::getInstance().getPVMatrix());
 		for (auto& component : components) {
-			component->update(deltaTime);
-			component->draw(shader,RenderType::GX_TRIANGLES, isWireFrame);
+			component->draw(shader, RenderType::GX_TRIANGLES, isWireFrame);
 		}
 	}
 

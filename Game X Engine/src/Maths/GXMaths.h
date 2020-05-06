@@ -41,6 +41,9 @@ namespace gx {
 		inline static GXMat4 prespective(const float& FOV,const float& AR,const float& zNear,const float& zFar ) {
 			return glm::perspective(FOV,AR,zNear,zFar);
 		}
+		inline static GXMat4 ortho(const float& left, const float& right, const float& bottom, const float& top, const float& zNear, const float& zFar) {
+			return glm::ortho(left, right, bottom, top, zNear, zFar);
+		}
 		inline static GXMat4 lookAt(const GXVec3& pos, const GXVec3& target, const GXVec3& up) {
 			return glm::lookAt(pos, target, up);
 		}

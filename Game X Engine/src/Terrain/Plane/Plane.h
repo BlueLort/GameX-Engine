@@ -17,6 +17,7 @@ namespace gx {
 		void init(const GXFloat* heights);
 		void uploadToBuffer(GXuint32 textureID);
 		virtual void update(GXFloat deltaTime) override;
+		virtual void draw() override;
 		virtual void destroy() override;
 		~GXPlane() { if (indices != nullptr)delete[] indices; }
 	protected:

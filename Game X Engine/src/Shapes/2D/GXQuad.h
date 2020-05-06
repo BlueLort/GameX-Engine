@@ -34,7 +34,7 @@ namespace gx {
 			graphicsBufferManager->endStream();
 		}
 		//GXTransform transform;
-		virtual void update(float deltaTime,const GXShader* shader);
+		virtual void draw(const GXShader* shader);
 		virtual void destroy();
 
 		inline GXuint32 getID()const { return TEXID; }

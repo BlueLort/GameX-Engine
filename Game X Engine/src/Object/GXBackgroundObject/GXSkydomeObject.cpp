@@ -14,6 +14,11 @@ namespace gx {
 	}
 
 	void GXSkydomeObject::update(GXFloat deltaTime) {
+		for (auto& component : components) {
+			component->update(deltaTime);
+		}
+	}
+	void GXSkydomeObject::draw() {
 		//For rendering as rendering happens in GXMeshComponent
 		//First set the proper depth func to allow us draw skydome at the end of the frame
 		GXRenderer::getInstance().setDepthFunc(GXCompareFunc::GX_LEQUAL);
@@ -23,8 +28,7 @@ namespace gx {
 		this->shader->setMat4("view", EditorCamera::getInstance().getViewMatrix());
 		this->shader->setMat4("projection", EditorCamera::getInstance().getProjectionMatrix());
 		for (auto& component : components) {
-			component->update(deltaTime);
-			component->draw(shader,RenderType::GX_TRIANGLES,isWireFrame);
+			component->draw(shader, RenderType::GX_TRIANGLES, isWireFrame);
 		}
 		//reset values to default
 		GXRenderer::getInstance().setDepthFunc(GXCompareFunc::GX_LESS);

@@ -23,16 +23,30 @@ namespace gx {
 									GBuffer->getAttachmentIndex(GX_NORMAL_TEXTURE),
 									GBuffer->getAttachmentIndex(GX_ID_TEXTURE) };
 		GBuffer->setDrawBuffeers(4, attachments);
+		gBufferShader = GXShaderManager::getShader(GXCompiledShader::DEFAULT_GBUFFER);
+		gBufferShader->use();
+		gBufferShader->setInt("dirLightDepthMap", SHADOW_TEX_LOCATION);
 
 		mainSceneBuffer.reset(new GXFrameBuffer());
 		mainSceneBuffer->init(width, height);
 		mainSceneBuffer->addTextureAttachment(GX_COLOR_TEXTURE);
+
+		dirLightShadowBuffer.reset(new GXFrameBuffer());
+		dirLightShadowBuffer->init(width, height,false);
+		dirLightShadowBuffer->addTextureAttachment(GX_DEPTH_TEXTURE);
+
 		lightingPassShader = GXShaderManager::getShader(GXCompiledShader::DEFAULT_DEFERRED);
 		lightingPassShader->use();
 		lightingPassShader->setInt("gAlbedoSpec", 0);
 		lightingPassShader->setInt("gPosition", 1);
-		lightingPassShader->setInt("gNormal", 2);
-	
+		lightingPassShader->setInt("gNormal", 2); 
+
+
+
+		shadowMappingPassShader = GXShaderManager::getShader(GXCompiledShader::DEFAULT_SHADOW_MAP);
+		shadowMappingPassShader->use();
+		shadowMappingPassShader->setMat4("lightSpaceMatrix", SceneLightManager::getInstance().getDirLight()->lightSpaceMatrix);
+
 		skydome.reset(new GXSkydomeObject());
 		skydome->init("res/models/sphere/spheres.obj");//will wait until it has been imported
 
@@ -64,12 +78,10 @@ namespace gx {
 
 	void MainScene::start()
 	{
-		GBuffer->use(GX_FBO_RW); // upload data to the GBUFFER
 		GXGraphicsContext::setViewPort(width, height);// let layers make viewport according to their resolution
 		for (auto ite : renderingFlags) {
 			GXGraphicsContext::enableFlag(ite);
 		}
-		GXGraphicsContext::clearBufferBits(GX_COLOR_BUFFER_BIT | GX_DEPTH_BUFFER_BIT | GX_STENCIL_BUFFER_BIT);
 
 	}
 
@@ -90,35 +102,11 @@ namespace gx {
 	{
 
 		updateModelRequests();
-		//Render selected object
-		GXRenderer::getInstance().setStencilFunc(GX_ALWAYS, 1, 0xFF);
-		GXRenderer::getInstance().setStencilMask(0xFF);
 		updateObjects(deltaTime);
-		selectObjectUnderCursor();
 		updatePlane(deltaTime);
-		GXRenderer::getInstance().setStencilMask(0x00);
 		skydome->update(deltaTime); //rendering to the COLOR_TEXTURE in the framebuffer
-		debuggingGrid->update(deltaTime);//TODO MAKE IT POSSIBLE TO HIDE THE GRID
-		updateSelectedObject(deltaTime);//TODO change outline approach [benchmark mathematical dilation]
-		
-		mainSceneBuffer->use(GX_FBO_RW); // now its time for lightpass
-		//disable stencil and depth testing during lighting pass
-		GXGraphicsContext::disableFlag(GX_DEPTH_TEST);
-		GXGraphicsContext::disableFlag(GX_STENCIL_TEST);
-		GXGraphicsContext::clearBufferBits(GX_COLOR_BUFFER_BIT);
-		lightingPassShader->use();
-		SceneLightManager::getInstance().setLightValues(lightingPassShader);
-		GXTexture2D::setActiveTexture(0);
-		GXTexture2D::use(GBuffer->getTextureID(GX_COLOR_TEXTURE));
-		GXTexture2D::setActiveTexture(1);
-		GXTexture2D::use(GBuffer->getTextureID(GX_POSITION_TEXTURE));
-		GXTexture2D::setActiveTexture(2);
-		GXTexture2D::use(GBuffer->getTextureID(GX_NORMAL_TEXTURE));
-
-		lightingPassShader->setVec3("viewPos", EditorCamera::getInstance().transform.position);
-		
-		quadRenderer->update(deltaTime, lightingPassShader);
-
+	
+		drawScene();
 
 	}
 
@@ -146,6 +134,55 @@ namespace gx {
 		ImGui::End();
 		GXTexture2D::stop();
 		
+	}
+
+	void MainScene::drawScene()
+	{
+		// render to shadow map
+		GXGraphicsContext::setViewPort(SHADOW_RESOLUTION, SHADOW_RESOLUTION);
+		dirLightShadowBuffer->use(GX_FBO_RW);
+		GXGraphicsContext::clearBufferBits(GX_DEPTH_BUFFER_BIT);
+		GXGraphicsContext::setCullFace(GX_FRONT);
+		drawObjects(shadowMappingPassShader);
+		drawPlane(shadowMappingPassShader);
+		GXGraphicsContext::setCullFace(GX_BACK);
+		GXGraphicsContext::setViewPort(width, height);
+
+		// Render selected object & scene objects using the defferred rendering
+		GBuffer->use(GX_FBO_RW); // upload data to the GBUFFER
+		GXGraphicsContext::clearBufferBits(GX_COLOR_BUFFER_BIT | GX_DEPTH_BUFFER_BIT | GX_STENCIL_BUFFER_BIT);
+		GXRenderer::getInstance().setStencilFunc(GX_ALWAYS, 1, 0xFF);
+		GXRenderer::getInstance().setStencilMask(0xFF);
+		gBufferShader->use();
+		GXTexture2D::setActiveTexture(SHADOW_TEX_LOCATION);
+		GXTexture2D::use(dirLightShadowBuffer->getTextureID(GX_DEPTH_TEXTURE));
+		drawObjects();
+		GXRenderer::getInstance().setStencilMask(0x00);
+		skydome->draw();
+		drawPlane();
+		debuggingGrid->draw();//TODO MAKE IT POSSIBLE TO HIDE THE GRID
+		drawSelectedObject();//TODO change outline approach [benchmark mathematical dilation]
+		selectObjectUnderCursor();
+		// render scene as normal [deffered rendering] with shadow mapping (using depth map)
+		mainSceneBuffer->use(GX_FBO_RW); // now its time for lightpass
+		//disable stencil and depth testing during lighting pass
+		GXGraphicsContext::disableFlag(GX_DEPTH_TEST);
+		GXGraphicsContext::disableFlag(GX_STENCIL_TEST);
+		GXGraphicsContext::clearBufferBits(GX_COLOR_BUFFER_BIT);
+		lightingPassShader->use();
+		SceneLightManager::getInstance().setLightValues(lightingPassShader);
+		GXTexture2D::setActiveTexture(0);
+		GXTexture2D::use(GBuffer->getTextureID(GX_COLOR_TEXTURE));
+		GXTexture2D::setActiveTexture(1);
+		GXTexture2D::use(GBuffer->getTextureID(GX_POSITION_TEXTURE));
+		GXTexture2D::setActiveTexture(2);
+		GXTexture2D::use(GBuffer->getTextureID(GX_NORMAL_TEXTURE));
+
+
+		lightingPassShader->setVec3("viewPos", EditorCamera::getInstance().transform.position);
+
+		quadRenderer->draw(lightingPassShader);
+
 	}
 
 	GXuint32 MainScene::selectObjectUnderCursor()
@@ -193,7 +230,7 @@ namespace gx {
 		return false;
 	}
 
-	GXBool MainScene::updateSelectedObject(GXFloat deltaTime)
+	GXBool MainScene::drawSelectedObject()
 	{
 		if (selectedObject == nullptr)return false;
 		//Render selected object outline
@@ -202,11 +239,55 @@ namespace gx {
 		GXRenderer::getInstance().setStencilFunc(GX_NOTEQUAL, 1, 0xFF);
 		GXRenderer::getInstance().setStencilMask(0x00);
 		GXGraphicsContext::disableFlag(GX_DEPTH_TEST);
-		selectedObject->update(deltaTime);
+		selectedObject->draw();
 		selectedObject->setShader(objShader);//return to object shader
 		GXRenderer::getInstance().setStencilMask(0xFF);
 		GXGraphicsContext::enableFlag(GX_DEPTH_TEST);
 		return true;
+	}
+
+	void MainScene::drawObjects()
+	{
+		auto ite = sceneModelObjects.begin();
+		while (ite != sceneModelObjects.end()) {
+			ite->second->draw();
+			ite++;
+		}
+	}
+
+	GXBool MainScene::drawPlane()
+	{
+		if (mainPlane.get() != nullptr) {
+			mainPlane->draw();
+			return true;
+		}
+		return false;
+	}
+
+	void MainScene::drawObjects(GXShader* shader)
+	{
+		auto ite = sceneModelObjects.begin();
+		GXShader* temp = nullptr;
+		while (ite != sceneModelObjects.end()) {
+			temp = ite->second->getShader();
+			ite->second->setShader(shader);
+			ite->second->draw();
+			ite->second->setShader(temp);
+			ite++;
+		}
+
+	}
+
+	GXBool MainScene::drawPlane(GXShader* shader)
+	{
+		if (mainPlane.get() != nullptr) {
+			GXShader* temp = mainPlane->getShader();
+			mainPlane->setShader(shader);
+			mainPlane->draw();
+			mainPlane->setShader(temp);
+			return true;
+		}
+		return false;
 	}
 
 	void MainScene::manipulateSelectedObject()

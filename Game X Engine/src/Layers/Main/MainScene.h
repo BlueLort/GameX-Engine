@@ -42,10 +42,17 @@ namespace gx {
 		virtual void onGUIRender()override;
 		virtual void mousePressRequest() { if(selected)mouseWasPressed = true; }
 	protected:
+		virtual void drawScene();
+
 		virtual GXuint32 selectObjectUnderCursor();
 		virtual void updateObjects(GXFloat deltaTime);
 		virtual GXBool updatePlane(GXFloat deltaTime);
-		virtual GXBool updateSelectedObject(GXFloat deltaTime);
+
+		virtual GXBool drawSelectedObject();
+		virtual void drawObjects();
+		virtual GXBool drawPlane();
+		virtual void drawObjects(GXShader* shader);
+		virtual GXBool drawPlane(GXShader* shader);
 		virtual void manipulateSelectedObject();
 		virtual void displayHierarchy();
 		virtual void drawGizmoOnSelectedObject();
@@ -72,7 +79,10 @@ namespace gx {
 
 		std::vector<GXRendererFlag> renderingFlags;
 		std::unique_ptr<GXFrameBuffer> GBuffer;
+		std::unique_ptr<GXFrameBuffer> dirLightShadowBuffer;
+		GXShader* gBufferShader = nullptr;
 		GXShader* lightingPassShader = nullptr;
+		GXShader* shadowMappingPassShader = nullptr;
 		GXQuad* quadRenderer = nullptr;
 		std::unique_ptr<GXFrameBuffer> mainSceneBuffer;
 		friend class PlaneEditorLayer;

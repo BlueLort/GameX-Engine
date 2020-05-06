@@ -32,6 +32,9 @@ namespace gx {
 		inline static void disableFlag(GXRendererFlag flag) {
 			OpenGLContext::disableFlag(flag);
 		}
+		inline static void setCullFace(GXCullFace cullingFace) {
+			OpenGLContext::setCullFace(cullingFace);
+		}
 		inline static void clearBufferBits(GXint32 bits) {
 			OpenGLContext::clearBufferBits(bits);
 		}

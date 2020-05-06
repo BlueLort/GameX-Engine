@@ -67,13 +67,19 @@ namespace gx {
 	}
 
 	void GXGrid::update(float deltaTime) {
+		for (auto& component : components) {
+			component->update(deltaTime);
+		}
+	}
+
+	void GXGrid::draw()
+	{
 		//For rendering as rendering happens in GXMeshComponent
 		this->shader->use();
 		this->shader->setMat4("model", GXMat4(1.0f));//identity
 		this->shader->setMat4("vp", EditorCamera::getInstance().getPVMatrix());
 		for (auto& component : components) {
-			component->update(deltaTime);
-			component->draw(shader,RenderType::GX_LINES, false);
+			component->draw(shader, RenderType::GX_LINES, false);
 		}
 	}
 

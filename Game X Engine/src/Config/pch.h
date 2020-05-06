@@ -26,6 +26,7 @@
 #include <future>
 //Project Classes
 #include "GX/GXTypes.h"
+#include "GX/GXConstants.h"
 #include "Logging/Logger.h"
 #include "Events/Event.h"
 #include "Events/KeyEvent.h"

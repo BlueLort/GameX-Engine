@@ -23,7 +23,8 @@ namespace gx {
 
 		virtual void init(const char* fileName, const char* shaderPath = nullptr) = 0;
 		virtual void init(const char* shaderPath = nullptr) {};
-		virtual void update(float deltaTime) = 0;
+		virtual void update(GXFloat deltaTime) = 0;
+		virtual void draw() = 0;
 		virtual void destroy() = 0;
 
 		inline void addComponent(const std::shared_ptr<GXComponent>& component) {

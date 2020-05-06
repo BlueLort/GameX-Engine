@@ -24,6 +24,8 @@ namespace gx {
 		std::shared_ptr<DirectionalLight> getDirLight() const { return dirLight; }
 		inline void setLightValues(GXShader* shader) {
 			//Directional light
+			shader->setMat4("lightSpaceMatrix", dirLight->lightSpaceMatrix);
+			shader->setVec3("lightPos", dirLight->virtualPos);
 			shader->setVec3("dirLight.direction", dirLight->direction);
 			shader->setVec3("dirLight.ambient", dirLight->ambientColor);
 			shader->setVec3("dirLight.diffuse", dirLight->diffuseColor);

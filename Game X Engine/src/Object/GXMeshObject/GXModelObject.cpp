@@ -17,7 +17,13 @@ namespace gx {
 	}
 
 	void GXModelObject::update(float deltaTime) {
-		//For rendering as rendering happens in GXMeshComponent
+		for (auto& component : components) {
+			component->update(deltaTime);
+		}
+	}
+
+	void GXModelObject::draw()
+	{
 		this->shader->use();
 		SceneLightManager::getInstance().setLightValues(this->shader);
 		this->shader->setMat4("model", transform.getModel());
@@ -25,8 +31,7 @@ namespace gx {
 		this->shader->setFloat("material.shininess", 32.0f);
 		this->shader->setUInt("objID", this->GXID);
 		for (auto& component : components) {
-			component->update(deltaTime);
-			component->draw(shader, RenderType::GX_TRIANGLES,isWireFrame);
+			component->draw(shader, RenderType::GX_TRIANGLES, isWireFrame);
 		}
 	}
 
