@@ -40,7 +40,7 @@ namespace gx {
 			canUpdate = true;
 			if (this->texID != 0)GXTexture2D::destroy(this->texID);
 			GXTexture2D tex;
-			tex.init(texColors, width, depth, GX_RGB, GX_DIFFUSE, GXTexture2DFilteringMethod::GX_NEAREST);
+			tex.init(texColors, width, depth, GX_RGB, GX_RGB, GX_DIFFUSE, GXTexture2DFilteringMethod::GX_NEAREST, GX_UNSIGNED_BYTE);
 			this->texID = tex.getID();
 			plane->uploadToBuffer(texID);
 			plane->isReady = true;

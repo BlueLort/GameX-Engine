@@ -26,7 +26,7 @@ namespace gx {
 		gBufferShader = GXShaderManager::getShader(GXCompiledShader::DEFAULT_GBUFFER);
 		gBufferShader->use();
 		gBufferShader->setInt("dirLightDepthMap", SHADOW_TEX_LOCATION);
-
+	
 		mainSceneBuffer.reset(new GXFrameBuffer());
 		mainSceneBuffer->init(width, height);
 		mainSceneBuffer->addTextureAttachment(GX_COLOR_TEXTURE);
@@ -40,8 +40,6 @@ namespace gx {
 		lightingPassShader->setInt("gAlbedoSpec", 0);
 		lightingPassShader->setInt("gPosition", 1);
 		lightingPassShader->setInt("gNormal", 2); 
-
-
 
 		shadowMappingPassShader = GXShaderManager::getShader(GXCompiledShader::DEFAULT_SHADOW_MAP);
 		shadowMappingPassShader->use();
@@ -67,6 +65,7 @@ namespace gx {
 
 		fileDialog.SetTitle("File Browser");
 		fileDialog.SetTypeFilters({ ".obj", ".fbx" });
+		targetRender = GX_MAINSCENE;
 	}
 
 	void MainScene::destroy()
@@ -121,7 +120,24 @@ namespace gx {
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 		ImVec2 windowSize = ImGui::GetContentRegionAvail();
-		ImGui::Image(reinterpret_cast<void*>(mainSceneBuffer->getTextureID(GX_COLOR_TEXTURE)), windowSize, ImVec2(0, 1), ImVec2(1, 0));
+		switch (targetRender)
+		{
+		case gx::GX_MAINSCENE:
+			ImGui::Image(reinterpret_cast<void*>(mainSceneBuffer->getTextureID(GX_COLOR_TEXTURE)), windowSize, ImVec2(0, 1), ImVec2(1, 0));
+			break;
+		case gx::GX_COLORGBUFFER:
+			ImGui::Image(reinterpret_cast<void*>(GBuffer->getTextureID(GX_COLOR_TEXTURE)), windowSize, ImVec2(0, 1), ImVec2(1, 0));
+			break;
+		case gx::GX_POSGBUFFER:
+			ImGui::Image(reinterpret_cast<void*>(GBuffer->getTextureID(GX_POSITION_TEXTURE)), windowSize, ImVec2(0, 1), ImVec2(1, 0));
+			break;
+		case gx::GX_NORMALGBUFFER:
+			ImGui::Image(reinterpret_cast<void*>(GBuffer->getTextureID(GX_NORMAL_TEXTURE)), windowSize, ImVec2(0, 1), ImVec2(1, 0));
+			break;
+		default:
+			break;
+		}
+		
 		drawGizmoOnSelectedObject();//Draw Guizmo on selected Object
 		ImGui::PopStyleVar(3);
 		ImVec2 mops = ImGui::GetMousePos();
@@ -374,6 +390,7 @@ namespace gx {
 			//ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(7.0f, 0.6f, 0.6f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(7.0f, 0.7f, 0.7f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(7.0f, 0.8f, 0.8f));
+			selectedObject->onGUIRender();
 			if (ImGui::Button("Delete Object")) {
 				sceneModelObjects.erase(selectedObject->getID());
 				selectedObject->destroy();
@@ -381,11 +398,14 @@ namespace gx {
 			}
 			ImGui::PopStyleColor(2);
 
+			
+
 			//TODO HANDLE THIS WITH A MEMORY MANAGER
 			delete[] position;
 			delete[] rotation;
 			delete[] scale;
 		}
+		
 		ImGui::End();
 	}
 
@@ -406,6 +426,14 @@ namespace gx {
 					if (ImGui::MenuItem("Sphere")) {}
 					if (ImGui::MenuItem("Box")) {}
 					if (ImGui::MenuItem("Ico Sphere")) {}
+					ImGui::EndMenu();
+				}
+				if (ImGui::BeginMenu("Render Target"))
+				{
+					if (ImGui::MenuItem("Main Scene")) { targetRender = GX_MAINSCENE; }
+					if (ImGui::MenuItem("GBuffer Albedo")) { targetRender = GX_COLORGBUFFER; }
+					if (ImGui::MenuItem("GBuffer Position")) { targetRender = GX_POSGBUFFER; }
+					if (ImGui::MenuItem("GBuffer Normal")) { targetRender = GX_NORMALGBUFFER; }
 					ImGui::EndMenu();
 				}
 				ImGui::EndMenu();

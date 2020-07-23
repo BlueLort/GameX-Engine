@@ -11,7 +11,7 @@ namespace gx {
 			ID = id;
 			type = Type;
 		}
-		void init(const uint8_t* data, GXint32 width, GXint32 height, GXTexture2DColorType colorType, GXTexture2DType Type, GXTexture2DFilteringMethod method);
+		void init(const void* data, GXint32 width, GXint32 height, gx::GXTexture2DColorType colorTypeInternal, gx::GXTexture2DColorType colorType, gx::GXTexture2DType Type, gx::GXTexture2DFilteringMethod method, gx::GXEnumType datatype);
 		inline static void setActiveTexture(GXuint32 pos) { glActiveTexture(GL_TEXTURE0 + pos); }
 		inline void use() {
 			glBindTexture(GL_TEXTURE_2D,ID);

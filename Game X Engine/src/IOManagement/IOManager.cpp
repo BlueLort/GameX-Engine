@@ -3,7 +3,7 @@
 static std::mutex IMAGE_READ_GAURD;
 namespace gx {
 	namespace io {
-	
+
 		std::unordered_map<std::string, GXuint32> IOManager::texIDs;
 		std::unordered_map<std::string, std::vector<std::shared_ptr<GXMeshComponent>>> IOManager::modelsImported;
 		std::unordered_map<std::string, std::string> IOManager::textImported;
@@ -20,22 +20,22 @@ namespace gx {
 				{
 					out += line;
 				}
-				GXE_DEBUG("Text File imported successfully\nPath: {0}",filePath);
+				GXE_DEBUG("Text File imported successfully\nPath: {0}", filePath);
 				textImported[std::string(filePath)] = out;
 				return out;
 			}
 			GXE_ERROR("Failed to import text file\nPath: {0}", filePath);
 			return out;
 		}
-		std::shared_ptr<ImageData> IOManager::imageRead(const char* filePath, GXTexture2DType Type,bool async)
+		std::shared_ptr<ImageData> IOManager::imageRead(const char* filePath, GXTexture2DType Type, bool async)
 		{
 			std::lock_guard<std::mutex> locker(IMAGE_READ_GAURD);
 			std::shared_ptr<ImageData> iData;
 			iData.reset(new ImageData());
-			iData->data=stbi_load(filePath, &iData->width, &iData->height, &iData->nChannels, 0);
+			iData->data = stbi_load(filePath, &iData->width, &iData->height, &iData->nChannels, 0);
 			iData->type = Type;
-			strcpy_s(iData->filePath,filePath);
-			if(async)texturesNeedToBeProcessed.emplace(iData);
+			strcpy_s(iData->filePath, filePath);
+			if (async)texturesNeedToBeProcessed.emplace(iData);
 			return iData;
 		}
 		std::shared_ptr<GXTexture2D> IOManager::readTexture(std::shared_ptr<ImageData>& iData) {
@@ -47,33 +47,34 @@ namespace gx {
 				return tex;
 			}
 			if (iData->data) {
-				tex->init(iData->data, iData->width,iData->height,iData->nChannels==4?GX_RGBA:GX_RGB,iData->type,GXTexture2DFilteringMethod::GX_LINEAR);
+				GXTexture2DColorType textype = (iData->nChannels == 4 ? GX_RGBA : GX_RGB);
+				tex->init(iData->data, iData->width, iData->height, textype, textype, iData->type, GXTexture2DFilteringMethod::GX_LINEAR, GX_UNSIGNED_BYTE);
 				GXE_DEBUG("Texture2D imported successfully\nPath: {0}", iData->filePath);
 				texIDs[fPath] = tex->getID();
 			}
 			else {
 				GXE_ERROR("Failed to import Texture2D\nPath: {0}", iData->filePath);
 			}
-			
+
 			//Data Freed on destruction using the destructor of ImageData
 			return tex;
 		}
-		
-		void IOManager::importModel(const char* filePath, const char* fileName )
+
+		void IOManager::importModel(const char* filePath, const char* fileName)
 		{
 			std::string sFilePath(filePath);
 			std::string sFileName(fileName);
-			auto ite = modelsImported.find(sFilePath+sFileName);
+			auto ite = modelsImported.find(sFilePath + sFileName);
 			if (ite != modelsImported.end()) {
 				return;
-			} 
+			}
 			asyncTasks.emplace_back(std::async(std::launch::async, assimpRead, sFilePath, sFileName));
 		}
 
-		
-		
+
+
 		//make a copy of the string to avoid garbage on threading
-		void IOManager::assimpRead(std::string filePath,std::string fileName) {
+		void IOManager::assimpRead(std::string filePath, std::string fileName) {
 			//most of the logic can be found in learnopengl.com
 			Assimp::Importer importer;
 			std::string file(filePath);
@@ -85,7 +86,7 @@ namespace gx {
 				| aiProcess_FlipUVs
 				| aiProcess_GenNormals
 				| aiProcess_CalcTangentSpace
-				
+
 			);
 			if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 			{
@@ -93,42 +94,42 @@ namespace gx {
 
 				return;
 			}
-			meshesNeedToBeProcessed.emplace(assimpProcessNode(filePath.c_str(), fileName.c_str() , scene->mRootNode, scene));
+			meshesNeedToBeProcessed.emplace(assimpProcessNode(filePath.c_str(), fileName.c_str(), scene->mRootNode, scene));
 		}
 
-		
-		
-		
+
+
+
 		std::pair<std::string, std::vector< std::shared_ptr<MeshData> > > IOManager::assimpProcessNode(const char* filePath, const char* fileName, aiNode* node, const aiScene* scene)
 		{
 			std::vector<std::shared_ptr<MeshData>> currentNodeMeshes;
 			std::vector< std::future< std::pair<std::string, std::vector< std::shared_ptr<MeshData>> > > > loadedMeshes;
 			for (GXuint32 i = 0; i < node->mNumChildren; i++)
 			{
-				loadedMeshes.emplace_back(std::async(std::launch::async,assimpProcessNode,filePath,fileName,node->mChildren[i], scene));
+				loadedMeshes.emplace_back(std::async(std::launch::async, assimpProcessNode, filePath, fileName, node->mChildren[i], scene));
 			}
 			for (GXuint32 i = 0; i < node->mNumMeshes; i++)
 			{
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-				currentNodeMeshes.emplace_back(assimpProcessMesh(filePath,fileName, mesh, scene));
+				currentNodeMeshes.emplace_back(assimpProcessMesh(filePath, fileName, mesh, scene));
 			}
 			for (GXint32 i = 0; i < loadedMeshes.size(); i++) {
 				std::vector<std::shared_ptr<MeshData>> childNodeMeshes = loadedMeshes[i].get().second;
-				currentNodeMeshes.insert(currentNodeMeshes.end(),childNodeMeshes.begin(), childNodeMeshes.end());
+				currentNodeMeshes.insert(currentNodeMeshes.end(), childNodeMeshes.begin(), childNodeMeshes.end());
 			}
 			std::string file = std::string(filePath);
 			file += fileName;
-			return {file ,currentNodeMeshes };
+			return { file ,currentNodeMeshes };
 		}
-		
-		
+
+
 		std::shared_ptr<MeshData> IOManager::assimpProcessMesh(const char* filePath, const char* fileName, aiMesh* mesh, const aiScene* scene)
 		{
 			std::shared_ptr<MeshData> mData;
 			mData.reset(new MeshData());
-			
+
 			//Vertices
-			for ( GXuint32 i = 0; i < mesh->mNumVertices; i++)
+			for (GXuint32 i = 0; i < mesh->mNumVertices; i++)
 			{
 				Vertex3D vert;
 				vert.position.x = mesh->mVertices[i].x;
@@ -137,7 +138,7 @@ namespace gx {
 				vert.normal.x = mesh->mNormals[i].x;
 				vert.normal.y = mesh->mNormals[i].y;
 				vert.normal.z = mesh->mNormals[i].z;
-				if (mesh->mTextureCoords[0]) 
+				if (mesh->mTextureCoords[0])
 				{
 					vert.texCoords.x = mesh->mTextureCoords[0][i].x;
 					vert.texCoords.y = mesh->mTextureCoords[0][i].y;
@@ -162,25 +163,25 @@ namespace gx {
 					mData->indices.emplace_back(face.mIndices[j]);
 			}
 
-			
+
 			//Materials/Textures
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
 			//diffuse
-			std::vector<std::shared_ptr<ImageData>> diffuse = assimpImportTextures2D(filePath,material, aiTextureType_DIFFUSE,GXTexture2DType::GX_DIFFUSE);
+			std::vector<std::shared_ptr<ImageData>> diffuse = assimpImportTextures2D(filePath, material, aiTextureType_DIFFUSE, GXTexture2DType::GX_DIFFUSE);
 			mData->texturesData.insert(mData->texturesData.end(), diffuse.begin(), diffuse.end());
 			//specular
-			std::vector<std::shared_ptr<ImageData>> specular = assimpImportTextures2D(filePath,material, aiTextureType_SPECULAR,  GXTexture2DType::GX_SPECULAR);
+			std::vector<std::shared_ptr<ImageData>> specular = assimpImportTextures2D(filePath, material, aiTextureType_SPECULAR, GXTexture2DType::GX_SPECULAR);
 			mData->texturesData.insert(mData->texturesData.end(), specular.begin(), specular.end());
 			//normal
-			std::vector<std::shared_ptr<ImageData>> normal = assimpImportTextures2D(filePath,material, aiTextureType_HEIGHT,  GXTexture2DType::GX_NORMAL);
+			std::vector<std::shared_ptr<ImageData>> normal = assimpImportTextures2D(filePath, material, aiTextureType_HEIGHT, GXTexture2DType::GX_NORMAL);
 			mData->texturesData.insert(mData->texturesData.end(), normal.begin(), normal.end());
 			//height
-			std::vector<std::shared_ptr<ImageData>> height = assimpImportTextures2D(filePath,material, aiTextureType_AMBIENT,  GXTexture2DType::GX_HEIGHT);
+			std::vector<std::shared_ptr<ImageData>> height = assimpImportTextures2D(filePath, material, aiTextureType_AMBIENT, GXTexture2DType::GX_HEIGHT);
 			mData->texturesData.insert(mData->texturesData.end(), height.begin(), height.end());
 			return mData;
 		}
-		
+
 		std::vector<std::shared_ptr<ImageData>> IOManager::assimpImportTextures2D(const char* filePath, aiMaterial* mat, aiTextureType type, GXTexture2DType gxTexType)
 		{
 			std::vector<std::shared_ptr<ImageData>> textures;
@@ -190,27 +191,26 @@ namespace gx {
 				mat->GetTexture(type, i, &fileName);
 				aiString file(filePath);
 				file.Append(fileName.C_Str());
-				textures.push_back(imageRead(file.C_Str(), gxTexType,false));
+				textures.push_back(imageRead(file.C_Str(), gxTexType, false));
 			}
 			return textures;
 		}
 
-	
-		
+
+
 		std::shared_ptr<GXGraphicsBufferManager> IOManager::createBufferLayout(std::vector<Vertex3D>& verts, std::vector<GXuint32>& indices, std::vector<std::shared_ptr<GXTexture2D>>& textures)
 		{
 			std::shared_ptr<GXGraphicsBufferManager> Buffer;
 			Buffer.reset(new GXGraphicsBufferManager());
 			Buffer->initFull(&verts[0], sizeof(Vertex3D) * verts.size(), sizeof(Vertex3D));
-			Buffer->uploadIndicesToBuffer(&indices[0], indices.size() * sizeof(GXuint32),indices.size());
+			Buffer->uploadIndicesToBuffer(&indices[0], indices.size() * sizeof(GXuint32), indices.size());
 			Buffer->setAttribPointer(0, 3, GX_FLOAT, offsetof(Vertex3D, position));
 			Buffer->setAttribPointer(1, 3, GX_FLOAT, offsetof(Vertex3D, normal));
 			Buffer->setAttribPointer(2, 2, GX_FLOAT, offsetof(Vertex3D, texCoords));
 			Buffer->setAttribPointer(3, 3, GX_FLOAT, offsetof(Vertex3D, tangent));
 			Buffer->setAttribPointer(4, 3, GX_FLOAT, offsetof(Vertex3D, bitangent));
-			//TODO Add Tangents bitangents later
 			Buffer->endStream();
-			for(GXint32 i=0;i<textures.size();i++){
+			for (GXint32 i = 0; i < textures.size(); i++) {
 				Buffer->addTexture(textures[i]);
 			}
 			return Buffer;
@@ -228,12 +228,12 @@ namespace gx {
 						textures.emplace_back(readTexture(tex));
 					}
 					//TODO HANDLE GXID initializing to this component
-					components.emplace_back(new GXMeshComponent(mesh->ownerID,createBufferLayout(mesh->verts, mesh->indices, textures),std::make_shared<GXPickingCollider>(mesh->verts)));
+					components.emplace_back(new GXMeshComponent(mesh->ownerID, createBufferLayout(mesh->verts, mesh->indices, textures), std::make_shared<GXPickingCollider>(mesh->verts)));
 				}
 
 				GXE_INFO("Model has been imported successfully ,File Path: {0} ", meshes.first);
 				modelsImported[meshes.first] = components;
-				
+
 
 			}
 

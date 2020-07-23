@@ -14,8 +14,8 @@ namespace gx {
 		inline void init(GXuint32 id, GXTexture2DType Type) {
 			gltexture.init(id, Type);
 		}
-		inline void init(const uint8_t* data, GXint32 width, GXint32 height, gx::GXTexture2DColorType colorType, gx::GXTexture2DType Type, gx::GXTexture2DFilteringMethod method) {
-			gltexture.init(data, width, height, colorType, Type, method);
+		inline void init(const void* data, GXint32 width, GXint32 height, gx::GXTexture2DColorType colorTypeInternal, gx::GXTexture2DColorType colorType, gx::GXTexture2DType Type, gx::GXTexture2DFilteringMethod method, gx::GXEnumType datatype) {
+			gltexture.init(data, width, height, colorTypeInternal, colorType, Type, method, datatype);
 		}
 		inline static void setActiveTexture(GXuint32 pos) { GLTexture2D::setActiveTexture(pos); }
 		inline void use() {

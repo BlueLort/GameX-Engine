@@ -28,6 +28,7 @@ namespace gx {
 		virtual inline GXuint32 getEventType() const = 0;
 		virtual inline GXuint32 getEventClass() const = 0;
 		virtual void update(GXFloat deltaTime) = 0;
+		virtual void onGUIRender() {};
 		virtual void draw(GXShader* shader, RenderType type,bool isWireFrame) {};
 		virtual void destroy() = 0;
 

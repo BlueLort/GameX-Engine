@@ -6,7 +6,7 @@ namespace gx {
 
 
 
-	void GLTexture2D::init(const uint8_t* data, GXint32 width, GXint32 height, GXTexture2DColorType colorType, GXTexture2DType Type, GXTexture2DFilteringMethod method) {
+	void GLTexture2D::init(const void* data, GXint32 width, GXint32 height, GXTexture2DColorType colorTypeInternal, GXTexture2DColorType colorType, GXTexture2DType Type, GXTexture2DFilteringMethod method, gx::GXEnumType datatype) {
 
 		this->type = Type;
 		glGenTextures(1, &ID);
@@ -15,7 +15,7 @@ namespace gx {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, method);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, method);
-		glTexImage2D(GL_TEXTURE_2D, 0, colorType, width, height, 0, colorType, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, colorTypeInternal, width, height, 0, colorType, datatype, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 

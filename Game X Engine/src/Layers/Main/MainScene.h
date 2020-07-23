@@ -8,7 +8,12 @@
 #include "IOManagement/IOManager.h"
 #include "Shapes/2D/GXQuad.h"
 #include "Renderer/Enums.h"
+#include "Renderer/Effects/SSAO.h"
 namespace gx {
+	enum GXTargetRender
+	{
+		GX_MAINSCENE = 0, GX_COLORGBUFFER, GX_POSGBUFFER, GX_NORMALGBUFFER
+	};
 	class GX_DLL MainScene :public Layer {
 	public:
 		inline MainScene(const std::string& layerName, GXint32 Width, GXint32 Height) : Layer(layerName),width(Width),height(Height), mouseWasPressed(false){}
@@ -65,7 +70,7 @@ namespace gx {
 		static GXFloat snap[];
 		ImGui::FileBrowser fileDialog;//file browser using imfilebrowser
 		std::vector<std::shared_ptr<GXModelObject>> modelObjectRequests;
-
+		GXTargetRender targetRender;
 		std::unordered_map<GXuint32,std::shared_ptr<GXModelObject>> sceneModelObjects;
 		std::shared_ptr<GXModelObject> selectedObject;
 		std::shared_ptr<GXSkydomeObject> skydome;
@@ -78,6 +83,7 @@ namespace gx {
 		GXint32 width, height;
 
 		std::vector<GXRendererFlag> renderingFlags;
+		std::unique_ptr<GXSSAO> SSAOEffect;
 		std::unique_ptr<GXFrameBuffer> GBuffer;
 		std::unique_ptr<GXFrameBuffer> dirLightShadowBuffer;
 		GXShader* gBufferShader = nullptr;

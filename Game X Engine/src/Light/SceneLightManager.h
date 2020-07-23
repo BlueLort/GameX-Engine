@@ -17,7 +17,7 @@ namespace gx {
 			pLight.reset(new PointLight(GXVec3(0.0f,3.0f,3.0f)));
 			pLights.emplace_back(pLight);
 			flashLight.reset(new SpotLight(GXVec3(0.0f,5.0f,1.0f),GXVec3(0.0f,0.0f,-1.0f)));
-			dirLight.reset(new DirectionalLight(GXVec3(-0.2f, -1.0f, -3.3f)));
+			dirLight.reset(new DirectionalLight(GXMaths::normalize(GXVec3(-0.2f, -1.0f, -3.3f))));
 		}
 		std::vector<std::shared_ptr<PointLight>> getPointLights() const { return pLights; }
 		std::shared_ptr<SpotLight> getSpotLight() const { return flashLight; }

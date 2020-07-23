@@ -39,7 +39,7 @@ namespace gx {
 			canUpdate = true;
 			if(this->texID!=0)GXTexture2D::destroy(this->texID);
 			GXTexture2D tex;
-			tex.init(heightValues, texWidth, texHeight,GX_RGB, GX_HEIGHT,GXTexture2DFilteringMethod::GX_LINEAR);
+			tex.init(heightValues, texWidth, texHeight,GX_RGB, GX_RGB, GX_HEIGHT,GXTexture2DFilteringMethod::GX_LINEAR, GX_UNSIGNED_BYTE);
 			this->texID = tex.getID();
 		}
 	}

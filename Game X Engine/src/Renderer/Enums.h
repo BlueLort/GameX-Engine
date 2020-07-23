@@ -25,11 +25,8 @@ namespace gx {
 	};
 	//SHADERS
 	enum GXCompiledShader
-	{
-		DEFAULT_COLOR = 0,//ADD MORE TYPES THAT ARE PRECOMPILED FOR THE USER
-		DEFAULT_LIGHT,
-		DEFAULT_MODEL,
-		DEFAULT_SKYDOME,
+	{//ADD MORE TYPES THAT ARE PRECOMPILED FOR THE USER
+		DEFAULT_SKYDOME=0,
 		DEFAULT_PLANE,
 		DEFAULT_GBUFFER,
 		DEFAULT_DEFERRED,
@@ -80,7 +77,8 @@ namespace gx {
 	enum GXEnumType {
 		GX_FLOAT = GL_FLOAT,
 		GX_RED_INTEGER = GL_RED_INTEGER,
-		GX_UNSIGNED_INT = GL_UNSIGNED_INT
+		GX_UNSIGNED_INT = GL_UNSIGNED_INT,
+		GX_UNSIGNED_BYTE = GL_UNSIGNED_BYTE
 		//addmore when needed
 	};
 	enum GXRendererFlag {
@@ -140,7 +138,8 @@ namespace gx {
 	enum GXTexture2DColorType {
 		GX_RGBA = GL_RGBA,
 		GX_RGB = GL_RGB,
-		GX_RED = GL_RED
+		GX_RED = GL_RED,
+		GX_RGB32F = GL_RGB32F
 	};
 
 	enum GXTexture2DFilteringMethod {

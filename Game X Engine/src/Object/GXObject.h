@@ -30,7 +30,11 @@ namespace gx {
 		inline void addComponent(const std::shared_ptr<GXComponent>& component) {
 			components.emplace_back(component);
 		}
-
+		virtual void onGUIRender(){
+			for (auto& component : components) {
+				component->onGUIRender();
+			}
+		}
 		inline GXObjectType getType()const { return objType; }
 		inline GXuint32 getID()const { return GXID; }
 		inline void setShader(GXShader* sh) { this->shader = sh; }

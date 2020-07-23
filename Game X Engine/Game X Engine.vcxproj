@@ -209,6 +209,7 @@
     <ClInclude Include="src\Renderer\Buffers\GXFrameBufferObject.h" />
     <ClInclude Include="src\Renderer\Buffers\GXGraphicsBufferManager.h" />
     <ClInclude Include="src\Renderer\Context\GXGraphicsContext.h" />
+    <ClInclude Include="src\Renderer\Effects\SSAO.h" />
     <ClInclude Include="src\Renderer\Enums.h" />
     <ClInclude Include="src\Renderer\GXRenderer.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />

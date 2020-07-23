@@ -16,7 +16,7 @@ namespace gx {
 	namespace io {
 		struct GX_DLL ImageData {
 			char filePath[256];
-			uint8_t* data = nullptr;
+			GXuint8* data = nullptr;
 			GXint32 width = -1;
 			GXint32 height = -1;
 			GXint32 nChannels = -1;
