@@ -12,6 +12,8 @@ namespace gx {
 		inline NoiseGeneratorLayer(const std::string& layerName) : Layer(layerName),
 			scale(27.0f), nOctaves(4), persistence(0.5f), lacunarity(2.9f), z(24.0f),texID(0){
 			filePathBuffer[0] = '\0';
+			fileDialog.SetTitle("File Browser");
+			fileDialog.SetTypeFilters({ ".jpg", ".png" });
 		}
 		virtual void init()override;
 		virtual void destroy()override;
@@ -39,13 +41,13 @@ namespace gx {
 				canUpdate = true;
 				return;
 			}
-			heightsNormalized = tmg.getHeightsNormalized();
 			texWidth = tmg.getWidth();
 			texHeight = tmg.getHeight();
 			isUpdated = true;
 
 		}
 	private:
+		ImGui::FileBrowser fileDialog;
 		ImGuiWindowFlags windowFlags;
 		GXuint32 texID;
 		static uint8_t* heightValues;
@@ -64,18 +66,23 @@ namespace gx {
 			texHeight = PERLIN_HEIGHT;
 			if (heightValues != nullptr) {
 				delete[] heightValues;
-				delete[] heightsNormalized;
 				heightValues = nullptr;
+			}
+			if (heightsNormalized != nullptr) {
+				delete[] heightsNormalized;
+				heightsNormalized = nullptr;
 			}
 		}
 	
 		std::future<void> asyncTask;
 		inline void createPerlinTex() {
 			canUpdate = false;
+			resetHeightValues();
 			asyncTask=std::async(std::launch::async, generateNoiseMap, texWidth, texHeight, scale, nOctaves, persistence, lacunarity, z);
 		}
 		inline void createHMapTex(const char* filePath) {
 			canUpdate = false;
+			resetHeightValues();
 			asyncTask = std::async(std::launch::async, createHeightMapAsync, filePath,GX_HEIGHT);
 		
 		}

@@ -37,6 +37,7 @@ void initSystems(gx::GameXApp* gameInst) {
 	gx::io::IORequestHandler::waitTasks();
 	gx::LayerManager::getInstance().init();//instantiate a layer manager.[first ref]
 	GXE_INFO("Layers Manager Initialized !");
+	GXPRINTF("Hello %s From the console.", "World");
 
 }
 

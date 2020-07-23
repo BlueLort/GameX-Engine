@@ -41,6 +41,7 @@ namespace gx {
 			GXTexture2D tex;
 			tex.init(heightValues, texWidth, texHeight,GX_RGB, GX_RGB, GX_HEIGHT,GXTexture2DFilteringMethod::GX_LINEAR, GX_UNSIGNED_BYTE);
 			this->texID = tex.getID();
+			resetHeightValues();
 		}
 	}
 
@@ -55,8 +56,8 @@ namespace gx {
 		ImGui::Text("Perlin Noise Generator Settings");
 		ImGui::Checkbox("Auto-Update", &autoUpdate);
 		if (autoUpdate&&canUpdate) {
-			if (ImGui::SliderFloat("Scale", &scale, 2.0f, 256.0f)) {createPerlinTex();}
-			if (ImGui::SliderInt("# Octaves", &nOctaves, 1, 9)) { createPerlinTex(); }
+			if (ImGui::SliderFloat("Scale", &scale, 2.0f, 256.0f)) { createPerlinTex();}
+			if (ImGui::SliderInt("# Octaves", &nOctaves, 1, 9)) {  createPerlinTex(); }
 			if (ImGui::SliderFloat("Persistence", &persistence, 0.01f, 1.0f)) { createPerlinTex(); }
 			if (ImGui::SliderFloat("Lacunarity", &lacunarity, 1.1f, 10.0f)) { createPerlinTex(); }
 			if (ImGui::SliderFloat("Z-Plane[Seed]", &z, 0.0f, 1000.0f)) { createPerlinTex(); }
@@ -70,16 +71,14 @@ namespace gx {
 			ImGui::SliderFloat("Z-Plane[Seed]", &z, 0.0f, 1000.0f);
 		}
 		if (ImGui::Button("Update")&& canUpdate) {
-			resetHeightValues();
 			createPerlinTex(); 
 		}
 
 		ImGui::Separator();
 		ImGui::Text("Height Map Settings");
-		ImGui::InputText("File Path", filePathBuffer, 1024);
 		if (ImGui::Button("Load File")&&canUpdate) {
-			resetHeightValues();
-			createHMapTex(filePathBuffer);
+			fileDialog.Open();
+			
 		}
 		if (errorLoading) {
 			ImGui::SameLine();
@@ -89,6 +88,13 @@ namespace gx {
 		ImGui::Image(reinterpret_cast<void*>(this->texID), ImGui::GetContentRegionAvail()
 			, ImVec2(1, 1), ImVec2(0, 0));
 		ImGui::PopStyleVar(3);
+		fileDialog.Display();
+		if (fileDialog.HasSelected())
+		{
+			strcpy(filePathBuffer, fileDialog.GetSelected().string().c_str());
+			createHMapTex(filePathBuffer);
+			fileDialog.ClearSelected();
+		}
 		ImGui::End();
 		GXTexture2D::stop();
 

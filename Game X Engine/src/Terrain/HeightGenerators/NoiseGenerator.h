@@ -14,11 +14,11 @@ namespace gx {
 			GXint32 size = width * height;
 			for (GXint32 i = 0; i < size; i++) {
 				float quality = 3.5f;
-				float amp = 1.25f;
+				float amp = 1.45f;
 				float curr = 0.0f;
 				for (GXint32 j = 0; j < nOctaves; j++) {
 
-					GXint32 X = i % width, Y = static_cast<GXint32>(i / width);
+					GXint32 X = i % width, Y = i / width;
 					curr += static_cast<GXFloat>(abs(PerlinNoise::noise(X / quality, Y / quality, zPlane) * quality * amp));
 					quality *= scale/lacunarity;
 					amp *= persistence;
@@ -27,7 +27,7 @@ namespace gx {
 				else if (curr < minH)minH = curr;
 				heightsNormalized[i] = curr;
 				quality = 3.5f;
-				amp = 1.25f;
+				amp = 1.45f;
 				curr = 0.0f;
 			}
 			GXint32 k = 0;
@@ -35,7 +35,7 @@ namespace gx {
 				for (GXint32 x = 0; x < totalWidth; x += 3) {
 					GXint32 loc = totalWidth * y + x;
 					heightsNormalized[k] = static_cast<GXFloat>(GXMaths::inverseLerp(heightsNormalized[k], minH, maxH));
-					heightsColor[loc] = static_cast<GXuint8>(heightsNormalized[k] * 255);
+					heightsColor[loc] = static_cast<GXuint8>(heightsNormalized[k] * 255.9f);
 					heightsColor[loc + 1] = heightsColor[loc];
 					heightsColor[loc + 2] = heightsColor[loc];
 					k++;
@@ -46,47 +46,20 @@ namespace gx {
 
 
 		}
+		GXFloat* getHeightsNormalized() { return heightsNormalized; }
 		NoiseGenerator(GXint32 Width, GXint32 Height, float Scale,
 			GXint32 NOctaves, float Persistence, float Lacunarity, float z)
 			: HeightMapGenerator(Width, Height, Scale),
 			nOctaves(NOctaves), persistence(Persistence), lacunarity(Lacunarity), zPlane(z) {
-
+			heightsNormalized = new GXFloat[static_cast<GXint64>(Width) * Height];
 		}
 
 	private:
-
+		GXFloat* heightsNormalized;
 		GXint32 nOctaves;
 		GXFloat persistence;
 		GXFloat lacunarity;
 		GXFloat zPlane;
-		inline GXBool isValid(GXint32 x, GXint32 y, GXint32 totalWidth)
-		{
-			// True if ij are valid indices; false otherwise.
-			return
-				y >= 0 && y < height &&
-				x >= 0 && x < totalWidth;
-		}
-		inline float average(GXint32 x, GXint32 y, GXint32 totalWidth)
-		{
-			float avg = 0.0f;
-			GXint32 counter = 0;
-			for (GXint32 i = y - 1; i <= y + 1; i++)
-			{
-				for (GXint32 j = x - 3; j <= x + 3; j += 3)
-				{
-					if (isValid(j, i, totalWidth))
-					{
-						avg += heightsNormalized[i * totalWidth + j];
-						counter++;
-					}
-				}
-			}
-			return avg / counter;
-		}
-
-
-
-
 	};
 
 }
