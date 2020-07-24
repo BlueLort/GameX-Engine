@@ -14,7 +14,7 @@ namespace gx {
 	class GX_DLL Camera
 	{
 	public:
-		Camera() : yaw(0.0f), pitch(0.0f), movementSpeed(30.0f), mouseSensitivity(5.0f), zoom(45.0f) {}
+		Camera() : yaw(0.0f), pitch(0.0f), movementSpeed(30.0f), mouseSensitivity(5.0f), zoom(45.0f), cameraMoved(false){}
 		GXTransform transform;
 		// Euler Angles
 		GXFloat yaw;
@@ -23,6 +23,7 @@ namespace gx {
 		GXFloat movementSpeed;
 		GXFloat mouseSensitivity;
 		GXFloat zoom;
+		bool cameraMoved; // FOR LOD CONTROL
 		virtual inline GXMat4 calculateViewMatrix()
 		{
 			return GXMaths::lookAt(transform.position, transform.position + transform.forward, transform.up);

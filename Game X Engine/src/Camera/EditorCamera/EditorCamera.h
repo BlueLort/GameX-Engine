@@ -48,6 +48,10 @@ namespace gx {
 			return projection;
 		}
 		virtual void update()override;
+		bool isInFrustum(const GXVec3& position, const GXuVec2& size) const {
+			//TODO FRUSTUM CULLING ALGORITHM
+			return true;
+		}
 	private:
 		GXMat4 PVMatrix = GXMat4(1.0f);
 		GXMat4 view = GXMat4(1.0f);

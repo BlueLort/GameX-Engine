@@ -9,7 +9,7 @@ namespace gx {
 	float* NoiseGeneratorLayer::heightsNormalized = nullptr;
 	GXint32 NoiseGeneratorLayer::texWidth;
 	GXint32 NoiseGeneratorLayer::texHeight;
-	
+	GXuint32 NoiseGeneratorLayer::texID = 0;
 	void NoiseGeneratorLayer::init()
 	{
 	}
@@ -37,11 +37,10 @@ namespace gx {
 		if (isUpdated) {
 			isUpdated = false;
 			canUpdate = true;
-			if(this->texID!=0)GXTexture2D::destroy(this->texID);
+			if(texID!=0)GXTexture2D::destroy(texID);
 			GXTexture2D tex;
 			tex.init(heightValues, texWidth, texHeight,GX_RGB, GX_RGB, GX_HEIGHT,GXTexture2DFilteringMethod::GX_LINEAR, GX_UNSIGNED_BYTE);
-			this->texID = tex.getID();
-			resetHeightValues();
+			texID = tex.getID();
 		}
 	}
 
@@ -85,7 +84,7 @@ namespace gx {
 			ImGui::TextColored(ImVec4(255, 0, 0, 255), "Error Loading File ...");
 		}
 
-		ImGui::Image(reinterpret_cast<void*>(this->texID), ImGui::GetContentRegionAvail()
+		ImGui::Image(reinterpret_cast<void*>(texID), ImGui::GetContentRegionAvail()
 			, ImVec2(1, 1), ImVec2(0, 0));
 		ImGui::PopStyleVar(3);
 		fileDialog.Display();

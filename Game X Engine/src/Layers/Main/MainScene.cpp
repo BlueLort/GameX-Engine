@@ -436,6 +436,11 @@ namespace gx {
 					if (ImGui::MenuItem("GBuffer Normal")) { targetRender = GX_NORMALGBUFFER; }
 					ImGui::EndMenu();
 				}
+				if (ImGui::BeginMenu("Terrain Settings"))
+				{
+					if (ImGui::MenuItem("Toggle Wireframe")) { if(mainPlane != nullptr)mainPlane->isWireFrame = !mainPlane->isWireFrame; }
+					ImGui::EndMenu();
+				}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();

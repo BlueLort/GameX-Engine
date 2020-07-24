@@ -6,44 +6,62 @@ namespace gx {
 	void GLBufferManager::init(GXuint32 requiredSize, GXuint32 strideLength)
 	{//NO ID SAVING
 		VAO.reset(new GLVertexArray());
-		VBO.reset(new GLVertexBuffer());
+		staticVBO.reset(new GLVertexBuffer());
+		dynamicVBO.reset(new GLVertexBuffer());
 		EBO.reset(new GLElementBuffer());
-
-		
 
 		VAO->init(strideLength);
 		VAOID = VAO->ID;
 		GLVertexArray::use(VAOID);
-		VBO->init(requiredSize);
+		staticVBO->init(requiredSize);
 		GLVertexArray::stop();
 		EBO->init();
 	}
-
+	
 	void GLBufferManager::initFull(void* data, GXuint32 requiredSize, GXuint32 strideLength)
 	{
 		//NO ID SAVING
 		VAO.reset(new GLVertexArray());
-		VBO.reset(new GLVertexBuffer());
+		staticVBO.reset(new GLVertexBuffer());
+		dynamicVBO.reset(new GLVertexBuffer());
 		EBO.reset(new GLElementBuffer());
 
 		VAO->init(strideLength);
 		VAOID = VAO->ID;
 		GLVertexArray::use(VAOID);
-		VBO->initFull(data,requiredSize);
-		VBOID = VBO->ID;
+		staticVBO->initFull(data,requiredSize);
+		sVBOID = staticVBO->ID;
+		dVBOID = dynamicVBO->ID;
 		EBO->init();
 		EBOID = EBO->ID;
 	}
 
 	void GLBufferManager::uploadDataToBuffer(void* data, GXuint32 size)
 	{
-		VBO->uploadData(data, size);
+		staticVBO->uploadData(data, size);
 	}
-
+	void GLBufferManager::updateDynamicBuffer(void* data, GXuint32 size)
+	{
+		dynamicVBO->updateData(data, size);
+	}
 
 	void GLBufferManager::setAttribPointer(GXuint32 loc, GXuint32 count,GXEnumType type, GXuint32 offset)
 	{
-		VAO->setAttribPointers(loc, count, type, offset);
+		VAO->setAttribPointer(loc, count, type, offset);
+	}
+	void GLBufferManager::setAttribIPointer(GXuint32 loc, GXuint32 count, GXEnumType type, GXuint32 offset) {
+		VAO->setAttribIPointer(loc, count, type, offset);
+	}
+	void GLBufferManager::setAttribPointer(GXuint32 loc, GXuint32 count, GXEnumType type, GXuint32 offset, GXuint32 stride)
+	{
+		VAO->setAttribPointer(loc, count, type, offset, stride);
+	}
+	void GLBufferManager::setAttribIPointer(GXuint32 loc, GXuint32 count, GXEnumType type, GXuint32 offset, GXuint32 stride) {
+		VAO->setAttribIPointer(loc, count, type, offset, stride);
+	}
+	void GLBufferManager::setVertexAttribDivisor(GXuint32 loc, GXuint32 divisor)
+	{
+		VAO->setVertexAttribDivisor(loc, divisor);
 	}
 
 	void GLBufferManager::uploadIndicesToBuffer(GXuint32* indices, GXuint32 size,GXuint32 length)
@@ -64,7 +82,7 @@ namespace gx {
 		GLElementBuffer::stop();
 		GLVertexBuffer::stop();
 		delete VAO.release();
-		delete VBO.release();
+		delete staticVBO.release();
 		delete EBO.release();
 	}
 

@@ -4,13 +4,13 @@
 #include "Terrain/HeightGenerators/NoiseGenerator.h"
 #include "Terrain/HeightGenerators/TextureMapGenerator.h"
 
-constexpr GXint32 PERLIN_WIDTH = 256;
-constexpr GXint32 PERLIN_HEIGHT = 256;
+constexpr GXint32 PERLIN_WIDTH = 512;
+constexpr GXint32 PERLIN_HEIGHT = 512;
 namespace gx {
 	class GX_DLL NoiseGeneratorLayer :public Layer {
 	public:
 		inline NoiseGeneratorLayer(const std::string& layerName) : Layer(layerName),
-			scale(27.0f), nOctaves(4), persistence(0.5f), lacunarity(2.9f), z(24.0f),texID(0){
+			scale(27.0f), nOctaves(4), persistence(0.5f), lacunarity(2.9f), z(24.0f){
 			filePathBuffer[0] = '\0';
 			fileDialog.SetTitle("File Browser");
 			fileDialog.SetTypeFilters({ ".jpg", ".png" });
@@ -46,10 +46,10 @@ namespace gx {
 			isUpdated = true;
 
 		}
+		static GXuint32 texID;
 	private:
 		ImGui::FileBrowser fileDialog;
 		ImGuiWindowFlags windowFlags;
-		GXuint32 texID;
 		static uint8_t* heightValues;
 		static float* heightsNormalized;
 		static bool isUpdated;

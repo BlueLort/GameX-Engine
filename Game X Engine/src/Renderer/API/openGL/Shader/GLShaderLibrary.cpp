@@ -41,27 +41,60 @@ void main()
 )"
 
 	};
-	const char* GLDefaultPlaneShader[] = {
+	const char* GLDefaultPlaneGBufferShader[] = {
 		R"( 
 #version 430 core
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aNormal;
-layout (location = 2) in vec2 aTexCoords;
+layout (location = 0) in vec2 aPos;
+layout (location = 1) in ivec2 aSamplingOffset;
+layout (location = 2) in vec2 aPosOffset;
+layout (location = 3) in ivec2 aSamplingStart;
+layout (location = 4) in int LOD;
 
 out vec3 FragPos;
-out vec3 Normal;
 out vec2 TexCoords;
+out vec3 Normal;
+out vec4 FragPosLightSpace;
+
+uniform sampler2D hmap;
 
 uniform mat4 model;
 uniform mat4 vp;
+uniform mat4 lightSpaceMatrix;
 
+uniform float height;
+uniform float totalWidth;
+uniform float totalDepth;
+uint pow2[] = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192 };
+//Getting normal map directly from heightmap idea from user 'dmmn' on shadertoy
+float getHeight(vec2 uv) {
+  return texture(hmap, uv).r;
+}
+vec3 bumpFromDepth(vec2 uv,vec2 step, float scale) {
+  float height = getHeight(uv);
+  vec2 dxy = height - vec2(
+      getHeight(uv + vec2(step.x, 0.)), 
+      getHeight(uv + vec2(0., step.y))
+  );
+  return normalize(vec3(dxy * scale / step, 1.));
+}
 void main()
 {
-    FragPos = vec3(model * vec4(aPos, 1.0));
-    Normal = mat3(transpose(inverse(model))) * aNormal;  
-    TexCoords = aTexCoords;
-    
-    gl_Position = vp * vec4(FragPos, 1.0);
+	vec4 position = vec4((aPos.x*pow2[LOD]) + aPosOffset.x, 0.0f, (aPos.y*pow2[LOD]) + aPosOffset.y, 1.0f);
+	ivec2 samplingLoc = aSamplingStart + ivec2(aSamplingOffset.x * pow2[LOD], aSamplingOffset.y * pow2[LOD]);
+	//vec4 color = texelFetch(hmap, samplingLoc, LOD);
+	vec4 color = texelFetch(hmap, samplingLoc, 0);
+	position.y = height * color.r - height/2.0;
+
+    vec4 worldPos = model * position;
+    FragPos = worldPos.xyz; 
+
+    mat3 normalMatrix = transpose(inverse(mat3(model)));
+    TexCoords = vec2(samplingLoc.x/totalWidth,samplingLoc.y/totalDepth);
+    vec2 step = vec2((samplingLoc.x+1.0)/totalWidth,(samplingLoc.y+1.0)/totalDepth) - TexCoords; 
+    vec3 norm = bumpFromDepth(TexCoords,step,0.1) * .5 + .5;
+    Normal = normalize(normalMatrix * norm);
+    FragPosLightSpace = lightSpaceMatrix * worldPos;
+    gl_Position = vp * worldPos;
 }
 )"
 ,
@@ -71,46 +104,73 @@ nullptr
 //Fragment Shader
 R"( 
 #version 430 core
-out vec4 FragColor;
-
-struct Material {
-    sampler2D diffuse1;
-}; 
-
-struct DirLight {
-    vec3 direction;
-	
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-};
+layout (location = 0) out vec4 gAlbedoSpec;
+layout (location = 1) out vec3 gPosition;
+layout (location = 2) out vec3 gNormal;
+layout (location = 3) out uint gID;
 
 in vec3 FragPos;
-in vec3 Normal;
 in vec2 TexCoords;
+in vec3 Normal;
+in vec4 FragPosLightSpace;
 
-uniform vec3 viewPos;
-uniform DirLight dirLight;
-uniform Material material;
+struct Material {
+    sampler2D diffuse;
+    float shininess;
+};  
 
 vec3 totalDiffuse;
-vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
+
+uniform Material material;
+uniform uint objID = 0;//let 0 be initial value for this as it's used for skydome/skybox objects
+uniform sampler2D dirLightDepthMap;
+uniform vec3 lightPos;
+float calculateShadow(vec4 fragPosLightSpace);
 void main()
 {    
+	totalDiffuse = texture(material.diffuse,TexCoords).rgb;
+    gPosition = FragPos;
+    gNormal = normalize(Normal);
+    float shadow = calculateShadow(FragPosLightSpace); 
 
-	totalDiffuse=vec3(texture(material.diffuse1,TexCoords));
-	vec3 norm = normalize(Normal);
-    vec3 viewDir = normalize(viewPos - FragPos);
-	vec3 result = CalcDirLight(dirLight, norm, viewDir);
-    FragColor = vec4(result,1.0);
+    vec3 ambient  = totalDiffuse.rgb * 0.1;// hard-coded ambient component
+    gAlbedoSpec.rgb = ambient + (1.0 - shadow) * (totalDiffuse.rgb - ambient);
+    gAlbedoSpec.a = 0.1;
+	gID = objID;
+	
 }
-vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
-{
-    vec3 lightDir = normalize(-light.direction);
-    float diff = max(dot(normal, lightDir), 0.0);
-    vec3 ambient = light.ambient * totalDiffuse;
-    vec3 diffuse = light.diffuse * diff * totalDiffuse;
-    return (ambient + diffuse);
+float calculateShadow(vec4 fragPosLightSpace) {
+    // perspective division
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    projCoords = projCoords * 0.5 + 0.5;
+    // closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(dirLightDepthMap, projCoords.xy).r; 
+    // depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+
+
+    // calculate bias (based on depth map resolution and slope)
+    vec3 normal = normalize(Normal);
+    vec3 lightDir = normalize(lightPos - FragPos);
+    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+
+    // check whether current frag pos is in shadow with PCF for softer shadows
+    float shadow = 0.0;
+    vec2 texelSize = 1.0 / textureSize(dirLightDepthMap, 0);
+    for(int x = -1; x <= 1; ++x)
+    {
+        for(int y = -1; y <= 1; ++y)
+        {
+            float pcfDepth = texture(dirLightDepthMap, projCoords.xy + vec2(x, y) * texelSize).r; 
+            shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;        
+        }    
+    }
+    shadow /= 9.0;
+    
+    // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+    if(projCoords.z > 1.0)
+        shadow = 0.0;
+    return shadow;
 }
 )"
 

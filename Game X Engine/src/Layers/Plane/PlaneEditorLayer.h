@@ -26,7 +26,7 @@ namespace gx {
 	public:
 		inline PlaneEditorLayer(const std::string& layerName) :
 			Layer(layerName)
-			, width(256), depth(256),height(16), texID(0), clusteringFactorX(2), clusteringFactorZ(2){
+			, width(2), depth(2),height(6), texID(0), rowInstances(16), colInstances(16),xDensity(16),zDensity(16){
 			levels.push_back(LevelData());
 		}
 		virtual void init()override;
@@ -47,14 +47,17 @@ namespace gx {
 		GXint32 width;
 		GXint32 depth;
 		GXint32 height;
-		GXint32 clusteringFactorX;
-		GXint32 clusteringFactorZ;
+		GXint32 rowInstances;
+		GXint32 colInstances;
+		GXint32 xDensity;
+		GXint32 zDensity;
 		std::vector<LevelData> levels;
 		std::future<void> asyncTask;
 
-		static inline void createColoredTexture(GXint32 width, GXint32 depth, GXint32 height, GXint32 clusteringFactorX, GXint32 clusteringFactorZ, std::vector<LevelData> levels) {
-			
-			if (NoiseGeneratorLayer::heightsNormalized == nullptr|| !NoiseGeneratorLayer::canUpdate ) {
+		static inline void createColoredTexture(GXint32 width, GXint32 depth, GXint32 height
+			,GXint32 rowInstances,GXint32 colInstances,
+			GXint32 clusteringFactorX, GXint32 clusteringFactorZ, std::vector<LevelData> levels) {
+			if (NoiseGeneratorLayer::heightValues == nullptr) {
 				canUpdate = true;
 				return;
 			}
@@ -65,61 +68,35 @@ namespace gx {
 			GXint32 nLevels = static_cast<GXint32>(levels.size());
 			nLevels--;
 			for (GXint32 i = 0; i <= nLevels; i++) {
-				levels[i].colors[0] = static_cast<uint8_t>(levels[i].colors[0]*255);
-				levels[i].colors[1] = static_cast<uint8_t>(levels[i].colors[1]*255);
-				levels[i].colors[2] = static_cast<uint8_t>(levels[i].colors[2]*255);
+				levels[i].colors[0] = static_cast<uint8_t>(levels[i].colors[0]*255.0f);
+				levels[i].colors[1] = static_cast<uint8_t>(levels[i].colors[1]*255.0f);
+				levels[i].colors[2] = static_cast<uint8_t>(levels[i].colors[2]*255.0f);
 			}
 			GXint32 generatedHeightTexSize = NoiseGeneratorLayer::texHeight * NoiseGeneratorLayer::texWidth * 3;
-			GXint32 texSize = width * depth * 3;
-			GXFloat* heights = new GXFloat[width * depth];
-			texColors = new GXuint8[texSize];
-			GXint32 widthFactor = width / NoiseGeneratorLayer::texWidth;
-			GXint32 depthFactor = depth / NoiseGeneratorLayer::texHeight;
-			GXint32 stepX = widthFactor == 0 ? 1 : widthFactor;
-			GXint32 stepZ = depthFactor == 0 ? 1 : depthFactor;
-			GXint32 iteWidth = 0;
-			GXint32 iteDepth = 0;
-		
-			GXint32 currX = 0;
-			GXint32 currZ = 0;
-			GXint32 k = 0;
-			GXint32 l = 0;
-			for (GXint32 z = 0; z < depth; z++) {
-				iteWidth = 0;
-				for (GXint32 x = 0; x < width; x++) {
-					GXint32 loc = iteDepth * NoiseGeneratorLayer::texWidth + iteWidth;
-					heights[k] = NoiseGeneratorLayer::heightsNormalized[loc]*height;
+			texColors = new GXuint8[generatedHeightTexSize];
+			for (GXint32 z = 0; z < NoiseGeneratorLayer::texHeight; z++) {
+				for (GXint32 x = 0; x < NoiseGeneratorLayer::texWidth; x++) {
+					GXint32 loc = (z * NoiseGeneratorLayer::texWidth + x) * 3;
 					//set base color first
-					texColors[l] = static_cast<GXuint8>(levels[nLevels].colors[0]);
-					texColors[l + 1] = static_cast<GXuint8>(levels[nLevels].colors[1]);
-					texColors[l + 2] = static_cast<GXuint8>(levels[nLevels].colors[2]);
+					texColors[loc] = static_cast<GXuint8>(levels[nLevels].colors[0]);
+					texColors[loc + 1] = static_cast<GXuint8>(levels[nLevels].colors[1]);
+					texColors[loc + 2] = static_cast<GXuint8>(levels[nLevels].colors[2]);
+					GXFloat currHeight = NoiseGeneratorLayer::heightValues[loc] / 255.0f;
+					
 					for (GXint32 i = 0; i < nLevels; i++) {
-						if (NoiseGeneratorLayer::heightsNormalized[loc] > levels[i].heightVal) {
-							texColors[l] = static_cast<GXuint8>(levels[i].colors[0]);
-							texColors[l + 1] = static_cast<GXuint8>(levels[i].colors[1]);
-							texColors[l + 2] = static_cast<GXuint8>(levels[i].colors[2]);
+						if (currHeight > levels[i].heightVal) {
+							texColors[loc] = static_cast<GXuint8>(levels[i].colors[0]);
+							texColors[loc + 1] = static_cast<GXuint8>(levels[i].colors[1]);
+							texColors[loc + 2] = static_cast<GXuint8>(levels[i].colors[2]);
 							break;
 						}
 					}
-					currX++;
-					if (currX == stepX) {
-						currX = 0;
-						iteWidth++;
-					}
-					l+=3;
-					k++;
-				}
-				currZ++;
-				if (currZ == stepZ) {
-					currZ = 0;
-					iteDepth++;
 				}
 			}
-			plane.reset(new GXPlane(width, depth,clusteringFactorX,clusteringFactorZ));
-			plane->init(heights);
+			plane.reset(new GXPlane(width, depth,height,rowInstances,colInstances,clusteringFactorX,clusteringFactorZ));
+			plane->init();
 			
 			isUpdated = true;
-			delete[] heights;
 
 			
 		}

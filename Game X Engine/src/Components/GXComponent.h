@@ -30,6 +30,7 @@ namespace gx {
 		virtual void update(GXFloat deltaTime) = 0;
 		virtual void onGUIRender() {};
 		virtual void draw(GXShader* shader, RenderType type,bool isWireFrame) {};
+		virtual void draw(GXShader* shader, RenderType type, bool isWireFrame,GXuint32 nInstance) {};
 		virtual void destroy() = 0;
 
 		inline bool isSameClassAs(GXComponentClass componentClass) const {

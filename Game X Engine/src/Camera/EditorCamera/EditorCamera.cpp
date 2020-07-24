@@ -48,6 +48,7 @@ namespace gx {
 		
 		view = GXMaths::lookAt(transform.position, transform.position + transform.forward, transform.up);
 		PVMatrix = projection * view;
+		cameraMoved = true;
 	}
 
 	void EditorCamera::processKeyboard(CameraMovement direction,GXFloat deltaTime)

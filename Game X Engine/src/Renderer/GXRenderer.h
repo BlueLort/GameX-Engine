@@ -19,6 +19,9 @@ namespace gx {
 		inline void draw(GXuint32 nElements, RenderType type, bool isWireFrame) {
 			GLRenderer::getInstance().draw(nElements, type, isWireFrame);
 		}
+		inline void draw(GXuint32 nElements, RenderType type, bool isWireFrame, GXuint32 nInstances) {
+			GLRenderer::getInstance().draw(nElements, type, isWireFrame, nInstances);
+		}
 		inline void setViewPort(GXuint32 Width, GXuint32 Height) {
 			GLRenderer::getInstance().setViewPort(Width, Height);
 		}

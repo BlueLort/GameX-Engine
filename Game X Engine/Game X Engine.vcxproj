@@ -221,6 +221,7 @@
     <ClInclude Include="src\Terrain\HeightGenerators\NoiseGenerator.h" />
     <ClInclude Include="src\Terrain\HeightGenerators\TextureMapGenerator.h" />
     <ClInclude Include="src\Terrain\Plane\Plane.h" />
+    <ClInclude Include="src\Terrain\Plane\QuadTree.h" />
     <ClInclude Include="src\UI\GXGizmo.h" />
     <ClInclude Include="src\UI\GXUserInterface.h" />
     <ClInclude Include="src\UI\ImGUI_SDLGL\ImGUI_SDLGL.h" />

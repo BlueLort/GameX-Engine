@@ -20,9 +20,13 @@ namespace gx {
 		inline static void stop() {
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
+		GLVertexBuffer() {
+			GL_CALL(glGenBuffers(1, &ID));
+		}
 
 		//Buffer Must be Bound before uploading data !
 		void uploadData(void* data,GXuint32 size);
+		void updateData(void* data, GXuint32 size);
 		inline static void destroy(GXuint32 id) {
 			GL_CALL(glDeleteBuffers(1, &id));
 		}

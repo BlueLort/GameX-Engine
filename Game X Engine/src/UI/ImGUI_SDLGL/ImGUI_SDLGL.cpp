@@ -46,7 +46,7 @@ namespace gx {
 	void ImGUI_SDLGL::onGUIRender()
 	{
 		showDockspace();
-		bool show_demo_window; ImGui::ShowDemoWindow(&show_demo_window);
+		//bool show_demo_window; ImGui::ShowDemoWindow(&show_demo_window);
 	}
 	void ImGUI_SDLGL::showDockspace()
 	{

@@ -9,8 +9,10 @@ namespace gx {
 	constexpr GXint32 MAX_WIDTH = 8192;
 	constexpr GXint32 MAX_DEPTH = 8192;
 	constexpr GXint32 MAX_HEIGHT = 128;
-	constexpr GXint32 MAX_N = 8;
-	constexpr GXint32 MAX_M = 8;
+	constexpr GXint32 MAX_INSTANCESX = 32;
+	constexpr GXint32 MAX_INSTANCESZ = 32;
+	constexpr GXint32 MAX_DENSITYX = 32;
+	constexpr GXint32 MAX_DENSITYZ = 32;
 	void  PlaneEditorLayer::init()
 	{
 	}
@@ -37,15 +39,16 @@ namespace gx {
 	{
 		if (isUpdated) {
 			isUpdated = false;
-			canUpdate = true;
+			
 			if (this->texID != 0)GXTexture2D::destroy(this->texID);
 			GXTexture2D tex;
-			tex.init(texColors, width, depth, GX_RGB, GX_RGB, GX_DIFFUSE, GXTexture2DFilteringMethod::GX_NEAREST, GX_UNSIGNED_BYTE);
+			tex.init(texColors, NoiseGeneratorLayer::texWidth, NoiseGeneratorLayer::texHeight, GX_RGB, GX_RGB, GX_DIFFUSE, GXTexture2DFilteringMethod::GX_NEAREST, GX_UNSIGNED_BYTE);
 			this->texID = tex.getID();
-			plane->uploadToBuffer(texID);
+			plane->uploadToBuffer(texID, NoiseGeneratorLayer::texID);
 			plane->isReady = true;
 			//plane->isWireFrame = true;
 			MainScene::mainPlane = plane;
+			canUpdate = true;
 		}
 	}
 
@@ -57,22 +60,27 @@ namespace gx {
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 		static bool isHueWheel = false;
-		ImGui::DragInt("Width", &width, 1, 2, MAX_WIDTH, "%d%");
-		ImGui::DragInt("Depth", &depth, 1, 2, MAX_DEPTH, "%d%");
-		ImGui::DragInt("MaxHeight", &height, 1, 0, MAX_HEIGHT, "%d%");
-		ImGui::DragInt("Quads Multiplier X", &clusteringFactorX, 0.25, 1, MAX_N, "%d%");
-		ImGui::DragInt("Quads Multiplier Z", &clusteringFactorZ, 0.25, 1, MAX_M, "%d%");
+		ImGui::DragInt("Patch Width", &width, 1, 1, MAX_WIDTH, "%d%");
+		ImGui::DragInt("Patch Depth", &depth, 1, 1, MAX_DEPTH, "%d%");
+		ImGui::DragInt("Max Height", &height, 1, 0, MAX_HEIGHT, "%d%");
+		ImGui::DragInt("# XInstances", &colInstances, 1, 1, MAX_INSTANCESX, "%d%");
+		ImGui::DragInt("# ZInstances", &rowInstances, 1, 1, MAX_INSTANCESZ, "%d%");
+		ImGui::DragInt("Patch X Density", &xDensity, 1, 2, MAX_DENSITYX, "%d%");
+		ImGui::DragInt("Patch Z Density", &zDensity, 1, 2, MAX_DENSITYZ, "%d%");
 		ImGui::Checkbox("Use Hue Wheel", &isHueWheel);
 		ImGuiColorEditFlags flags = isHueWheel ? ImGuiColorEditFlags_PickerHueWheel : ImGuiColorEditFlags_PickerHueBar;
 		ImGui::ColorEdit3("Base Color", levels[0].colors, flags);
-		CLAMP(width, 2, MAX_WIDTH);
-		CLAMP(depth, 2, MAX_DEPTH);
+		CLAMP(width, 1, MAX_WIDTH);
+		CLAMP(depth, 1, MAX_DEPTH);
 		CLAMP(height, 0, MAX_HEIGHT);
-		CLAMP(clusteringFactorX, 1, MAX_N);
-		CLAMP(clusteringFactorZ, 1, MAX_M);
+		CLAMP(colInstances, 1, MAX_INSTANCESX);
+		CLAMP(rowInstances, 1, MAX_INSTANCESZ);
+		CLAMP(xDensity, 2, MAX_DENSITYX);
+		CLAMP(zDensity, 2, MAX_DENSITYZ);
 		if (ImGui::Button("Update/Add Plane") && canUpdate) {
 			canUpdate = false;
-			asyncTask = std::async(std::launch::async, createColoredTexture, width, depth, height, clusteringFactorX, clusteringFactorZ, levels);
+			asyncTask = std::async(std::launch::async, createColoredTexture, width, depth, height, rowInstances,
+				colInstances, xDensity, zDensity, levels);
 
 		}
 		ImGui::Separator();

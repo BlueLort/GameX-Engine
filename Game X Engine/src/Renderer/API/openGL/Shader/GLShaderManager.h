@@ -8,7 +8,7 @@
 namespace gx {
 	//0 vert 1 frag 2 geo
 	extern const char* GLDefaultSkydomeShader[3];
-	extern const char* GLDefaultPlaneShader[3];
+	extern const char* GLDefaultPlaneGBufferShader[3];
 	extern const char* GLDefaultGBufferShader[3];
 	extern const char* GLDefaultDeferredShader[3];
 	extern const char* GLDefaultOutlineShader[3];

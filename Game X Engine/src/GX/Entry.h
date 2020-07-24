@@ -21,7 +21,7 @@ void initSystems(gx::GameXApp* gameInst) {
 	gx::InputManager::getInstance().init(); GXE_INFO("InputManager initialized successfully!");
 	gx::SceneLightManager::getInstance().init();  GXE_PRINT("Lighting information is Initialized for debugging");
 #ifdef USING_GLM_MATHS
-	GXE_INFO("Using GLM for Maths library!");
+	GXE_INFO("Using GLM as Maths library!");
 #endif
 	gx::GXPhysicsManager::getInstance().init(); GXE_INFO("Physics Engine Initialized [Bullet Physics] !");
 	gx::GXTimer::getAppTimer().init(); GXE_INFO("Application Timer Started using SDL_GetTicks !");
@@ -37,7 +37,7 @@ void initSystems(gx::GameXApp* gameInst) {
 	gx::io::IORequestHandler::waitTasks();
 	gx::LayerManager::getInstance().init();//instantiate a layer manager.[first ref]
 	GXE_INFO("Layers Manager Initialized !");
-	GXPRINTF("Hello %s From the console.", "World");
+	GXPRINTF("Hello %s from the console.", "World");
 
 }
 

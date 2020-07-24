@@ -20,9 +20,9 @@ namespace gx {
 		GXE_DEBUG("Default Skydome GLShader Compiled Successfully");
 
 		sh = new GXShader();
-		sh->addShader(GX_VERTEX_SHADER, GLDefaultPlaneShader[0]);
-		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultPlaneShader[1]);
-		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultPlaneShader[2]);
+		sh->addShader(GX_VERTEX_SHADER, GLDefaultPlaneGBufferShader[0]);
+		sh->addShader(GX_GEOMETRY_SHADER, GLDefaultPlaneGBufferShader[1]);
+		sh->addShader(GX_FRAGMENT_SHADER, GLDefaultPlaneGBufferShader[2]);
 		defaultShaders.push_back(sh);
 		GXE_DEBUG("Default Plane GLShader Compiled Successfully");
 

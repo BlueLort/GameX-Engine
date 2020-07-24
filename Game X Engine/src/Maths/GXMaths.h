@@ -14,6 +14,12 @@ namespace gx {
 	using GXVec4 = glm::vec4;
 	using GXVec3 = glm::vec3;
 	using GXVec2 = glm::vec2;
+	using GXiVec4 = glm::ivec4;
+	using GXiVec3 = glm::ivec3;
+	using GXiVec2 = glm::ivec2;
+	using GXuVec4 = glm::uvec4;
+	using GXuVec3 = glm::uvec3;
+	using GXuVec2 = glm::uvec2;
 #define GXPtr(structure) glm::value_ptr(structure)
 #define GXRad glm::radians
 #define GXCos glm::cos

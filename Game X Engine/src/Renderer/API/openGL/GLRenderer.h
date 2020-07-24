@@ -15,6 +15,7 @@ namespace gx {
 		}
 		virtual void init() override;
 		virtual void draw(GXuint32 nElements, RenderType type, bool isWireFrame) override;
+		virtual void draw(GXuint32 nElements, RenderType type, bool isWireFrame, GXuint32 nInstances) override;
 		virtual inline void setViewPort(GXuint32 Width, GXuint32 Height) override {
 			GXGraphicsContext::setViewPort(Width, Height);
 		}

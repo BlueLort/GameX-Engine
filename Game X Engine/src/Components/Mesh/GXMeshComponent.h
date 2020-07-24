@@ -171,7 +171,7 @@ namespace gx {
 					matController.setNormal(textures[i]->getID());
 					break;
 				case gx::GX_HEIGHT:
-					name = "material.displacement";
+					name = "hmap"; //used with plane only up till now
 					break;
 				case gx::GX_AMBIENT:
 					break;
@@ -189,6 +189,51 @@ namespace gx {
 			graphicsBufferManager->stop();
 			
 			
+			GXTexture2D::setActiveTexture(0);
+			GXTexture2D::stop();
+		}
+		void draw(GXShader* shader, RenderType type, bool isWireFrame, GXuint32 nInstances) override {
+			auto textures = graphicsBufferManager->getTextures();
+			for (GXuint32 i = 0; i < textures.size(); i++)
+			{
+				GXTexture2D::setActiveTexture(i);
+				GXTexture2DType type = textures[i]->getType();
+				std::string name;
+				switch (type)
+				{
+				case gx::GX_DIFFUSE:
+					name = "material.diffuse";
+					matController.setDiffuse(textures[i]->getID());
+					break;
+				case gx::GX_SPECULAR:
+					name = "material.specular";
+					matController.setSpecular(textures[i]->getID());
+					break;
+				case gx::GX_SPECULAR_MAP:
+					break;
+				case gx::GX_NORMAL:
+					name = "material.normal";
+					matController.setNormal(textures[i]->getID());
+					break;
+				case gx::GX_HEIGHT:
+					name = "hmap"; //used with plane only up till now
+					break;
+				case gx::GX_AMBIENT:
+					break;
+				default:
+					break;
+				}
+				shader->setInt(name.c_str(), i);
+
+				textures[i]->use();
+			}
+
+			// draw mesh
+			graphicsBufferManager->use();
+			GXRenderer::getInstance().draw(graphicsBufferManager->getNumberOfElements(), type, isWireFrame,nInstances);
+			graphicsBufferManager->stop();
+
+
 			GXTexture2D::setActiveTexture(0);
 			GXTexture2D::stop();
 		}

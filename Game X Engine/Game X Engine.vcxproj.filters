@@ -246,6 +246,9 @@
     <ClInclude Include="src\Renderer\Effects\SSAO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Terrain\Plane\QuadTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window\GXWindow.cpp">
