@@ -35,20 +35,17 @@ After Finishing the 3D Side i might work on the 2D Side.
 - [ ] Terrain LOD.
 - [x] Deffered Rendering.
 - [ ] Normal Mapping.
-- [ ] Shadow Mapping.
+- [x] Shadow Mapping.
 - [x] Ray Picking.
-- [ ] Object Inspector and Object Tree.
-- [ ] Selected Object Outline.
-
-### Later
-
+- [x] Object Inspector and Simple Object Tree.
+- [x] Selected Object Outline.
 - [ ] Parallax Mapping.
-- [ ] Model Importer UI.
-- [ ] Skybox/Skydome Manager UI.
+- [x] Model Importer UI.
 - [ ] Simple Shapes Generation.
+- [ ] SSAO
+### Later
+- [ ] Skydome Manager UI.
 - [ ] Control over Physics Component.
-- [ ] SSAO (screen space ambient occlusion).
-- [ ] Skybox.
 - [ ] Content Browser.
 - [ ] Frustum Culling.
 - [ ] Planet Rendering using LOD Techniques.
