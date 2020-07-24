@@ -1,6 +1,5 @@
 # GameX-Engine
 
-[~~Work In Progress~~]
 
 GameX Engine is an attempt to create 3D Game Engine by building on top of GameX Level Editor features.
 
