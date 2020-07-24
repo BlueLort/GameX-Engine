@@ -77,6 +77,7 @@ namespace gx {
 		CLAMP(rowInstances, 1, MAX_INSTANCESZ);
 		CLAMP(xDensity, 2, MAX_DENSITYX);
 		CLAMP(zDensity, 2, MAX_DENSITYZ);
+		if(plane != nullptr)plane->setHeight(height);
 		if (ImGui::Button("Update/Add Plane") && canUpdate) {
 			canUpdate = false;
 			asyncTask = std::async(std::launch::async, createColoredTexture, width, depth, height, rowInstances,

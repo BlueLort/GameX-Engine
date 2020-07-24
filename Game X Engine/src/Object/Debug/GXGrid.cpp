@@ -63,7 +63,7 @@ namespace gx {
 		GBM->setAttribPointer(0, 3, GX_FLOAT, offsetof(Vertex3D, position));
 		GBM->endStream();
 		components.push_back(std::make_shared<GXMeshComponent>(this->GXID,GBM));
-		GXGraphicsContext::setLineWidth(3.0f);
+		GXGraphicsContext::setLineWidth(2.0f);
 	}
 
 	void GXGrid::update(float deltaTime) {

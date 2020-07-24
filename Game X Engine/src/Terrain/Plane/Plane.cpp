@@ -64,39 +64,6 @@ namespace gx {
 		
 		Buffer.reset(new GXGraphicsBufferManager());
 		Buffer->initFull(&verts[0], sizeof(PlaneVertex3D) * verts.size(), sizeof(PlaneVertex3D));
-		/*
-		GL_CALL(glGenBuffers(1, &ID));
-		GL_CALL(glGenBuffers(1, &otherID));
-
-		stride = sizeof(PlaneVertex3D);
-		GL_CALL(glGenVertexArrays(1, &ID));
-		VAOID = VAO->ID;
-		bind vao
-		bind static vbo
-		GL_CALL(glBufferData(GL_ARRAY_BUFFER, requiredSize, data, GL_STATIC_DRAW));
-
-		sVBOID = staticVBO->ID;
-		dVBOID = dynamicVBO->ID;
-		GL_CALL(glGenBuffers(1, &indexID));
-		EBOID = EBO->ID;
-		bind index buffer
-		GL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
-		GL_CALL(glVertexAttribPointer(ShaderLoc,Count,Type,GL_FALSE,stride,reinterpret_cast<void*>(offset)));
-		GL_CALL(glEnableVertexAttribArray(ShaderLoc));
-		GL_CALL(glVertexAttribPointer(ShaderLoc,Count,Type,GL_FALSE,stride,reinterpret_cast<void*>(offset)));
-		GL_CALL(glEnableVertexAttribArray(ShaderLoc));
-		dynamicVBO->use()
-		GL_CALL(glVertexAttribPointer(ShaderLoc,Count,Type,GL_FALSE,stride,reinterpret_cast<void*>(offset)));
-		GL_CALL(glEnableVertexAttribArray(ShaderLoc));
-		GL_CALL(glVertexAttribPointer(ShaderLoc,Count,Type,GL_FALSE,stride,reinterpret_cast<void*>(offset)));
-		GL_CALL(glEnableVertexAttribArray(ShaderLoc));
-		GL_CALL(glVertexAttribPointer(ShaderLoc,Count,Type,GL_FALSE,stride,reinterpret_cast<void*>(offset)));
-		GL_CALL(glEnableVertexAttribArray(ShaderLoc));
-		Buffer->setVertexAttribDivisor(2, 1);
-		Buffer->setVertexAttribDivisor(3, 1);
-		Buffer->setVertexAttribDivisor(4, 1);
-
-		*/
 		Buffer->uploadIndicesToBuffer(&indices[0], totalIndicesSize * sizeof(GXuint32), totalIndicesSize);
 		Buffer->setAttribPointer(0, 2, GX_FLOAT, offsetof(PlaneVertex3D, position), sizeof(PlaneVertex3D));
 		Buffer->setAttribIPointer(1, 2, GX_INT, offsetof(PlaneVertex3D, samplingOffset), sizeof(PlaneVertex3D));

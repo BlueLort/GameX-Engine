@@ -36,6 +36,7 @@ namespace gx {
 		virtual void update(GXFloat deltaTime) override;
 		virtual void draw() override;
 		virtual void destroy() override;
+		virtual void setHeight(GXint32 Height) { height = Height; }
 		~GXPlane() { if (indices != nullptr)delete[] indices; }
 	protected:
 		GXint32 width;
