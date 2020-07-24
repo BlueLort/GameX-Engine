@@ -6,7 +6,7 @@ GameX Engine is a 3D Game Engine built on top of improved features of GameX Leve
 
 After Finishing the 3D Side i might work on the 2D Side.
 
-**This project is for learning purposes So ,Design mistakes are possible and i really appreciate feedback.**
+**This project is for learning purposes so expect design mistakes and tons of bugs;I appreciate feedback.**
 
 ## Progress
 
@@ -32,18 +32,18 @@ After Finishing the 3D Side i might work on the 2D Side.
 - [x] I/O Requests,Plane Generation,Ray Picking handled on another thread.
 - [x] Bullet Physics Integration.
 - [x] Textures & Models could be pre-loaded to the system.
-- [ ] Terrain LOD.
+- [x] Terrain LOD.
 - [x] Deffered Rendering.
-- [ ] Normal Mapping.
+- [x] Normal Mapping.
 - [x] Shadow Mapping.
 - [x] Ray Picking.
 - [x] Object Inspector and Simple Object Tree.
 - [x] Selected Object Outline.
-- [ ] Parallax Mapping.
 - [x] Model Importer UI.
+### Later
+- [ ] Parallax Mapping.
 - [ ] Simple Shapes Generation.
 - [ ] SSAO
-### Later
 - [ ] Skydome Manager UI.
 - [ ] Control over Physics Component.
 - [ ] Content Browser.
