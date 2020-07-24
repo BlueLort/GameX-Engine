@@ -134,6 +134,9 @@ namespace gx {
 		case gx::GX_NORMALGBUFFER:
 			ImGui::Image(reinterpret_cast<void*>(GBuffer->getTextureID(GX_NORMAL_TEXTURE)), windowSize, ImVec2(0, 1), ImVec2(1, 0));
 			break;
+		case gx::GX_DEPTHBUFFER:
+			ImGui::Image(reinterpret_cast<void*>(dirLightShadowBuffer->getTextureID(GX_DEPTH_TEXTURE)), windowSize, ImVec2(0, 1), ImVec2(1, 0));
+			break;
 		default:
 			break;
 		}
@@ -173,9 +176,9 @@ namespace gx {
 		GXTexture2D::setActiveTexture(SHADOW_TEX_LOCATION);
 		GXTexture2D::use(dirLightShadowBuffer->getTextureID(GX_DEPTH_TEXTURE));
 		drawObjects();
+		drawPlane();
 		GXRenderer::getInstance().setStencilMask(0x00);
 		skydome->draw();
-		drawPlane();
 		debuggingGrid->draw();//TODO MAKE IT POSSIBLE TO HIDE THE GRID
 		drawSelectedObject();//TODO change outline approach [benchmark mathematical dilation]
 		selectObjectUnderCursor();
@@ -434,6 +437,7 @@ namespace gx {
 					if (ImGui::MenuItem("GBuffer Albedo")) { targetRender = GX_COLORGBUFFER; }
 					if (ImGui::MenuItem("GBuffer Position")) { targetRender = GX_POSGBUFFER; }
 					if (ImGui::MenuItem("GBuffer Normal")) { targetRender = GX_NORMALGBUFFER; }
+					if (ImGui::MenuItem("Shadow Depth Map")) { targetRender = GX_DEPTHBUFFER; }
 					ImGui::EndMenu();
 				}
 				if (ImGui::BeginMenu("Terrain Settings"))

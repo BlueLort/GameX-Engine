@@ -123,7 +123,7 @@ namespace gx {
 			this->shader->setFloat("totalWidth", this->totalVertsX-1.0f);
 			this->shader->setFloat("totalDepth", this->totalVertsZ-1.0f);
 			for (auto& component : components) {
-				component->draw(shader, RenderType::GX_TRIANGLES, isWireFrame, instances.size());
+				component->draw(this->shader, RenderType::GX_TRIANGLES, isWireFrame, instances.size());
 			}
 		}
 		
