@@ -4,6 +4,8 @@
 GameX Engine is an attempt to create 3D Game Engine by building on top of GameX Level Editor features.
 
 **This project is for learning purposes so expect design mistakes and tons of bugs;I appreciate feedback.**
+First demo video: https://youtu.be/gviEp5gqbEc
+
 Unfortunately no cmake or premake files made to test this on multiple platforms.
 This was developed on Visual Studio 2019
 clone the repo. by the following command:
@@ -58,8 +60,8 @@ clone the repo. by the following command:
 - [ ] Nodal Material Editor.
 - [ ] Lighting Control.
 
-
-
   ![Running](https://github.com/BlueLort/GameX-Engine/blob/master/Status/Running.png)
+  
+  ![LODTerrain](https://github.com/BlueLort/GameX-Engine/blob/master/Status/LODTerrain.PNG)
   
   ![Console](https://github.com/BlueLort/GameX-Engine/blob/master/Status/Console.png)
