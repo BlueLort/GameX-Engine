@@ -40,20 +40,21 @@ After Finishing the 3D Side i might work on the 2D Side.
 - [x] Object Inspector and Simple Object Tree.
 - [x] Selected Object Outline.
 - [x] Model Importer UI.
+- [x] Simple Material Editor.
 ### Later
 - [ ] Parallax Mapping.
 - [ ] Simple Shapes Generation.
 - [ ] SSAO
 - [ ] Skydome Manager UI.
 - [ ] Control over Physics Component.
-- [ ] Content Browser.
 - [ ] Frustum Culling.
 - [ ] Planet Rendering using LOD Techniques.
 - [ ] Memory Manager.
-- [ ] Particle System (& Instancing).
+- [ ] Particle System.
 - [ ] Animation System.
 - [ ] Scripting.
-- [ ] Material Editor.
+- [ ] Nodal Material Editor.
+- [ ] Lighting Control.
 
 
 
