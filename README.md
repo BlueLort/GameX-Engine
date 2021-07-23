@@ -3,7 +3,7 @@
 
 GameX Engine is an attempt to create 3D Game Engine by building on top of GameX Level Editor features.
 
-**This project is for learning purposes so expect design mistakes and tons of bugs;I appreciate feedback.**
+**This project is for learning purposes so expect design mistakes and bugs;I appreciate feedback.**
 
 First demo video: https://youtu.be/gviEp5gqbEc
 
